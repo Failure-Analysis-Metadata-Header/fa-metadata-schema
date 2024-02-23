@@ -1,0 +1,176 @@
+{
+    "toolspecific": {
+        "title": "Tool specific",
+        "description": "the tool specific section contains the metadata which are specific for a tool.",
+        "type": "object",
+        "properties": {
+            "method": {
+                "description": "method",
+                "type": "string",
+                "example": "PeakBipolar"
+            },
+            "fileHeaderLength": {
+                "description": "fileHeaderLength",
+                "type": "integer",
+                "example": "50"
+            },
+            "date": {
+                "description": "Date",
+                "type": "date",
+                "example": "18.04.2023 00:00:00"
+            },
+            "filelocation": {
+                "description": "filelocation",
+                "type": "string",
+                "example": "c:\\iFAct_exchange\\FA4_0_white_bumps_test_session2_channel0_Scan9 XGate1_2.tiff"
+            },
+            "multiPurposeFileLocation": {
+                "description": "MultiPurposeFileLocation",
+                "type": "string",
+                "example": "c:\\iFAct_exchange\\FA4_0_white_bumps_test_session2_channel0_Scan9 XGate1_2.tiff"
+            },
+            "tool": {
+                "type": "object",
+                "properties": {
+                    "manufacturer": {
+                        "description": "Manufacturer",
+                        "type": "string",
+                        "example": "PVA Tepla Analytical Systems GmbH"
+                    },
+                    "version": {
+                        "description": "Version",
+                        "type": "string",
+                        "example": "8.23.2.3"
+                    },
+                    "fileVSN": {
+                        "description": "fileVSN",
+                        "type": "string",
+                        "example": "8.23.2.3"
+                    }
+                }
+            },
+            "scan": {
+                "type": "object",
+                "properties": {
+                    "sequence": {
+                        "description": "sequence",
+                        "type": "string"
+                    },
+                    "mode": {
+                        "description": "mode",
+                        "type": "string",
+                        "example": ""
+                    },
+                    "width": {
+                        "description": "width",
+                        "type": "numerical",
+                        "example": "14678,8507109005"
+                    },
+                    "height": {
+                        "description": "height",
+                        "type": "numerical",
+                        "example": "14678,8507109005"
+                    },
+                    "unit": {
+                        "description": "Unit",
+                        "type": "string",
+                        "example": "mm"
+                    },
+                    "x_NbrOfPixel": {
+                        "description": "x_NbrOfPixel",
+                        "type": "integer",
+                        "example": "1468"
+                    },
+                    "y_NbrOfPixel": {
+                        "description": "y_NbrOfPixel",
+                        "type": "integer",
+                        "example": "1468"
+                    },
+                    "yLinesPerScan": {
+                        "description": "yLinesPerScan",
+                        "type": "integer",
+                        "example": "1307"
+                    },
+                    "x_CTR": {
+                        "description": "x_CTR",
+                        "type": "numerical",
+                        "example": "163653,684199052"
+                    },
+                    "y_CTR": {
+                        "description": "y_CTR",
+                        "type": "numerical",
+                        "example": "163653,684199052"
+                    },
+                    "z_CTR": {
+                        "description": "z_CTR",
+                        "type": "numerical",
+                        "example": "163653,684199052"
+                    },
+                    "name": {
+                        "description": "name",
+                        "type": "string",
+                        "example": "Scan9 XGate1_2 Channel0"
+                    }
+                }
+            },
+            "adc": {
+                "type": "object",
+                "properties": {
+                    "sampleOffset": {
+                        "description": "sampleOffset",
+                        "type": "integer"
+                    },
+                    "sampleRate": {
+                        "description": "sampleRate",
+                        "type": "integer"
+                    },
+                    "sampleRateUnit": {
+                        "description": "sampleRateUnit",
+                        "type": "string"
+                    },
+                    "inputRange": {
+                        "description": "inputRange",
+                        "type": "numerical"
+                    },
+                    "nbrOfSamplesperSignal": {
+                        "description": "nbrOfSamplesperSignal",
+                        "type": "integer"
+                    },
+                    "sampleBits": {
+                        "description": "sampleBits",
+                        "type": "integer"
+                    },
+                    "t_Sample_Start": {
+                        "description": "t_Sample_Start",
+                        "type": "integer"
+                    },
+                    "t_Sample_End": {
+                        "description": "t_Sample_End",
+                        "type": "integer"
+                    },
+                    "dataformat": {
+                        "description": "dataformat",
+                        "type": "string"
+                    }
+                }
+            },
+            "pulser": {
+                "type": "object",
+                "properties": {
+                    "gain": {
+                        "description": "gain",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "name",
+                        "type": "string"
+                    },
+                    "preamp_name": {
+                        "description": "name",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

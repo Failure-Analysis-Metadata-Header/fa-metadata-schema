@@ -1,0 +1,95 @@
+{
+    "methodspecific": {
+        "title": "method specific",
+        "description": "the method specific section incorporates the all neccessary metadata for each measurement methods.",
+        "type": "object",
+        "properties": {
+            "scanning electron microscopy": {
+                "type": "object",
+                "description": "the scanning electron microscopy subsection describes all specific sem-metadata which are adjustable in each sem device.",
+                "properties": {
+                    "accelerating voltage": {
+                        "description": "the accelerating voltage describes the voltage in [kv] at the cathode which generates the electric accelerating field.",
+                        "type": "number",
+                        "example": "2"
+                    },
+                    "decelerating voltage": {
+                        "description": "the deccelerating voltage describes a negative voltage in [kv] which can be applied at the tool's stage, to deccelerate the beam before it hits the specimen for a lower landing voltage.",
+                        "type": "number",
+                        "example": "0"
+                    },
+                    "working distance": {
+                        "description": "the working distance, is defined as the distance in [mm] between the objective lens and the focal plane or the final crossover point of the beam.",
+                        "type": "number",
+                        "example": "7.7"
+                    },  
+                    "magnification": {
+                        "description": "the magnification value indicates the magnification of the raster field.",
+                        "type": "string",
+                        "example": "x30k"
+                    },
+                    "signal type(s)": {
+                        "description": "the type of signal which was detected to generate the image.",
+                        "type": "string",
+                        "example": "se"
+                    }, 
+                    "detector": {
+                        "description": "the type of detector used by the tool to collect the electron signal.",
+                        "type": "string",
+                        "example": "inlens se2"
+                    },
+                    "mixed signals": {
+                        "description": "indicates the detected signals which were mixed to generate the image. is left ommited if only one signal is used.",
+                        "type": "string",
+                        "example": "se, bse"
+                    },
+                    "signal proportion": {
+                        "description": "describes the proportion of the used signals in [%]",
+                        "type": "string"
+                    },
+                    "aperture alignment x, y": {
+                        "description": "the relatve centering of the aperture in x and y direction in the electron beam path in [%]. the first entry denotes the x-proportion and the second the y-proportion.",
+                        "type": "number",
+                        "items": {
+                            "type":"number",
+                            "minitems": "2",
+                            "maxitems": "2"
+                        }
+                    },
+                    "stigmator alignment x, y": { 
+                    "description": "the relative alignment of the magnetic field in the objective lens to form or shift the elctronic beam in x and y direction in [%]. the first entry denotes the x-proportion and the second the y-proportion.",
+                    "type": "number",
+                    "items": {
+                        "type":"number",
+                        "minitems": "2",
+                        "maxitems": "2"
+                        }
+                    },
+                    "brightness": {
+                        "description": "the relative brightness of the image in [%]. a value of 100% corresponds to a white image and 0% to a black image.",
+                        "type":"integer",
+                        "minimum": "0",
+                        "maximum": "100",
+                        "example": "60"
+                    },
+                    "contrast": {
+                        "description": "the relative contrast of the image in [%]. higher values correspond to a high contrast.",
+                        "type":"integer",
+                        "minimum": "0",
+                        "maximum": "100",
+                        "example": "70"
+                    },
+                    "emission current": {
+                        "description": "the value indicates the emitted current out of the electron gun in [ua].", 
+                        "type": "number",
+                        "example": "20"
+                    },
+                    "probe current": {
+                        "description": "the value indicates the current which hits the specimen in [ua]",
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "toolspecific": {
+        "title": "Tool specific",
+        "description": "the tool specific section contains the metadata which are specific for a tool.",
+        "type": "object",
+        "properties": {
+            "sem500-1": {
+                "description": "the tool specific section contains the metadata which are specific for the sem500-1.(tbd)",
+                "type": "object",
+                "properties": {
+                    "accelerating voltage": {
+                        "description": "the accelerating voltage describes the voltage in [kv] at the cathode which generates the electric accelerating field.",
+                        "type": "number",
+                        "example": "2"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,286 @@
+{
+    "dataevaluation": {
+        "title": "data Evaluation",
+        "description": "the Data Evaluation section contains metadata about a measurement evaluation.",
+        "type": "object",
+        "process": "RoiSelection.py",
+        "properties": {
+            "poi": {
+                "type":"array",
+                "items":{
+                  "type":"object",
+                  "required":[
+                      "Name",
+                      "Coordinates"
+                  ],
+                  "example":{
+                      "poi":[
+                        {
+                          "name": "POI-1",
+                          "coordinates": [
+                            1234.57,
+                            3481.19
+                          ]
+                        },
+                        {
+                          "name": "POI-2",
+                          "coordinates": [
+                            1933.57,
+                            8732.19
+                          ]
+                        }
+                      ]
+                  },
+                  "properties":{
+                      "name":{
+                        "description":"Name of the specific POI",
+                        "type":"string"
+                      },
+                      "coordinates":{
+                        "description":"(x, y) coordinates of the specific POI in the tools coordinate frame. The first element denotes the x-coordinate and the second the y-coordinate.",
+                        "type":"array",
+                        "maxItems":2,
+                        "items":{
+                            "type":"integer"
+                        }
+                      }
+                  }
+                }
+            },
+            "roi": {
+                "description": "An ROI is any by the user segmented area in the image. This subsection contains metadata of each type of ROIs which were segmented by the user. It provides information like area of the ROI or coordinate of points that frame the region of the ROI.",
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "roi-polygon": {
+                        "description": "ROI-Polygon is an array which contains all ROI-Polygons selected by the user. A polygon is any drawn plane consisting of vertices selected by the user, which are connected over straight lines to form a closed area. ROI-Polygon contains the name of the polygon, the coordinates of the vertices, the area of the closed polygon, the filling color as well as color and width of the stroke.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Coordinates",
+                                "Area",
+                                "FillColor",
+                                "StrokeColor",
+                                "StrokeWidth"
+                            ],
+                            "example": {
+                                "roi-polygon": [
+                                    {
+                                        "Name": "ROI-Polygon-1",
+                                        "Coordinates": [
+                                            [
+                                                1264.23,
+                                                2172.23
+                                            ],
+                                            [
+                                                2464.15,
+                                                4521.15
+                                            ],
+                                            [
+                                                5435.14,
+                                                55484.5
+                                            ],
+                                            [
+                                                4465.55,
+                                                54642.48
+                                            ]
+                                        ],
+                                        "Area": 239,
+                                        "FillColor": [
+                                            0.8500,
+                                            0.3250,
+                                            0.0980
+                                        ],
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": 3
+                                    },
+                                    {
+                                        "Name": "ROI-Polygon-2",
+                                        "Coordinates": [
+                                            [
+                                                1154.23,
+                                                2543.23
+                                            ],
+                                            [
+                                                4726.15,
+                                                4115.15
+                                            ],
+                                            [
+                                                5621.14,
+                                                7452.56
+                                            ],
+                                            [
+                                                5433.55,
+                                                6563.48
+                                            ]
+                                        ],
+                                        "Area": 932,
+                                        "FillColor": [
+                                            0.8500,
+                                            0.3250,
+                                            0.0980,
+                                            0,
+                                            5000
+                                        ],
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": 3
+                                    }
+                                ]
+                            },
+                            "properties": {
+                                "name": {
+                                    "description": "The Name of the specific ROI-Polygon which can be any string.",
+                                    "type": "string"
+                                },
+                                "coordinates": {
+                                    "description": "Represents an N x 2 matrix whose rows contain the x and y coordinates of the vertices which define the polygon. The vertices are connected over straight lines and are rudimentary numbered from the first row (first vertice coordinate of the polygon) to the bottom row which represents the last vertice which is also connected to the first vertice to close the polygon. In the json format the matrix is defined as an array of arrays.",
+                                    "type": "array",
+                                    "items": {
+										"type": "number",
+                                        "maxItems": 2
+                                    }
+                                },
+                                "area": {
+                                    "description": "The Area drawn polygon in the unit of the tools coordinate frame",
+                                    "type": "number"
+                                },
+                                "fillColor": {
+                                    "description": "The fill color of the polygon encoded in RGBA.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "minItems": 4,
+                                    "maxItems": 4
+                                },
+                                "strokeColor": {
+                                    "description": "The color of the stroke the polygon was drawn with.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                },
+                                "strokeWidth": {
+                                    "description": "The width of the stroke in pixels. ",
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    },
+                    "roi-polyline": {
+                        "description": "ROI-Polyline is an array which contains all ROI-Polylines selected by the user. A polyline is specified by an array of vertices that are connected over straight lines. The first vertice is the starting point and the last vertice the end point of the vertice (an arrowhed marker is applied to the end of the line). ROI-Polyline contains the name of the polyline, the coordinates of the vertices  as well as color and width of the stroke. ",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Coordinates",
+                                "StrokeColor",
+                                "StrokeWidth"
+                            ],
+                            "example": {
+                                "ROI-Polyline": [
+                                    {
+                                        "Name": "ROI-Polyline-1",
+                                        "Coordinates": [
+                                            [
+                                                1264.23,
+                                                2172.23
+                                            ],
+                                            [
+                                                2464.15,
+                                                4521.15
+                                            ],
+                                            [
+                                                5435.14,
+                                                55484.5
+                                            ],
+                                            [
+                                                4465.55,
+                                                54642.48
+                                            ]
+                                        ],
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": 3
+                                    },
+                                    {
+                                        "Name": "ROI-Polyline-2",
+                                        "Coordinates": [
+                                            [
+                                                1154.23,
+                                                2543.23
+                                            ],
+                                            [
+                                                4726.15,
+                                                4115.15
+                                            ],
+                                            [
+                                                5621.14,
+                                                7452.56
+                                            ],
+                                            [
+                                                5433.55,
+                                                6563.48
+                                            ]
+                                        ],
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": 3
+                                    }
+                                ]
+                            },
+                            "properties": {
+                                "name": {
+                                    "description": "The name of the spcific polyline which can be any string.",
+                                    "type": "string"
+                                },
+                                "coordinates": {
+                                    "description": "Represents an N x 2 matrix whose rows contain the x and y coordinates of the vertices which define the polyline. The vertices are connected over straight lines and are rudimentary numbered from the first row (start point of the polyline) to the bottom row which represents the endpoint of the line (arrowhead marker is applied to the end of the line). In the json format the matrix is defined as an array of arrays.",
+                                    "type": "array",
+                                    "items": {
+										"type": "number",
+                                        "maxItems": 2
+                                    }
+                                },
+                                "strokeColor": {
+                                    "description": "The color of the stroke the polyline was drawn with.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                },
+                                "strokeWidth": {
+                                    "description": "The width of the stroke in pixels. ",
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

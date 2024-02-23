@@ -1,0 +1,195 @@
+{
+    "$schema":"http://json-schema.org/draft-04/schema",
+    "title": "json schema for the fa4.0 standardized header",
+    "type": "object",
+    "description": "this schema defines the standard json header used for the meta data collection within the fa4.0 project. it defines each section as well es the properties of the general and method specific section where metadata of a measurement should be mapped to. the general section is thereby identical for all tools.",
+    "generalsection": {
+        "description": "the general section incorporates all necessary metadata from the general section.",
+        "title": "generalsection header",
+        "type": "object",
+        "process": "coordinate_transformation.py",
+        "properties": {
+            "file path": {
+                "title": "the path to the generated file, linked to the json file.",
+                "type": "string",
+                "example": "w:\\_fa4\\marko\\zeiss meta\\test"
+            },
+            "file name": {
+                "title": "the name of the generated file, linked to the json file.",
+                "type": "string"
+            },
+            "file format": {
+                "title": "indicates the file format.",
+                "type": "string",
+                "example": ".tiff"
+            },
+            "file size": {
+                "title": "the file size in [bytes]",
+                "type": "integer"
+            },
+            "logfile path": {
+                "title": "the path to the created log file of the tool. is left ommitted if there is no existing logfile.",
+                "type": "string"
+            },
+            "previous header file": {
+                "type": "string",
+                "title": "the name of the previous header file in the ifact workflow history."
+            },
+            "header type": { 
+                "title": "use standard for creation of header file",
+                "type": "string",
+                "example": "fa4.0 standardized header"
+            },
+            "version": {
+                "title": "the version of the standard header type.",
+                "type": "string",
+                "example": "v1.0"
+            },
+            "time stamp": {
+                "title": "the time stamp, when the file was generated in iso8601 format (yyyy-mm-dd hh:mm:ss). an add on indicates the differences to the coordinated universal time (utc), for example +01:00 for central european time (cet)",
+                "type": "string",
+                "example":"2022-10-31t16:05:25+01:00"
+            },
+            "manufacturer": {
+                "title": "the manufacturer name of the measurement tool.",
+                "type": "string",
+                "example": "zeiss microscopy"
+            },
+            "tool name": {
+                "title": "the name of the measurement tool.",
+                "type": "string",
+                "example": "sem 500-1"
+            },
+            "serial number": {
+                "title": "the value is the unique manufacturer serial number of a measurement tool.",
+                "type": "string"
+            },
+            "method": {
+                "title": "indicates the analysis method.",
+                "type": "string",
+                "example": "sem"
+            },
+            "image width": {
+                "title": "the width of the image in pixel.",
+                "type": "integer",
+                "example": "1050"
+            },
+            "image length": {
+                "title": "the length of the image in pixel.",
+                "type": "integer",
+                "example": "1050"
+            },
+            "pixel length": {
+                "title": "the length per pixel in [um].",
+                "type": "number",
+                "example": "3.307292"
+            },
+            "pixel width": {
+                "title": "the width per pixel in [um].",
+                "type": "number",
+                "example": "3.307292"
+            },
+            "bit depth": {
+                "title": "the number of bits each pixel can resolute. for example a 8-bit depth in a grayscale image, means a resolution of 256 grayscales.",
+                "type": "integer",
+                "example": "8"
+            },
+            "compressed bits/pixel": {
+                "title": "the amount of compressed bits per pixel.",
+                "type": "number"
+            },
+            "color mode": {
+                "title": "the color mode of the image",
+                "type": "string",
+                "enum": ["grayscale", "rgb"]
+            },
+            "customer":{
+                "title": "the name of the respective company which performed the measurement.",
+                "type": "string",
+                "example": "infineon"
+            },
+            "coordinates sub section":{
+                "type":"object",
+                "properties": {
+                    "stage coordinate system orientation": {
+                        "title": "indicates whether the tool's cartesian coordinate system is right or left handed.",
+                        "type": "string",
+                            "enum": ["right handed", "left handed"],
+                            "example": "right handed"
+                        },
+                        "global or local frame movement": {
+                            "title": "this value indicates whether chained movements of the tool's stage are defined around a global fixed frame or around its local frame. the boolean 1 states the stage is moving around a global frame and 0 around its local frame respectively.",
+                            "type":"boolean",
+                            "example": "1"
+                        },
+                        "relative orientation to screens coordinate frame": {
+                            "title": "this array describes the relative offset orientation of the tool's global frame to the screens coordinate frame. the first entry denotes the angle around the x-axis, the second around the y-axis and the third around the z-axis in degrees. the angles are relative to the tools global frame.",
+                            "type": "number",
+                            "items": {
+                                "type":"number",
+                                "minitems":3,
+                                "maxitems":3,
+                                "minimum":-180,
+                                "maximum":180
+                            }
+                        },
+                        "stage coordinates Mark 1 x": {
+                            "title": "Alignment Mark 1 x",
+                            "type": "number"
+                        },
+                        "stage coordinates Mark 1 y": {
+                            "title": "Alignment Mark 1 y",
+                            "type": "number"
+                        },
+                        "stage coordinates Mark 2 x": {
+                            "title": "Alignment Mark 2 x",
+                            "type": "number"
+                        },
+                        "stage coordinates Mark 2 y": {
+                            "title": "Alignment Mark 2 y",
+                            "type": "number"
+                        },
+                        "stage coordinates Mark 3 x": {
+                            "title": "Alignment Mark 3 x",
+                            "type": "number"
+                        },
+                        "stage coordinates Mark 3 y": {
+                            "title": "Alignment Mark 3 y",
+                            "type": "number"
+                        },
+                        "result coordinates x": {
+                            "title": "Transformed coordinates x",
+                            "type": "integer",
+                            "state": "disabled"
+                        },
+                        "result coordinates y": {
+                            "title": "Transformed coordinates y",
+                            "type": "integer",
+                            "state": "disabled"
+                        },
+                        "stage rotation rx": {
+                            "title": "rx is the vertical angle which describes the rotation of the tool's stage around a horizontal axis parallel to the x-axis of either the tool's global or local frame in degrees",
+                            "type": "number",
+                            "example": "20.4",
+                            "minimum":-180,
+                            "maximum":180
+                        },
+                        "stage rotation ry": {
+                            "title": "ry is the vertical angle which describes the rotation of the tool's stage around a horizontal axis parallel to the y-axis of either the tool's global or local frame in degrees",
+                            "type": "number",
+                            "example": "20.4",
+                            "minimum":-180,
+                            "maximum":180
+                        },
+                        "stage rotation rz": {
+                            "title": "rz is the horizontal angle which describes the rotation of the tool's stage around a vertical axis parallel to the z-axis of either the tool's global or local frame in degrees",
+                            "type": "number",
+                            "example": "223.5",
+                            "minimum":-180,
+                            "maximum":180
+                        }
+                }
+            }
+        }
+    }
+}
