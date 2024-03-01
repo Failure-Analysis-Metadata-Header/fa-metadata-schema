@@ -104,8 +104,9 @@ Any JSON Header files that are created by the tool must adhere to a specified ve
 
 The Standardized FA JSON Header is used for image meta data storage and can be used as a transfer file to exchange the meta data between different tools in a workflow. In the following an exemplary workflow is illustrated between a scanning acoustic microscope (tool A) and focused ion beam (tool B) using the JSON Header together with the Universal Sample Holder: 
 
-- A Flip Chip (such as one illustrated in the images below) is analyzed after a thermal stress test which induces delaminations between the solder bumps and the interconnection layer of the die. 
- 
+- A Flip Chip (such as one illustrated in the image below) is analyzed after a thermal stress test which induces delaminations between the solder bumps and the interconnection layer of the die. 
+ ![plot](documentation/images/schematic_crossection.PNG)
+
 
 
 
