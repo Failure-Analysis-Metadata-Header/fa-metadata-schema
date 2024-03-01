@@ -24,7 +24,7 @@ The Header has a federal structure and contains standardized data fields/labels 
 This section describes the different sections that make up the JSON Header and what they are used for.
 In the future, further sections may be added. The modular schemas of the header allow extension and adding of new sections.
 The following image gives an overview of the overall structure of the header:
-![plot](documentation/images/Header_Overall-Structure.png)
+![plot](documentation/images/Header_Overall_Structure_new.PNG)
 The different sections are generated based on seperate JSON-Schema files (Each section has an own schema file). This allows easy interchangeability of new versions for different sub sections and also easy customization (e.g. Infineon and Bosch may have different CustomerSection-Schema Files without affecting the other sections
 
 ### Customer
@@ -101,6 +101,13 @@ Any JSON Header files that are created by the tool must adhere to a specified ve
 - my_example_image.json
 
 ## JSON Header Workflow
+
+The Standardized FA JSON Header is used for image meta data storage and can be used as a transfer file to exchange the meta data between different tools in a workflow. In the following an exemplary workflow is illustrated between a scanning acoustic microscope (tool A) and focused ion beam (tool B) using the JSON Header together with the Universal Sample Holder: 
+
+- A Flip Chip (such as one illustrated in the images below) is analyzed after a thermal stress test which induces delaminations between the solder bumps and the interconnection layer of the die. 
+ 
+
+
 
 The JSON Header can be used for general image metadata storage and to transfer this metadata between different tools. An exemplary workflow could look like the following:
 
