@@ -104,13 +104,52 @@ Any JSON Header files that are created by the tool must adhere to a specified ve
 
 The Standardized FA JSON Header is used for image meta data storage and can be used as a transfer file to exchange the meta data between different tools in a workflow. In the following an exemplary workflow is illustrated between a scanning acoustic microscope (tool A) and focused ion beam (tool B) using the JSON Header together with the Universal Sample Holder: 
 
-- A Flip Chip (such as one illustrated in the image below) is analyzed after a thermal stress test which induces delaminations between the solder bumps and the interconnection layer of the die. 
- ![plot](documentation/images/schematic_crossection.PNG)
+- A Flip Chip (such as one illustrated in the image below) is analyzed after a thermal stress test which potentially induces delaminations between the solder bumps and the interconnection layer of the die. 
+<div align="center">
+  <img src="documentation/images/schematic_crossection.PNG" width="600" height="250" />
+  <img src="documentation/images/sample_overview.jpg" width="400" height="250" />  
+</div>
+
+- The chip is attached to the Universal Sample Holder and it's alignment marks are automatically scanned at the scanning acoustic microscope (SAM).
+
+- The SAM is able to generate images at different material interfaces in C-SAM mode. Possible delaminations or cracks within the chip appear white in the SAM image. In our case therefore, the delaminated regions at the interface between the solder bumps and the interconnection layer of the die, show up as 'white bumps':
+<div align="center">
+  <img src="documentation/images/White_Bumps.jpg" width="500" height="350" />
+</div>
+
+- After inspecting the white bumps, the user saves the created SAM image together with its corresponding JSON file header which contains all general image and SAM specific meta data, but also the coordinates of the alignment marks and the stage position. The alignment marks and the stage position will be used for coordinate transformation.
+
+<div align="center">
+  <img src="documentation/images/UniversalSampleHolder-AlignmentMarks.png"/>
+  <img src="documentation/images/Alignment_Marks_SubSection.PNG" width = "200" height="400"/>
+  <img src="documentation/images/Stage_Coordinates.PNG" height="400"/>  
+</div>
+
+- Furthermore, an additional application can be used which reads the image and the JSON file header, where the user marks the inspected white bumps as, e.g. points of interest (POIs). The SAM coordinates of the POIs are saved under the Data Evaluation section in the JSON file header.
+
+<div align="center">
+  <img src="documentation/images/Xeia_Demo.PNG" height="450" />
+</div>
+
+- In the last step of the workflow, the user wants to perform a focused ion beam (FIB) cut at tool B to verify the root cause failure of the inspected white bumps in the SAM image. The Uiversal Sample Holder is inserted into the FIB and the alignment marks are again automatically scanned.
+  
+- The FIB tool can not generate images of different material interfaces, but only of the chip surface. Thus, it is difficult for the user to navigate to the explicit POIs, since they are not visible at the chip surface. 
+- To navigate to the POIs, the FIB loads the JSON file header and reads the coordinates of the POIs and alignment marks in the SAM coordinates. It subsequently performs a coordinate transformation with the help of the alignment marks to get the FIB coordinates of the POIs:
+
+<div align="center">
+  <img src="documentation/images/Coordinate_Transformation.png" />
+</div>
+
+- Finally the the user can move the white bumps of interest and perform a FIB cut to verify the root cause failure:
+<div align="center">
+  <img src="documentation/images/autoxeia_move.png" width="400" height="400" />
+      ---> 
+  
+  <img src="documentation/images/Final_FIB_Cut.png" width="400" height="400" />
+</div>
 
 
-
-
-The JSON Header can be used for general image metadata storage and to transfer this metadata between different tools. An exemplary workflow could look like the following:
+<!-- Old Version: The JSON Header can be used for general image metadata storage and to transfer this metadata between different tools. An exemplary workflow could look like the following:
 
 - Create initial JSON file from database
   - This initial JSON file would hold no image information but only customer-specific information such as order or part IDs
@@ -124,4 +163,4 @@ The JSON Header can be used for general image metadata storage and to transfer t
 - Create image with tool B with the help of positional information stored in JSON Header
 - Save new JSON Header with tool B
 
-In this workflow, a set of certain POIs could be marked in the image taken with tool A and then be transferred to tool B, which can then take pictures of the same POIs based on the coordinates. This requires storing of all coordinate-related information and correct transformation between coordinate systems, if necessary. In case of using a sample holder, this workflow is greatly simplified as the coordinate system of the sample holder can be used.
+In this workflow, a set of certain POIs could be marked in the image taken with tool A and then be transferred to tool B, which can then take pictures of the same POIs based on the coordinates. This requires storing of all coordinate-related information and correct transformation between coordinate systems, if necessary. In case of using a sample holder, this workflow is greatly simplified as the coordinate system of the sample holder can be used. -->
