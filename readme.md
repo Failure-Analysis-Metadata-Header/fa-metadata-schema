@@ -106,8 +106,8 @@ The Standardized FA JSON Header is used for image meta data storage and can be u
 
 - A Flip Chip (such as one illustrated in the image below) is analyzed after a thermal stress test which potentially induces delaminations between the solder bumps and the interconnection layer of the die. 
 <div align="center">
-  <img src="documentation/images/schematic_crossection.PNG" width="600" height="250" />
-  <img src="documentation/images/sample_overview.jpg" width="400" height="250" />  
+  <img src="documentation/images/schematic_crossection.PNG" width="500" height="200" />
+  <img src="documentation/images/sample_overview.jpg" width="300" height="200" />  
 </div>
 
 - The chip is attached to the Universal Sample Holder and it's alignment marks are automatically scanned at the scanning acoustic microscope (SAM).
@@ -122,7 +122,7 @@ The Standardized FA JSON Header is used for image meta data storage and can be u
 <div align="center">
   <img src="documentation/images/UniversalSampleHolder-AlignmentMarks.png"/>
   <img src="documentation/images/Alignment_Marks_SubSection.PNG" width = "200" height="400"/>
-  <img src="documentation/images/Stage_Coordinates.PNG" height="400"/>  
+  <img src="documentation/images/Stage_Coordinates.PNG" width = "250" height="400"/>  
 </div>
 
 - Furthermore, an additional application can be used which reads the image and the JSON file header, where the user marks the inspected white bumps as, e.g. points of interest (POIs). The SAM coordinates of the POIs are saved under the Data Evaluation section in the JSON file header.
@@ -142,10 +142,10 @@ The Standardized FA JSON Header is used for image meta data storage and can be u
 
 - Finally the the user can move the white bumps of interest and perform a FIB cut to verify the root cause failure:
 <div align="center">
-  <img src="documentation/images/autoxeia_move.png" width="400" height="400" />
+  <img src="documentation/images/autoxeia_move.png" width="350" height="350" />
       ---> 
   
-  <img src="documentation/images/Final_FIB_Cut.png" width="400" height="400" />
+  <img src="documentation/images/Final_FIB_Cut.png" width="350" height="350" />
 </div>
 
 
