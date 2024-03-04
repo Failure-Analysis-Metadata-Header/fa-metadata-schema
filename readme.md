@@ -112,12 +112,12 @@ The Standardized FA JSON Header is used for image meta data storage and can be u
 
 - The chip is attached to the Universal Sample Holder and it's alignment marks are automatically scanned at the scanning acoustic microscope (SAM).
 
-- The SAM is able to generate images at different material interfaces in C-SAM mode. Possible delaminations or cracks within the chip appear white in the SAM image. In our case therefore, the delaminated regions at the interface between the solder bumps and the interconnection layer of the die, show up as 'white bumps':
+- The SAM is able to generate images at different material interfaces in C-SAM mode. Possible delaminations or cracks within the chip appear white in the SAM image. In our case therefore, the delaminated regions at the interface between the solder bumps and the interconnection layer of the die show up as 'white bumps':
 <div align="center">
   <img src="documentation/images/White_Bumps.jpg" width="500" height="350" />
 </div>
 
-- After inspecting the white bumps, the user saves the created SAM image together with its corresponding JSON file header which contains all general image and SAM specific meta data, but also the coordinates of the alignment marks and the stage position. The alignment marks and the stage position will be used for coordinate transformation.
+- After inspecting the white bumps, the user saves the created SAM image together with its corresponding JSON file header which contains all general image and SAM specific meta data, but also the coordinates of the alignment marks from the Universal Sample Holder and the stage position of the SAM. The alignment marks and the stage position will be used for coordinate transformation between tool A and tool B. Optional: Upload the JSON file header and the image to an internal Database.
 
 <div align="center">
   <img src="documentation/images/UniversalSampleHolder-AlignmentMarks.png"/>
@@ -133,18 +133,19 @@ The Standardized FA JSON Header is used for image meta data storage and can be u
 
 - In the last step of the workflow, the user wants to perform a focused ion beam (FIB) cut at tool B to verify the root cause failure of the inspected white bumps in the SAM image. The Uiversal Sample Holder is inserted into the FIB and the alignment marks are again automatically scanned.
   
-- The FIB tool can not generate images of different material interfaces, but only of the chip surface. Thus, it is difficult for the user to navigate to the explicit POIs, since they are not visible at the chip surface. 
-- To navigate to the POIs, the FIB loads the JSON file header and reads the coordinates of the POIs and alignment marks in the SAM coordinates. It subsequently performs a coordinate transformation with the help of the alignment marks to get the FIB coordinates of the POIs:
+- The FIB tool can only generate images of the chip surface and not at different material interfaces like the SAM. Thus, it is difficult for the user to navigate to the explicit POIs, since they are not visible at the chip surface. 
+- To navigate to the POIs, the FIB loads the JSON file header and reads the coordinates of the POIs and alignment marks in the SAM coordinates. It subsequently performs a coordinate transformation with the help of the alignment marks to retrieve the FIB coordinates of the POIs:
 
 <div align="center">
   <img src="documentation/images/Coordinate_Transformation.png" />
 </div>
 
-- Finally the the user can move the white bumps of interest and perform a FIB cut to verify the root cause failure:
+- Finally the the user can navigate to the white bumps of interest and perform a FIB cut to verify the root cause failure:
 <div align="center">
   <img src="documentation/images/autoxeia_move.png" width="350" height="350" />
-      ---> 
-  
+  <center>
+    --->
+  </center>
   <img src="documentation/images/Final_FIB_Cut.png" width="350" height="350" />
 </div>
 
