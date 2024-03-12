@@ -1,0 +1,8 @@
+{
+    "History": {
+        "description": "The History section is intended to store data of pevious related measurements or images. Like the link to the previous JSON header file.",
+        "type": ["object","null"],
+        "properties": {      
+        }
+    }  
+}
