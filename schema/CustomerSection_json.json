@@ -1,45 +1,19 @@
 {
-    "customerspecific": {
-        "title": "Customer specific",
-        "description": "The customer specific section contains the metadata related with the customer.",
-        "type": "object",
-        "properties": {
-            "subheaderlength": {
-                "description": "subheaderlength",
-                "type": "integer"
-                },
-            "headerIdentifier": {
-                "description": "headerIdentifier",
-                "type": "string"
-                },
-            "sampleorientation": {
-                "description": "sampleorientation",
-                "type": "string"
-                },
-            "analysisnumber": {
-                "description": "analysisnumber",
-                "type": "string"
-                },
-            "sampleID": {
-                "description": "sampleID",
-                "type": "string"
-                },
-            "customerlogisticsSystemID": {
-                "description": "customerlogisticsSystemID",
-                "type": "string"
-                },
-            "customerITSystemPath": {
-                "description": "customerITSystemPath",
-                "type": "string"
-                },
-            "cloudStorageID": {
-                "description": "cloudStorageID",
-                "type": "string"
-                },
-            "internal Toolname": {
-                "description": "internal Toolname",
-                "type": "string"
-            }
+    "Customer Specific": {
+      "description": "The customer specific section contains specific meta data defined by a customer.",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "Infineon": {
+          "description": "The Infineon subsection contains specific metadata defined by the customer Infineon.",
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {}
         }
+      }
     }
-}
+  }
