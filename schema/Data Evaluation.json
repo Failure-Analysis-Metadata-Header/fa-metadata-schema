@@ -3,6 +3,14 @@
     "description": "The Data Evaluation section contains metadata about a measurement evaluation.",
     "type": ["object", "null"],
     "properties": {
+      "Image Label": {
+        "description": "The label to the image. The image label can for example be an image caption or represent a failure mode and takes any string.",
+        "type": "string"      
+      },
+      "Image ID": {
+        "description": "The unique ID to the image.",
+        "type": "string"
+      },
       "POI": {
         "description": ".POI (point of interest) is an array which contains all the 0-N POIs selected by the user. One POI is a point on the image, defined by its name and (x, y)-coordinates.",
         "type": [ "array", "null" ],
