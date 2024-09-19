@@ -91,13 +91,7 @@
               "type": "object",
               "required": [
                 "Name",
-                "Label",
-                "ID",
-                "Coordinates",
-                "Area",
-                "FillColor",
-                "StrokeColor",
-                "StrokeWidth"
+                "Coordinates"
               ],
               "example": {
                 "ROI-Polygon": [
@@ -236,11 +230,7 @@
               "type": "object",
               "required": [
                 "Name",
-                "Label",
-                "ID",
-                "Coordinates",
-                "StrokeColor",
-                "StrokeWidth"
+                "Coordinates"
               ],
               "example": {
                 "ROI-Polyline": [
