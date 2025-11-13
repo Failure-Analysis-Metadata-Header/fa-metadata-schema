@@ -13,6 +13,7 @@ A lightweight JSON schema for storing metadata alongside semiconductor failure a
 - **[Versioning Strategy](documentation/VERSIONING.md)** - How we manage schema versions
 - **[Schema Files](schema/v2/)** - JSON Schema definitions
 - **[Examples](schema/v2/examples/)** - Sample implementations
+- **[FA40 Documentation](documentation/fa40_description.md)** - Documentation from the FA4.0 Project
 
 ## Why Version 2.0?
 
