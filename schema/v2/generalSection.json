@@ -1,0 +1,474 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FA Metadata - General Section",
+  "version": "2.0",
+  "description": "General section containing core metadata applicable to all analysis methods and tools.",
+  "type": "object",
+  "properties": {
+    "generalSection": {
+      "type": "object",
+      "description": "Core metadata about the measurement file and tool configuration.",
+      "required": [
+        "fileName",
+        "timeStamp",
+        "manufacturer",
+        "toolName",
+        "method"
+      ],
+      "properties": {
+        "filePath": {
+          "description": "The path to the generated file, linked to the JSON metadata file.",
+          "type": "string"
+        },
+        "fileName": {
+          "description": "The name of the generated file, linked to the JSON metadata file.",
+          "type": "string"
+        },
+        "fileFormat": {
+          "description": "File format/extension of the measurement file.",
+          "type": "string",
+          "examples": [
+            ".tiff",
+            ".png",
+            ".jpg",
+            ".bmp"
+          ]
+        },
+        "fileSize": {
+          "description": "The file size in bytes.",
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "default": "bytes"
+            }
+          }
+        },
+        "logfilePath": {
+          "description": "The path to the tool's log file. Optional - only if log file exists.",
+          "type": "string"
+        },
+        "previousHeaderFile": {
+          "description": "Reference to the previous metadata file in the analysis workflow.",
+          "type": "string"
+        },
+        "headerType": {
+          "description": "Standard/schema type used for metadata header creation.",
+          "type": "string",
+          "default": "FA4.0 Metadata Header"
+        },
+        "version": {
+          "description": "Version of the metadata header standard.",
+          "type": "string",
+          "examples": [
+            "2.0",
+            "1.0"
+          ]
+        },
+        "timeStamp": {
+          "description": "Time when the measurement file was generated, in ISO8601 format (YYYY-MM-DDThh:mm:ss±hh:mm).",
+          "type": "string",
+          "format": "date-time",
+          "examples": [
+            "2025-11-13T16:05:25+01:00"
+          ]
+        },
+        "manufacturer": {
+          "description": "Manufacturer name of the measurement tool.",
+          "type": "string",
+          "examples": [
+            "ZEISS",
+            "FEI",
+            "Hitachi",
+            "Tescan"
+          ]
+        },
+        "toolName": {
+          "description": "Name/model of the measurement tool.",
+          "type": "string",
+          "examples": [
+            "GeminiSEM 500",
+            "Magellan 400"
+          ]
+        },
+        "serialNumber": {
+          "description": "Unique manufacturer serial number of the measurement tool.",
+          "type": "string"
+        },
+        "method": {
+          "description": "Primary analysis method used.",
+          "type": "string",
+          "examples": [
+            "SEM",
+            "FIB",
+            "Optical",
+            "X-Ray",
+            "AFM"
+          ]
+        },
+        "imageWidth": {
+          "description": "Width of the image in pixels.",
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "default": "px"
+            }
+          }
+        },
+        "imageHeight": {
+          "description": "Height of the image in pixels.",
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "default": "px"
+            }
+          }
+        },
+        "pixelWidth": {
+          "description": "Physical width of each pixel.",
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "default": "nm",
+              "examples": [
+                "nm",
+                "µm"
+              ]
+            }
+          }
+        },
+        "pixelHeight": {
+          "description": "Physical height of each pixel.",
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "default": "nm",
+              "examples": [
+                "nm",
+                "µm"
+              ]
+            }
+          }
+        },
+        "bitDepth": {
+          "description": "Number of bits per pixel (e.g., 8-bit = 256 gray levels).",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "examples": [
+            8,
+            16,
+            32
+          ]
+        },
+        "compressedBitsPerPixel": {
+          "description": "Amount of compressed bits per pixel (if compression applied).",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "colorMode": {
+          "description": "Color mode of the image.",
+          "type": "string",
+          "examples": [
+            "Grayscale",
+            "RGB",
+            "RGBA"
+          ]
+        },
+        "customer": {
+          "description": "Name of the organization/customer performing the measurement.",
+          "type": "string"
+        },
+        "sampleHolder": {
+          "description": "Name/type of the sample holder used.",
+          "type": "string",
+          "examples": [
+            "Universal Sample Holder",
+            "Custom Pin Stub"
+          ]
+        },
+        "toolCalibrated": {
+          "description": "Indicates if the tool is currently calibrated.",
+          "type": "boolean"
+        },
+        "coordinates": {
+          "description": "Coordinate system information and stage position data.",
+          "type": "object",
+          "properties": {
+            "stageCoordinateSystem": {
+              "description": "Orientation of the tool's coordinate system.",
+              "type": "string",
+              "enum": [
+                "right-handed",
+                "left-handed"
+              ]
+            },
+            "globalOrLocalFrame": {
+              "description": "Indicates whether stage movements are in global frame (true) or local frame (false).",
+              "type": "boolean"
+            },
+            "relativeOrientation": {
+              "description": "Relative offset orientation angles (X, Y, Z) of the tool's frame to screen coordinates, in degrees.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            },
+            "stagePosition": {
+              "description": "Stage coordinates (X, Y, Z) in the tool's coordinate frame.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "unit": {
+                  "type": "string",
+                  "examples": [
+                    "mm",
+                    "µm"
+                  ]
+                }
+              }
+            },
+            "stageRotationRx": {
+              "description": "Stage rotation around X-axis.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": -360,
+                  "maximum": 360
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            },
+            "stageRotationRy": {
+              "description": "Stage rotation around Y-axis.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": -360,
+                  "maximum": 360
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            },
+            "stageRotationRz": {
+              "description": "Stage rotation around Z-axis.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": -360,
+                  "maximum": 360
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            }
+          }
+        },
+        "alignmentMarks": {
+          "description": "Information about alignment marks (e.g., for Universal Sample Holder). Optional - only if alignment marks are used.",
+          "type": "object",
+          "properties": {
+            "offset": {
+              "description": "Offset vector (X, Y, Z) for transformation matrix calculation.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "unit": {
+                  "type": "string",
+                  "examples": [
+                    "µm",
+                    "mm"
+                  ]
+                }
+              }
+            },
+            "fiducialPositions": {
+              "description": "Coordinates of the alignment marks in tool's coordinate frame.",
+              "type": "object",
+              "properties": {
+                "mark1": {
+                  "description": "Position of alignment mark 1 (X, Y, Z).",
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    "unit": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "mark2": {
+                  "description": "Position of alignment mark 2 (X, Y, Z).",
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    "unit": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "mark3": {
+                  "description": "Position of alignment mark 3 (X, Y, Z).",
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    "unit": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "fiducialType": {
+              "description": "Shape of the alignment marks.",
+              "type": "string",
+              "examples": [
+                "circle",
+                "cross",
+                "square"
+              ]
+            },
+            "fiducialSize": {
+              "description": "Size property of the fiducials (e.g., diameter for circles).",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "µm"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "generalSection": {
+    "fileName": "optical_defect_overview.jpg",
+    "timeStamp": "2025-11-13T10:15:00+01:00",
+    "manufacturer": "Olympus",
+    "toolName": "DSX1000",
+    "method": "Optical"
+  },
+  "methodSpecific": {
+    "opticalMicroscopy": {
+      "objectiveMagnification": "50x"
+    }
+  }
+}

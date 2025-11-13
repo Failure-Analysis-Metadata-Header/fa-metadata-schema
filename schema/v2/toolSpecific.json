@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FA Metadata - Tool Specific Section",
+  "version": "2.0",
+  "description": "Tool/equipment-specific metadata. Vendors can define custom fields here.",
+  "type": "object",
+  "properties": {
+    "toolSpecific": {
+      "description": "Contains tool/equipment-specific metadata not covered in method-specific section.",
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "vendorName": {
+          "description": "Name of the tool vendor/manufacturer.",
+          "type": "string"
+        },
+        "softwareVersion": {
+          "description": "Version of the tool control software.",
+          "type": "string"
+        },
+        "customParameters": {
+          "description": "Tool-specific custom parameters.",
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

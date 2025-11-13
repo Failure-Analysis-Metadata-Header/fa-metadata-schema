@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FA Metadata - Customer Section",
+  "version": "2.0",
+  "description": "Customer-specific metadata fields. This section is fully customizable per organization.",
+  "type": "object",
+  "properties": {
+    "customerSpecific": {
+      "description": "Contains customer/organization-specific metadata fields.",
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "sampleId": {
+          "description": "Internal sample identifier.",
+          "type": "string"
+        },
+        "orderId": {
+          "description": "Internal order/job number.",
+          "type": "string"
+        },
+        "projectId": {
+          "description": "Project identifier.",
+          "type": "string"
+        },
+        "lotNumber": {
+          "description": "Manufacturing lot number.",
+          "type": "string"
+        },
+        "waferNumber": {
+          "description": "Wafer identifier.",
+          "type": "string"
+        },
+        "dieCoordinates": {
+          "description": "Die coordinates on wafer (X, Y).",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": [
+                "number",
+                "string",
+                "null"
+              ]
+            },
+            "y": {
+              "type": [
+                "number",
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "customFields": {
+          "description": "Additional custom fields as key-value pairs.",
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

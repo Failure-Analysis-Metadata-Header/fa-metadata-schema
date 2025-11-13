@@ -1,0 +1,30 @@
+{
+  "generalSection": {
+    "fileName": "fib_cross_section.tiff",
+    "timeStamp": "2025-11-13T15:45:12+01:00",
+    "manufacturer": "FEI",
+    "toolName": "Helios G4",
+    "method": "FIB"
+  },
+  "methodSpecific": {
+    "focusedIonBeam": {
+      "acceleratingVoltage": {
+        "value": 30.0,
+        "unit": "kV"
+      },
+      "workingDistance": {
+        "value": 4.0,
+        "unit": "mm"
+      },
+      "signalTypes": ["SE"],
+      "fibTiltAngle": {
+        "value": 52.0,
+        "unit": "degrees"
+      },
+      "ionCurrent": {
+        "value": 2.5,
+        "unit": "pA"
+      }
+    }
+  }
+}
