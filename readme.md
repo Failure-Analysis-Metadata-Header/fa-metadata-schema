@@ -61,7 +61,7 @@ That's it! Just 8 fields minimum. Add more as available.
 Six modular sections that can be combined as needed:
 
 | Section | Schema File | Required? | Purpose |
-|---------|-------------|-----------|---------||
+|---------|-------------|-----------|---------|
 | **General** | `v2/generalSection.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
 | **Method Specific** | `v2/methodSpecific.json` | ✅ Yes | Analysis method parameters (SEM/FIB/Optical) |
 | **Data Evaluation** | `v2/dataEvaluation.json` | Optional | Marked features (POIs, ROIs) |
