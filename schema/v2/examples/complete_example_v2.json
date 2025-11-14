@@ -33,10 +33,14 @@
     "customer": "Acme Semiconductor Lab",
     "toolCalibrated": true,
     "coordinates": {
-      "stageCoordinateSystem": "right-handed",
+      "stageCoordinateSystem": "rightHanded",
       "globalOrLocalFrame": true,
       "stagePosition": {
-        "value": [152.3, 84.7, 12.5],
+        "value": [
+          152.3,
+          84.7,
+          12.5
+        ],
         "unit": "mm"
       },
       "stageRotationRz": {
@@ -55,10 +59,19 @@
         "value": 8.5,
         "unit": "mm"
       },
-      "signalTypes": ["SE2", "InLens"],
+      "signalTypes": [
+        "SE2",
+        "InLens"
+      ],
       "signalMixing": true,
-      "signalProportion": [0.6, 0.4],
-      "detectors": ["Everhart-Thornley", "InLens"],
+      "signalProportion": [
+        0.6,
+        0.4
+      ],
+      "detectors": [
+        "Everhart-Thornley",
+        "InLens"
+      ],
       "magnification": "5000x",
       "probeCurrent": {
         "value": 850,
@@ -68,8 +81,14 @@
         "value": 125,
         "unit": "µA"
       },
-      "brightness": [0.65, 0.70],
-      "contrast": [0.55, 0.60]
+      "brightness": [
+        0.65,
+        0.70
+      ],
+      "contrast": [
+        0.55,
+        0.60
+      ]
     }
   },
   "dataEvaluation": {
@@ -81,7 +100,10 @@
         "label": "Delamination",
         "id": "poi_001",
         "coordinates": {
-          "value": [512, 384],
+          "value": [
+            512,
+            384
+          ],
           "unit": "px"
         }
       },
@@ -90,7 +112,10 @@
         "label": "Crack initiation",
         "id": "poi_002",
         "coordinates": {
-          "value": [650, 420],
+          "value": [
+            650,
+            420
+          ],
           "unit": "px"
         }
       }
@@ -103,10 +128,22 @@
           "id": "roi_poly_001",
           "coordinates": {
             "value": [
-              [450, 350],
-              [580, 350],
-              [580, 450],
-              [450, 450]
+              [
+                450,
+                350
+              ],
+              [
+                580,
+                350
+              ],
+              [
+                580,
+                450
+              ],
+              [
+                450,
+                450
+              ]
             ],
             "unit": "px"
           },
@@ -114,8 +151,17 @@
             "value": 350000,
             "unit": "nm²"
           },
-          "fillColor": [1.0, 0.0, 0.0, 0.3],
-          "strokeColor": [1.0, 0.0, 0.0],
+          "fillColor": [
+            1.0,
+            0.0,
+            0.0,
+            0.3
+          ],
+          "strokeColor": [
+            1.0,
+            0.0,
+            0.0
+          ],
           "strokeWidth": {
             "value": 2,
             "unit": "px"

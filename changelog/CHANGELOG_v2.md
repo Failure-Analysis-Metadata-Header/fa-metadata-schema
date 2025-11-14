@@ -181,9 +181,9 @@ NEW: Consistent camelCase
 #### Enum Value Formatting
 
 OLD: `"right handed"`, `"left handed"`  
-NEW: `"right-handed"`, `"left-handed"`
+NEW: `"rightHanded"`, `"leftHanded"`
 
-**Reason:** Hyphenated compound adjectives are correct English and avoid space parsing issues.
+**Reason:** Consistent with camelCase convention used throughout the schema for better JSON compatibility.
 
 ### 5. Corrected Spelling Errors
 

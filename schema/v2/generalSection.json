@@ -236,8 +236,8 @@
               "description": "Orientation of the tool's coordinate system.",
               "type": "string",
               "enum": [
-                "right-handed",
-                "left-handed"
+                "rightHanded",
+                "leftHanded"
               ]
             },
             "globalOrLocalFrame": {
