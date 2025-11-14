@@ -127,6 +127,11 @@ Load the JSON file to access:
 ## Schema Files
 
 All schema files are in `/schema/v2/`:
+
+**Root Schema (recommended for validation):**
+- `famSchema.json` - Complete schema combining all sections
+
+**Individual Section Schemas:**
 - `generalSection.json` - Core metadata
 - `methodSpecific.json` - SEM, FIB, Optical methods
 - `dataEvaluation.json` - POIs and ROIs
@@ -157,9 +162,23 @@ Numeric values with units use this structure:
 
 ## Support & Validation
 
-- Validate your JSON against schema files using any JSON Schema validator
+- Validate your JSON against `schema/v2/famSchema.json` using any JSON Schema validator
 - Schema version: 2.0 (Nov 2025)
 - Standard: JSON Schema Draft 07
+
+**Example validation (Python):**
+```python
+import json
+from jsonschema import validate
+
+with open('schema/v2/famSchema.json') as schema_file:
+    schema = json.load(schema_file)
+
+with open('your_metadata.json') as data_file:
+    data = json.load(data_file)
+
+validate(instance=data, schema=schema)
+```
 
 ## Examples
 

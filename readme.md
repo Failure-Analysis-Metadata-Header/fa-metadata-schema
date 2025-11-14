@@ -59,6 +59,16 @@ That's it! Just 8 fields minimum. Add more as available.
 
 ## Schema Structure
 
+### Root Schema
+
+**`famSchema.json`** - Complete validation schema  
+Combines all sections into a single root schema for easy validation. Use this to validate complete metadata files:
+- References all individual section schemas
+- Enforces that `generalSection` and `methodSpecific` are required
+- Validates optional sections when present
+
+### Individual Sections
+
 Six modular sections that can be combined as needed:
 
 | Section | Schema File | Required? | Purpose |
@@ -140,6 +150,11 @@ See **[QUICK_START.md](QUICK_START.md)** for detailed implementation guide.
 ## Schema Files
 
 ### Current Version (v2.0)
+
+**Root Schema:**
+- `schema/v2/famSchema.json` - Complete schema combining all sections
+
+**Individual Section Schemas:**
 - `schema/v2/generalSection.json`
 - `schema/v2/methodSpecific.json`
 - `schema/v2/dataEvaluation.json`
