@@ -155,7 +155,7 @@ Numeric values with units use this structure:
 ✅ **Do** use camelCase: `fileName` not `"File Name"`
 
 ❌ **Don't** make fields required if they're not always available  
-✅ **Do** mark optional fields as nullable: `"type": ["string", "null"]`
+✅ **Do** instead mark fields as optional and nullable: `"type": ["string", "null"]`
 
 ❌ **Don't** include fields with no value  
 ✅ **Do** omit optional fields if data is unavailable
