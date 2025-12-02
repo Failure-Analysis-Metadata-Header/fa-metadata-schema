@@ -164,7 +164,7 @@ Numeric values with units use this structure:
 
 - Validate your JSON against `schema/v2/famSchema.json` using any JSON Schema validator
 - Schema version: 2.0 (Nov 2025)
-- Standard: JSON Schema Draft 07
+- Standard: JSON Schema Draft 2020-12
 
 **Example validation (Python):**
 ```python
