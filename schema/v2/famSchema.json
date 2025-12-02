@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "FA Metadata - Root Schema",
     "description": "Combines all FA metadata sections into a single schema. Only the general and method sections are mandatory; other sections are validated when present.",
     "type": "object",

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "FA Metadata - Data Evaluation Section",
   "version": "2.0",
   "description": "Metadata about measurement evaluation including points and regions of interest.",

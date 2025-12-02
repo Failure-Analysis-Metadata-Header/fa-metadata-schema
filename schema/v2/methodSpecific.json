@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "FA Metadata - Method Specific Section",
   "version": "2.0",
   "description": "Method-specific metadata for different analysis techniques (SEM, FIB, Optical, etc.).",

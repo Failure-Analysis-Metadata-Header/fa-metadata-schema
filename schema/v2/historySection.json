@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "FA Metadata - History Section",
   "version": "2.0",
   "description": "Historical information about previous measurements or analysis steps in the workflow.",
