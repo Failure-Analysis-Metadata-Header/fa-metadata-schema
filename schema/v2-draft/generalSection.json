@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "FA Metadata - General Section",
-  "version": "2.0",
-  "description": "General section containing core metadata applicable to all analysis methods and tools.",
+  "title": "DRAFT - FA Metadata General Section v2.0 (NOT FOR PRODUCTION USE)",
+  "version": "2.0-draft",
+  "description": "⚠️ WARNING: This is a DRAFT schema with breaking changes. Use v1.1 for production. This v2-draft uses camelCase property names (e.g., 'fileName' instead of 'File Name') which are NOT backward compatible with v1.x. General section containing core metadata applicable to all analysis methods and tools.",
   "type": "object",
   "properties": {
     "generalSection": {

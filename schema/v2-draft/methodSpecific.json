@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "FA Metadata - Method Specific Section",
-  "version": "2.0",
-  "description": "Method-specific metadata for different analysis techniques (SEM, FIB, Optical, etc.).",
+  "title": "DRAFT - FA Metadata Method Specific Section v2.0 (NOT FOR PRODUCTION USE)",
+  "version": "2.0-draft",
+  "description": "⚠️ WARNING: This is a DRAFT schema with breaking changes. Use v1.1 for production. This v2-draft uses camelCase property names which are NOT backward compatible with v1.x. Method-specific metadata for different analysis techniques (SEM, FIB, Optical, etc.).",
   "type": "object",
   "properties": {
     "methodSpecific": {

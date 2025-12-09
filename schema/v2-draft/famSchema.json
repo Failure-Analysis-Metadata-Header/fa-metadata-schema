@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "FA Metadata - Root Schema",
-    "description": "Combines all FA metadata sections into a single schema. Only the general and method sections are mandatory; other sections are validated when present.",
+    "title": "DRAFT - FA Metadata v2.0 (NOT FOR PRODUCTION USE)",
+    "description": "⚠️ WARNING: This is a DRAFT schema with breaking changes. Use v1.1 for production. This v2-draft contains property naming changes (camelCase) that are NOT backward compatible with v1.x. Combines all FA metadata sections into a single schema. Only the general and method sections are mandatory; other sections are validated when present.",
     "type": "object",
     "properties": {
         "generalSection": {

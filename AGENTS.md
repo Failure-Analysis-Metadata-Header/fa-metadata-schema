@@ -1,8 +1,28 @@
 # AGENTS.md - AI Assistant Guide
 
 **Repository:** FA Metadata Header Standard  
-**Version:** 2.0 (November 2025)  
+**Version:** 1.1 (December 2025) - Current Stable  
 **Purpose:** Standardized JSON schema for semiconductor failure analysis metadata
+
+---
+
+## ⚠️ Important Version Information (December 2025)
+
+**Current Stable Version: 1.1**
+- Location: `schema/v1.1/`
+- Status: Production-ready
+- Property names: **WITH SPACES** (e.g., `"File Name"`, `"General Section"`)
+- Only 5-8 required fields total
+- Fully backward compatible with v1.0
+
+**Experimental Draft: v2.0-draft** 
+- Location: `schema/v2-draft/`
+- Status: ⚠️ **NOT FOR PRODUCTION USE**
+- Property names: camelCase (e.g., `"fileName"`, `"generalSection"`)
+- Contains breaking changes, postponed after stakeholder consultation
+- See `documentation/FUTURE_V2_MIGRATION.md` for details
+
+**When helping users:** Always use v1.1 (with spaces in property names) unless they explicitly ask about v2.0-draft.
 
 ---
 
@@ -30,27 +50,32 @@ measurement_001.json    ← Metadata file (following this schema)
 ```
 fa-metadata-schema/
 ├── schema/
-│   ├── v1/                    # Legacy version (preserved for reference)
-│   └── v2/                    # Current version (2.0)
-│       ├── famSchema.json     # Root schema (validates complete files)
-│       ├── generalSection.json        # Core metadata (5 required fields)
-│       ├── methodSpecific.json        # SEM/FIB/Optical parameters
-│       ├── dataEvaluation.json        # POIs/ROIs (optional)
-│       ├── customerSection.json       # Custom fields (optional)
-│       ├── toolSpecific.json          # Vendor-specific (optional)
-│       ├── historySection.json        # Workflow links (optional)
-│       └── examples/
-│           ├── minimal_example_fib.json
-│           ├── minimal_example_optical.json
-│           └── complete_example_v2.json
+│   ├── v1/                    # Legacy v1.0 (preserved for reference)
+│   ├── v1.1/                  # Current stable version (December 2025)
+│   │   ├── General Section.json       # Core metadata (5 required fields)
+│   │   ├── Method Specific.json       # SEM/FIB/Optical parameters
+│   │   ├── Data Evaluation.json       # POIs/ROIs (optional)
+│   │   ├── Customer Section.json      # Custom fields (optional)
+│   │   ├── Tool Specific.json         # Vendor-specific (optional)
+│   │   ├── History.json               # Workflow links (optional)
+│   │   └── examples/
+│   │       ├── minimal_example_sem.json
+│   │       ├── minimal_example_fib.json
+│   │       └── minimal_example_optical.json
+│   └── v2-draft/              # Experimental (NOT for production)
+│       ├── famSchema.json     # ⚠️ DRAFT - camelCase names
+│       ├── generalSection.json
+│       └── ... (all with camelCase)
 ├── documentation/
 │   ├── fa40_description.md            # Original FA4.0 project docs
 │   ├── VERSIONING.md                  # Version strategy
-│   └── MIGRATION_REFERENCE.md         # v1 → v2 migration
+│   ├── MIGRATION_REFERENCE.md         # v1 → v2 mapping (for future)
+│   └── FUTURE_V2_MIGRATION.md         # v2.0-draft migration plan
 ├── changelog/
-│   └── CHANGELOG_v2.md                # Detailed v2.0 changes
-├── README.md                          # Main documentation
-└── QUICK_START.md                     # Implementation guide
+│   ├── CHANGELOG_v1.1.md              # v1.1 changes (current)
+│   └── CHANGELOG_v2.md                # v2.0-draft reference
+├── README.md                          # Main documentation (v1.1)
+└── QUICK_START.md                     # Implementation guide (v1.1)
 ```
 
 ---
@@ -62,15 +87,15 @@ The schema consists of **6 independent sections** that can be combined:
 
 | Section | File | Required? | Purpose |
 |---------|------|-----------|---------|
-| **General** | `generalSection.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
-| **Method Specific** | `methodSpecific.json` | ✅ Yes | Analysis parameters (SEM/FIB/Optical) |
-| **Data Evaluation** | `dataEvaluation.json` | Optional | Marked features (POIs, ROIs) |
-| **Customer** | `customerSection.json` | Optional | Custom organizational fields |
-| **Tool Specific** | `toolSpecific.json` | Optional | Vendor-specific parameters |
-| **History** | `historySection.json` | Optional | Previous workflow steps |
+| **General** | `General Section.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
+| **Method Specific** | `Method Specific.json` | ✅ Yes | Analysis parameters (SEM/FIB/Optical) |
+| **Data Evaluation** | `Data Evaluation.json` | Optional | Marked features (POIs, ROIs) |
+| **Customer** | `Customer Section.json` | Optional | Custom organizational fields |
+| **Tool Specific** | `Tool Specific.json` | Optional | Vendor-specific parameters |
+| **History** | `History.json` | Optional | Previous workflow steps |
 
-### Root Schema (`famSchema.json`)
-Combines all sections into a single validation schema. Use this to validate complete metadata files.
+### Note on v1.1 Structure
+Unlike v2.0-draft which has a root `famSchema.json`, v1.1 uses individual section schemas. Validate each section separately against its corresponding schema file.
 
 ---
 
@@ -79,12 +104,12 @@ Combines all sections into a single validation schema. Use this to validate comp
 ### General Section (5 required)
 ```json
 {
-  "generalSection": {
-    "fileName": "measurement.tiff",           // Name of measurement file
-    "timeStamp": "2025-11-26T14:30:00+01:00", // ISO8601 format
-    "manufacturer": "ZEISS",                   // Tool manufacturer
-    "toolName": "GeminiSEM 500",               // Tool model/name
-    "method": "SEM"                            // "SEM", "FIB", or "Optical"
+  "General Section": {
+    "File Name": "measurement.tiff",           // Name of measurement file
+    "Time Stamp": "2025-12-09T14:30:00+01:00", // ISO8601 format
+    "Manufacturer": "ZEISS",                   // Tool manufacturer
+    "Tool Name": "GeminiSEM 500",              // Tool model/name
+    "Method": "SEM"                            // "SEM", "FIB", or "Optical"
   }
 }
 ```
@@ -94,10 +119,39 @@ Combines all sections into a single validation schema. Use this to validate comp
 **SEM: 3 required fields**
 ```json
 {
-  "methodSpecific": {
-    "scanningElectronMicroscopy": {
-      "acceleratingVoltage": { "value": 5.0, "unit": "kV" },
-      "workingDistance": { "value": 8.5, "unit": "mm" },
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": { "Value": 5.0, "Unit": "kV" },
+      "Working Distance": { "Value": 8.5, "Unit": "mm" },
+      "Signal Type(s)": ["SE2"]
+    }
+  }
+}
+```
+
+**FIB: 3 required fields** (same as SEM)
+```json
+{
+  "Method Specific": {
+    "Focused Ion Beam": {
+      "Accelerating Voltage": { "Value": 30.0, "Unit": "kV" },
+      "Working Distance": { "Value": 4.0, "Unit": "mm" },
+      "Signal Type(s)": ["SE"]
+    }
+  }
+}
+```
+
+**Optical: 1 required field**
+```json
+{
+  "Method Specific": {
+    "Optical Microscopy": {
+      "Objective Lens Magnification": { "Value": 50, "Unit": "x" }
+    }
+  }
+}
+```
       "signalTypes": ["SE2"]
     }
   }
@@ -130,19 +184,26 @@ Combines all sections into a single validation schema. Use this to validate comp
 
 ---
 
-## Version 2.0 Key Changes
+## v1.1 Key Changes from v1.0
 
-### Major Improvements (Breaking Changes)
+### Major Improvements (Non-Breaking)
 1. **80% fewer required fields** - Down from 26+ to just 5 core fields
-2. **camelCase naming** - Changed from `"File Name"` to `"fileName"` for better code integration
-3. **Proper JSON Schema** - Follows JSON Schema Draft 07 standard
-4. **Better structure** - Clear separation of required vs optional fields
+2. **Same property naming** - Kept `"File Name"`, `"General Section"` etc. for backward compatibility
+3. **Proper JSON Schema** - Added `$schema`, fixed validation bugs
+4. **Better documentation** - Clear examples, fixed spelling errors
 
-### Migration from v1.0
-- **All property names changed** to camelCase (e.g., `"Time Stamp"` → `"timeStamp"`)
-- **Section names changed** (e.g., `"General Section"` → `"generalSection"`)
-- **Most fields now optional** - Only 5 required in General, 1-3 in Method Specific
-- See `MIGRATION_REFERENCE.md` for complete mapping table
+### What Changed
+- **Dramatically reduced requirements** - Only 5-8 fields needed now
+- **Fixed array validation bugs** - Proper `minItems` placement
+- **Added schema metadata** - `$schema`, `title`, `version` fields
+- **Corrected spelling** - Fixed typos in descriptions
+- **All property names UNCHANGED** - Full backward compatibility with v1.0
+
+### What About v2.0?
+- **v2.0-draft exists** in `schema/v2-draft/` but is **NOT for production**
+- Contains breaking changes (camelCase naming like `"fileName"`, `"generalSection"`)
+- Postponed after stakeholder feedback prioritized backward compatibility
+- See `documentation/FUTURE_V2_MIGRATION.md` for future migration plans
 
 ---
 
@@ -155,7 +216,7 @@ Combines all sections into a single validation schema. Use this to validate comp
 1. When saving an image, generate companion JSON file with same base name
 2. Populate required fields (5 in General + 1-3 in Method Specific)
 3. Add optional fields as available from tool
-4. Validate against `famSchema.json`
+4. Validate against v1.1 schemas
 5. Save JSON file alongside image
 
 **Validation:**
@@ -163,26 +224,29 @@ Combines all sections into a single validation schema. Use this to validate comp
 import jsonschema
 import json
 
-# Load schema
-with open('schema/v2/famSchema.json') as f:
-    schema = json.load(f)
+# Load schemas
+with open('schema/v1.1/General Section.json') as f:
+    general_schema = json.load(f)
 
 # Validate metadata
 with open('measurement.json') as f:
     metadata = json.load(f)
     
-jsonschema.validate(instance=metadata, schema=schema)
+jsonschema.validate(
+    instance=metadata["General Section"], 
+    schema=general_schema["General Section"]
+)
 ```
 
 ### For Data Scientists
 **Task:** Read and process FA metadata for ML analysis
 
 **Key Fields to Extract:**
-- `generalSection.method` - Analysis type
-- `generalSection.timeStamp` - When captured
-- `methodSpecific.scanningElectronMicroscopy.acceleratingVoltage` - SEM parameters
-- `dataEvaluation.pointsOfInterest` - Marked features
-- `dataEvaluation.regionsOfInterest` - Marked regions
+- `metadata["General Section"]["Method"]` - Analysis type
+- `metadata["General Section"]["Time Stamp"]` - When captured
+- `metadata["Method Specific"]["Scanning Electron Microscopy"]["Accelerating Voltage"]` - SEM parameters
+- `metadata["Data Evaluation"]["POI"]` - Marked features
+- `metadata["Data Evaluation"]["ROI (Region of Interest)"]` - Marked regions
 
 ### For Lab Automation
 **Task:** Chain multiple analysis tools together
@@ -190,40 +254,40 @@ jsonschema.validate(instance=metadata, schema=schema)
 **Workflow:**
 1. Tool A creates image + metadata JSON
 2. Tool B reads metadata to:
-   - Locate sample position (`generalSection.coordinates`)
-   - Access previous results (`dataEvaluation.pointsOfInterest`)
-   - Continue workflow (`history` section)
+   - Locate sample position (`"General Section"` → `"Coordinates Sub Section"`)
+   - Access previous results (`"Data Evaluation"` → `"POI"`)
+   - Continue workflow (`"History"` section)
 3. Tool B adds its own metadata and saves updated JSON
 
 ---
 
-## Important Naming Conventions
+## Important Naming Conventions (v1.1)
 
 ### Property Naming Rules
-- **Always camelCase** - `fileName`, `timeStamp`, `acceleratingVoltage`
-- **No spaces** - Use camelCase, not `"File Name"`
-- **Arrays are plural** - `signalTypes`, `detectors`, `pointsOfInterest`
-- **Objects for units** - Always `{ "value": 5.0, "unit": "kV" }`
+- **Use spaces in names** - `"File Name"`, `"Time Stamp"`, `"Accelerating Voltage"`
+- **Capitalize properly** - Section names: `"General Section"`, `"Method Specific"`
+- **Capitalize Value/Unit** - Always `{ "Value": 5.0, "Unit": "kV" }`
+- **Arrays use parentheses** - `"Signal Type(s)"`, `"Detector(s)"`
 
 ### Section Names (exact spelling required)
 ```json
 {
-  "generalSection": {},      // NOT "General Section"
-  "methodSpecific": {},      // NOT "Method Specific"
-  "dataEvaluation": {},      // NOT "Data Evaluation"
-  "customerSpecific": {},    // NOT "Customer Specific"
-  "toolSpecific": {},        // NOT "Tool Specific"
-  "history": {}              // NOT "History"
+  "General Section": {},      // WITH spaces, NOT "generalSection"
+  "Method Specific": {},      // WITH spaces, NOT "methodSpecific"
+  "Data Evaluation": {},      // WITH spaces, NOT "dataEvaluation"
+  "Customer Specific": {},    // WITH spaces, NOT "customerSpecific"
+  "Tool Specific": {},        // WITH spaces, NOT "toolSpecific"
+  "History": {}               // Just "History"
 }
 ```
 
-### Method Names (in methodSpecific)
+### Method Names (in Method Specific)
 ```json
 {
-  "methodSpecific": {
-    "scanningElectronMicroscopy": {},  // NOT "Scanning Electron Microscopy"
-    "focusedIonBeam": {},              // NOT "Focused Ion Beam"
-    "opticalMicroscopy": {}            // NOT "Optical Microscopy"
+  "Method Specific": {
+    "Scanning Electron Microscopy": {},  // WITH spaces, NOT "scanningElectronMicroscopy"
+    "Focused Ion Beam": {},              // WITH spaces, NOT "focusedIonBeam"
+    "Optical Microscopy": {}             // WITH spaces, NOT "opticalMicroscopy"
   }
 }
 ```
@@ -232,15 +296,18 @@ jsonschema.validate(instance=metadata, schema=schema)
 
 ## File Locations & References
 
-### Current Version Files
-- **Main schema:** `schema/v2/famSchema.json`
-- **Examples:** `schema/v2/examples/`
+### Current Version Files (v1.1)
+- **Schema files:** `schema/v1.1/General Section.json`, `Method Specific.json`, etc.
+- **Examples:** `schema/v1.1/examples/`
 - **Documentation:** `README.md`, `QUICK_START.md`
 
 ### Historical/Reference Files
-- **v1.0 schemas:** `schema/v1/` (preserved for migration reference)
-- **Migration guide:** `documentation/MIGRATION_REFERENCE.md`
-- **Changelog:** `changelog/CHANGELOG_v2.md`
+- **v1.0 schemas:** `schema/v1/` (preserved for reference)
+- **v2.0-draft schemas:** `schema/v2-draft/` (experimental, not for production)
+- **Migration guide:** `documentation/MIGRATION_REFERENCE.md` (v1 to v2 field mapping, for future)
+- **Future migration:** `documentation/FUTURE_V2_MIGRATION.md`
+- **Changelog v1.1:** `changelog/CHANGELOG_v1.1.md`
+- **Changelog v2-draft:** `changelog/CHANGELOG_v2.md`
 - **FA4.0 project docs:** `documentation/fa40_description.md`
 
 ### Validation Scripts
@@ -255,29 +322,31 @@ jsonschema.validate(instance=metadata, schema=schema)
 - **Y (Minor):** Non-breaking additions, updated in-place
 
 ### Current Status
-- **Version 2.0:** Current (November 2025) - `schema/v2/`
+- **Version 1.1:** Current stable (December 2025) - `schema/v1.1/`
 - **Version 1.0:** Legacy (preserved) - `schema/v1/`
+- **Version 2.0-draft:** Experimental (NOT for production) - `schema/v2-draft/`
 
 ### Backward Compatibility
+- v1.1 is fully backward compatible with v1.0
 - Multiple versions coexist in separate folders
 - Old implementations continue working
-- Migration guides provided for major versions
+- Migration guides provided for major versions (when released)
 
 ---
 
 ## Common Questions
 
 ### Q: What are the absolute minimum fields needed?
-**A:** Only 5 in `generalSection` + 1-3 in `methodSpecific` (varies by method). That's 6-8 fields total.
+**A:** Only 5 in `"General Section"` + 1-3 in `"Method Specific"` (varies by method). That's 6-8 fields total.
 
 ### Q: Can I add custom fields?
-**A:** Yes! Use `customerSpecific` section for organizational fields, or `toolSpecific` for vendor-specific data.
+**A:** Yes! Use `"Customer Specific"` section for organizational fields, or `"Tool Specific"` for vendor-specific data.
 
 ### Q: Do field names have spaces?
-**A:** NO! Version 2.0 uses camelCase. `fileName`, not `"File Name"`. This is a breaking change from v1.0.
+**A:** YES! In v1.1 (current version), use `"File Name"`, `"General Section"`, etc. with spaces. v2.0-draft uses camelCase but is NOT for production yet.
 
 ### Q: How do I validate my JSON?
-**A:** Use `schema/v2/famSchema.json` with any JSON Schema validator (Python: jsonschema, JavaScript: ajv, etc.). You can also use the `famdo`[https://github.com/Failure-Analysis-Metadata-Header/famdo] directly with your JSON files.
+**A:** Use `schema/v1.1/General Section.json` and `schema/v1.1/Method Specific.json` with any JSON Schema validator (Python: jsonschema, JavaScript: ajv, etc.). You can also use the `famdo` tool (https://github.com/Failure-Analysis-Metadata-Header/famdo) directly with your JSON files.
 
 ### Q: What's the difference between POI and ROI?
 **A:** POI (Point of Interest) is a single coordinate. ROI (Region of Interest) is a polygon or polyline with multiple points.
@@ -286,7 +355,7 @@ jsonschema.validate(instance=metadata, schema=schema)
 **A:** No. Pick one method per file. If you have both SEM and FIB images of the same area, create two separate image+metadata file pairs.
 
 ### Q: What timestamp format should I use?
-**A:** ISO8601 with timezone: `"2025-11-26T14:30:00+01:00"`
+**A:** ISO8601 with timezone: `"2025-12-09T14:30:00+01:00"`
 
 ---
 
@@ -328,19 +397,21 @@ jsonschema.validate(instance=metadata, schema=schema)
 
 ### Data Types
 - **Strings:** `"fileName": "measurement.tiff"`
-- **Numbers:** `"value": 5.0`
-- **Arrays:** `"signalTypes": ["SE2", "BSE"]`
-- **Objects:** `{ "value": 5.0, "unit": "kV" }`
-- **Booleans:** `"toolCalibrated": true`
-- **Nullable:** `"value": [number, null]` allows null values
+### Data Types
+- **Strings:** `"File Name": "measurement.tiff"`
+- **Numbers:** `"Value": 5.0`
+- **Arrays:** `"Signal Type(s)": ["SE2", "BSE"]`
+- **Objects:** `{ "Value": 5.0, "Unit": "kV" }`
+- **Booleans:** `"Tool Calibrated": true`
+- **Nullable:** `"Value": [number, null]` allows null values
 
 ### Unit Convention
 Quantities with units ALWAYS use object format:
 ```json
 {
-  "acceleratingVoltage": {
-    "value": 5.0,
-    "unit": "kV"
+  "Accelerating Voltage": {
+    "Value": 5.0,
+    "Unit": "kV"
   }
 }
 ```
@@ -371,13 +442,16 @@ Quantities with units ALWAYS use object format:
 import jsonschema
 import json
 
-with open('schema/v2/famSchema.json') as f:
-    schema = json.load(f)
+with open('schema/v1.1/General Section.json') as f:
+    general_schema = json.load(f)
 
 with open('my_metadata.json') as f:
     data = json.load(f)
 
-jsonschema.validate(instance=data, schema=schema)
+jsonschema.validate(
+    instance=data["General Section"], 
+    schema=general_schema["General Section"]
+)
 print("✓ Valid!")
 ```
 
@@ -387,18 +461,18 @@ import json
 from datetime import datetime
 
 metadata = {
-    "generalSection": {
-        "fileName": "sem_image_001.tiff",
-        "timeStamp": datetime.now().astimezone().isoformat(),
-        "manufacturer": "ZEISS",
-        "toolName": "GeminiSEM 500",
-        "method": "SEM"
+    "General Section": {
+        "File Name": "sem_image_001.tiff",
+        "Time Stamp": datetime.now().astimezone().isoformat(),
+        "Manufacturer": "ZEISS",
+        "Tool Name": "GeminiSEM 500",
+        "Method": "SEM"
     },
-    "methodSpecific": {
-        "scanningElectronMicroscopy": {
-            "acceleratingVoltage": {"value": 5.0, "unit": "kV"},
-            "workingDistance": {"value": 8.5, "unit": "mm"},
-            "signalTypes": ["SE2"]
+    "Method Specific": {
+        "Scanning Electron Microscopy": {
+            "Accelerating Voltage": {"Value": 5.0, "Unit": "kV"},
+            "Working Distance": {"Value": 8.5, "Unit": "mm"},
+            "Signal Type(s)": ["SE2"]
         }
     }
 }
@@ -413,30 +487,30 @@ with open('sem_image_001.json', 'w') as f:
 
 ### When helping users with this repository:
 
-1. **Always use v2.0 schemas** unless explicitly asked about v1.0
-2. **Check property names carefully** - they must be camelCase without spaces
+1. **Always use v1.1 schemas** unless explicitly asked about v2.0-draft
+2. **Check property names carefully** - they must have spaces: `"File Name"`, `"General Section"`
 3. **Remember the minimal requirements** - only 5-8 fields needed total
-4. **Validate against famSchema.json** - this is the root schema
-5. **Use examples** in `schema/v2/examples/` as reference
-6. **For migration questions** - refer to `MIGRATION_REFERENCE.md`
+4. **Validate against individual section schemas** - `General Section.json`, `Method Specific.json`
+5. **Use examples** in `schema/v1.1/examples/` as reference
+6. **For v2 migration questions** - refer to `FUTURE_V2_MIGRATION.md`
 7. **For version questions** - refer to `VERSIONING.md`
 
 ### Common user intents:
 - "How do I implement this?" → Point to `QUICK_START.md`
-- "What changed in v2?" → Point to `CHANGELOG_v2.md`
-- "How do I migrate?" → Point to `MIGRATION_REFERENCE.md`
-- "What fields are required?" → Show minimal example (8 fields total)
-- "Can I add custom fields?" → Yes, use `customerSpecific` or `toolSpecific`
+- "What changed in v1.1?" → Point to `CHANGELOG_v1.1.md`
+- "What fields are required?" → Show minimal example (6-8 fields total)
+- "Can I add custom fields?" → Yes, use `"Customer Specific"` or `"Tool Specific"`
+- "What about v2.0?" → Explain v2.0-draft is experimental, use v1.1 for production
 
 ### Code generation best practices:
-- Always use proper camelCase property names
-- Include unit objects for all quantities
+- Always use property names with spaces
+- Capitalize `"Value"` and `"Unit"` in value/unit objects
 - Use ISO8601 for timestamps
-- Validate generated JSON against schema
+- Validate generated JSON against v1.1 schemas
 - Provide working, minimal examples first, then expand
 
 ---
 
-**Last Updated:** November 26, 2025  
-**Schema Version:** 2.0  
+**Last Updated:** December 9, 2025  
+**Schema Version:** 1.1  
 **Maintainer:** Failure Analysis Metadata Header Initiative

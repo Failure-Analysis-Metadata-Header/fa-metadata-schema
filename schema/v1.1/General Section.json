@@ -1,0 +1,430 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "General Section Schema",
+    "description": "The general section incorporates general informational data about the measurement as well as the properties which are supported by every used tool. The section is thereby identically defined for all standard header.",
+    "version": "1.1",
+    "General Section": {
+        "type": "object",
+        "description": "The general section incorporates general informational data about the measurement as well as the properties which are supported by every used tool. The section is thereby identically defined for all standard header.",
+        "properties": {
+            "File Path": {
+                "description": "The path to the generated file, linked to the json file.",
+                "type": "string"
+            },
+            "File Name": {
+                "description": "The Name of the generated file, linked to the json file.",
+                "type": "string"
+            },
+            "File Format": {
+                "description": "Indicates the file format.",
+                "type": "string",
+                "example": ".tiff"
+            },
+            "File Size": {
+                "description": "The file size in [bytes]",
+                "type": "object",
+                "properties": {
+                    "Value": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
+                    "Unit": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Logfile Path": {
+                "description": "The path to the created log file of the tool. Is left omitted if there is no existing logfile.",
+                "type": "string"
+            },
+            "Header Type": {
+                "description": "Used standard for creation of header file",
+                "type": "string",
+                "example": "FA4.0 standardized header"
+            },
+            "Version": {
+                "description": "The version of the standard header type.",
+                "type": "string",
+                "example": "v1.0"
+            },
+            "Time Stamp": {
+                "description": "The time stamp, when the file was generated in ISO8601 format (YYYY-MM-DD hh:mm:ss). An add on indicates the differences to the Coordinated Universal Time (UTC), for example +01:00 for Central European Time (CET)",
+                "type": "string",
+                "format": "date-time",
+                "example": "2022-10-31T16:05:25+01:00"
+            },
+            "Manufacturer": {
+                "description": "The manufacturer name of the measurement tool.",
+                "type": "string",
+                "example": "ZEISS Microscopy"
+            },
+            "Tool Name": {
+                "description": "The name of the measurement tool.",
+                "type": "string",
+                "example": "SEM 500-1"
+            },
+            "Serial Number": {
+                "description": "The value is the unique manufacturer serial number of a measurement tool.",
+                "type": "string"
+            },
+            "Method": {
+                "description": "Indicates the analysis method.",
+                "type": "string",
+                "example": "SEM"
+            },
+            "Image Width": {
+                "description": "The width of the image in pixel.",
+                "type": "object",
+                "properties": {
+                    "Value": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "example": "1050"
+                    },
+                    "Unit": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Image Height": {
+                "description": "The height of the image in pixel.",
+                "type": "object",
+                "properties": {
+                    "Value": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "example": "1050"
+                    },
+                    "Unit": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Pixel Width": {
+                "description": "The width of each pixel. The unit is specified under the property 'Unit' and should preferably be chosen in [nm].",
+                "type": "object",
+                "properties": {
+                    "Value": {
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "example": "3.307292"
+                    },
+                    "Unit": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Pixel Height": {
+                "description": "The height of each pixel. The unit is specified under the property 'Unit' and should preferably be chosen in [nm].",
+                "type": "object",
+                "properties": {
+                    "Value": {
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "example": "3.307292"
+                    },
+                    "Unit": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Bit Depth": {
+                "description": "The number of bits each pixel can resolute. For example a 8-bit depth in a grayscale image, means a resolution of 256 grayscales.",
+                "type": [
+                    "integer",
+                    "null"
+                ],
+                "example": "8"
+            },
+            "Compressed Bits/Pixel": {
+                "description": "The amount of compressed bits per pixel.",
+                "type": [
+                    "number",
+                    "null"
+                ]
+            },
+            "Color Mode": {
+                "description": "The color mode of the image",
+                "type": "string"
+            },
+            "Customer": {
+                "description": "The name of the respective company which performed the measurement.",
+                "type": "string",
+                "example": "Infineon"
+            },
+            "Sample Holder": {
+                "description": "The name of the used sample holder.",
+                "type": "string"
+            },
+            "Tool Calibrated": {
+                "description": "This key indicates if the tool is correctly calibrated. Value is 'true' for correctly calibrated.",
+                "type": "boolean"
+            },
+            "Coordinates Sub Section": {
+                "description": "The Coordinate Sub Section defines the coordinate handling in the json files. The screen coordinates are defined to be a right handed coordinate system with its origin on the top left of the screen. The x-coordinate increases to the right; y-coordinates are incremented from top to bottom. Having an image file, the saved tool coordinates for this file are defined to be in the center of the image. The properties can be used to transform the stage coordinates into screen coordinates, when analysing an image.",
+                "type": "object",
+                "properties": {
+                    "Stage Coordinate System Orientation": {
+                        "description": "Indicates whether the tool's cartesian coordinate system is right or left handed.",
+                        "type": "string",
+                        "enum": [
+                            "right handed",
+                            "left handed"
+                        ]
+                    },
+                    "global or local frame movement": {
+                        "description": "This value indicates whether chained movements of the tool's stage are defined around a global fixed frame or around its local frame. True indicates that the stage moves around a global frame and false that it moves around its local frame.",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "Relative Orientation to screens coordinate frame": {
+                        "description": "This array describes the relative offset orientation of the tool's global frame to the screens coordinate frame. The first entry denotes the angle around the X-axis, the second around the Y-axis and the third around the Z-axis in degrees. The angles are relative to the tools global frame.",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": "array",
+                                "items": {
+                                    "type": [
+                                        "number",
+                                        "null"
+                                    ],
+                                    "minimum": -180,
+                                    "maximum": 180
+                                },
+                                "minItems": 3,
+                                "maxItems": 3
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Stage Coordinates X Y Z": {
+                        "description": "The three translational coordinates X, Y and Z of the tool's stage relative to the tool's global coordinate frame. The first entry denotes the X-coordinate and last denotes the Z-coordinate.",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": "array",
+                                "items": {
+                                    "type": [
+                                        "number",
+                                        "null"
+                                    ]
+                                },
+                                "minItems": 3,
+                                "maxItems": 3
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Stage Rotation Rx": {
+                        "description": "Rx is the vertical angle which describes the rotation of the tool's stage around a horizontal axis parallel to the x-axis of either the tool's global or local frame. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 20.4,
+                                "minimum": -360,
+                                "maximum": 360
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Stage Rotation Ry": {
+                        "description": "Ry is the vertical angle which describes the rotation of the tool's stage around a horizontal axis parallel to the y-axis of either the tool's global or local frame. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 20.4,
+                                "minimum": -360,
+                                "maximum": 360
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Stage Rotation Rz": {
+                        "description": "Rz is the horizontal angle which describes the rotation of the tool's stage around a vertical axis parallel to the z-axis of either the tool's global or local frame. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 223.5,
+                                "minimum": -360,
+                                "maximum": 360
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "Alignment Marks Sub Section": {
+                "description": "This subsection is reserved for parameter of the alignment marks of the universal sample holder",
+                "type": "object",
+                "properties": {
+                    "Offset(x y z)": {
+                        "description": "The offset vector for the calculation of the transformation matrix in the order of (X,Y,Z).",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": "array",
+                                "items": {
+                                    "type": [
+                                        "number",
+                                        "null"
+                                    ]
+                                },
+                                "minItems": 3,
+                                "maxItems": 3
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Position of the Fiducials": {
+                        "description": "The coordinates of the 3 Alignment Marks relative to the tool's global coordinate frame.",
+                        "type": "object",
+                        "properties": {
+                            "Mark1": {
+                                "description": "Position of Alignment Mark1 in the order of (X,Y,Z). ",
+                                "type": "object",
+                                "example": {
+                                    "Value": [
+                                        194506.96,
+                                        312372.13,
+                                        30838
+                                    ],
+                                    "Unit": "µm"
+                                },
+                                "properties": {
+                                    "Value": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "minItems": 3,
+                                        "maxItems": 3
+                                    },
+                                    "Unit": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "Mark2": {
+                                "description": "Position of Alignment Mark2 in the order of (X,Y,Z). ",
+                                "type": "object",
+                                "properties": {
+                                    "Value": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "minItems": 3,
+                                        "maxItems": 3
+                                    },
+                                    "Unit": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "Mark3": {
+                                "description": "Position of Alignment Mark3 in the order of (X,Y,Z). ",
+                                "type": "object",
+                                "properties": {
+                                    "Value": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "minItems": 3,
+                                        "maxItems": 3
+                                    },
+                                    "Unit": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Type of Fiducials": {
+                        "description": "Shape of the Alignment Marks.",
+                        "type": "string",
+                        "example": "circle"
+                    },
+                    "Fiducial Size": {
+                        "description": "Describes a size property of the fiducial. Example: the diameter for circles. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "example": {
+                            "Value": 300,
+                            "Unit": "µm"
+                        },
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "required": [
+            "File Name",
+            "Time Stamp",
+            "Manufacturer",
+            "Tool Name",
+            "Method"
+        ]
+    }
+}

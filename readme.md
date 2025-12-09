@@ -1,6 +1,6 @@
 # FA Metadata Header Standard
 
-**Version 2.0** | November 2025
+**Version 1.1** | December 2025
 
 ## What is this?
 
@@ -9,22 +9,24 @@ A lightweight JSON schema for storing metadata alongside semiconductor failure a
 ## Quick Links
 
 - **[Quick Start Guide](QUICK_START.md)** - For equipment manufacturers implementing the standard
-- **[Change Log v2.0]()** - What changed from v1.0 and why
+- **[Change Log v1.1](changelog/CHANGELOG_v1.1.md)** - What changed from v1.0 and why
 - **[Versioning Strategy](documentation/VERSIONING.md)** - How we manage schema versions
-- **[Schema Files](schema/v2/)** - JSON Schema definitions
-- **[Examples](schema/v2/examples/)** - Sample implementations
+- **[Schema Files](schema/v1.1/)** - JSON Schema definitions
+- **[Examples](schema/v1.1/examples/)** - Sample implementations
 - **[FA40 Documentation](documentation/fa40_description.md)** - Documentation from the FA4.0 Project
 
-## Why Version 2.0?
+## Why Version 1.1?
 
-Version 2.0 is a major simplification focused on **ease of implementation**:
+Version 1.1 is a **non-breaking update** focused on **ease of implementation**:
 
 - ✅ **80% fewer required fields** (5 instead of 26+ core fields)
-- ✅ **Standard JSON naming** (camelCase, no spaces)
-- ✅ **Better structure** (proper JSON Schema format)
+- ✅ **Backward compatible** with v1.0 (no migration needed)
+- ✅ **Better schema quality** (proper JSON Schema format, fixed validation bugs)
 - ✅ **Clearer documentation** (concise, action-oriented)
 
-See [CHANGELOG_v2.md](changelog/CHANGELOG_v2.md) for complete details.
+**What didn't change:** All property names remain identical to v1.0 for full backward compatibility.
+
+See [CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md) for complete details.
 
 ## Core Concept
 
@@ -35,156 +37,251 @@ measurement_001.tiff    ← Your image file
 measurement_001.json    ← Metadata file
 ```
 
-**Minimal example:**
+**Minimal example (SEM):**
 ```json
 {
-  "generalSection": {
-    "fileName": "measurement_001.tiff",
-    "timeStamp": "2025-11-13T14:30:00+01:00",
-    "manufacturer": "ZEISS",
-    "toolName": "GeminiSEM 500",
-    "method": "SEM"
+  "General Section": {
+    "File Name": "measurement_001.tiff",
+    "Time Stamp": "2025-12-09T14:30:00+01:00",
+    "Manufacturer": "ZEISS",
+    "Tool Name": "GeminiSEM 500",
+    "Method": "SEM"
   },
-  "methodSpecific": {
-    "scanningElectronMicroscopy": {
-      "acceleratingVoltage": { "value": 5.0, "unit": "kV" },
-      "workingDistance": { "value": 8.5, "unit": "mm" },
-      "signalTypes": ["SE2"]
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": { "Value": 5.0, "Unit": "kV" },
+      "Working Distance": { "Value": 8.5, "Unit": "mm" },
+      "Signal Type(s)": ["SE2"]
     }
   }
 }
 ```
 
-That's it! Just 8 fields minimum. Add more as available.
+That's it! Just 8 fields minimum for SEM, 6 for Optical. Add more as available.
 
 ## Schema Structure
 
-### Root Schema
+### Individual Section Schemas
 
-**`famSchema.json`** - Complete validation schema  
-Combines all sections into a single root schema for easy validation. Use this to validate complete metadata files:
-- References all individual section schemas
-- Enforces that `generalSection` and `methodSpecific` are required
-- Validates optional sections when present
-
-### Individual Sections
-
-Six modular sections that can be combined as needed:
+Six modular schemas that define the structure:
 
 | Section | Schema File | Required? | Purpose |
 |---------|-------------|-----------|---------|
-| **General** | `v2/generalSection.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
-| **Method Specific** | `v2/methodSpecific.json` | ✅ Yes | Analysis method parameters (SEM/FIB/Optical) |
-| **Data Evaluation** | `v2/dataEvaluation.json` | Optional | Marked features (POIs, ROIs) |
-| **Customer** | `v2/customerSection.json` | Optional | Your organization's custom fields |
-| **Tool Specific** | `v2/toolSpecific.json` | Optional | Vendor-specific parameters |
-| **History** | `v2/historySection.json` | Optional | Previous analysis steps in workflow |
+| **General** | `v1.1/General Section.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
+| **Method Specific** | `v1.1/Method Specific.json` | ✅ Yes | Analysis method parameters (SEM/FIB/Optical) |
+| **Data Evaluation** | `v1.1/Data Evaluation.json` | Optional | Marked features (POIs, ROIs) |
+| **Customer** | `v1.1/Customer Section.json` | Optional | Your organization's custom fields |
+| **Tool Specific** | `v1.1/Tool Specific.json` | Optional | Vendor-specific parameters |
+| **History** | `v1.1/History.json` | Optional | Previous workflow steps |
 
-### Section Details
+### Validation
 
-**General Section** - 5 required fields, ~25 optional  
-Core information about the measurement file and tool. Only `fileName`, `timeStamp`, `manufacturer`, `toolName`, and `method` are required. Everything else (image dimensions, stage coordinates, alignment marks) is optional.
+Validate your JSON files using any JSON Schema validator:
 
-**Method Specific** - 1-3 required fields per method  
-Method-specific settings. Requirements vary:
-- **SEM:** 3 required (`acceleratingVoltage`, `workingDistance`, `signalTypes`)
-- **FIB:** 3 required (same as SEM)
-- **Optical:** 1 required (`objectiveMagnification`)
+```python
+import jsonschema
+import json
 
-**Data Evaluation** - All optional  
-Points of interest (POIs) and regions of interest (ROIs) marked during analysis. Supports polygons and polylines with styling information.
+# Load schema
+with open('schema/v1.1/General Section.json') as f:
+    general_schema = json.load(f)
 
-**Customer Section** - Fully customizable  
-Define your own fields for sample tracking, order numbers, project IDs, etc. Completely flexible schema.
+# Load your metadata
+with open('measurement.json') as f:
+    metadata = json.load(f)
 
-**Tool Specific** - Fully customizable  
-Vendor-defined fields for tool-specific parameters not covered in the standard method section.
+# Validate
+jsonschema.validate(
+    instance=metadata["General Section"],
+    schema=general_schema["General Section"]
+)
+```
 
-**History** - All optional  
-Links to previous measurements and workflow tracking.
+## Minimum Required Fields
+
+### General Section (5 fields)
+
+```json
+{
+  "General Section": {
+    "File Name": "measurement.tiff",
+    "Time Stamp": "2025-12-09T14:30:00+01:00",
+    "Manufacturer": "ZEISS",
+    "Tool Name": "GeminiSEM 500",
+    "Method": "SEM"
+  }
+}
+```
+
+### Method-Specific Sections
+
+**SEM (3 fields):**
+```json
+{
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": { "Value": 5.0, "Unit": "kV" },
+      "Working Distance": { "Value": 8.5, "Unit": "mm" },
+      "Signal Type(s)": ["SE2"]
+    }
+  }
+}
+```
+
+**FIB (3 fields):**
+```json
+{
+  "Method Specific": {
+    "Focused Ion Beam": {
+      "Accelerating Voltage": { "Value": 30.0, "Unit": "kV" },
+      "Working Distance": { "Value": 4.0, "Unit": "mm" },
+      "Signal Type(s)": ["SE"]
+    }
+  }
+}
+```
+
+**Optical (1 field):**
+```json
+{
+  "Method Specific": {
+    "Optical Microscopy": {
+      "Objective Lens Magnification": { "Value": 50, "Unit": "x" }
+    }
+  }
+}
+```
+
+## Optional Sections
+
+Add these sections when you have the data:
+
+### Data Evaluation
+Mark important features in your images:
+```json
+{
+  "Data Evaluation": {
+    "POI": [
+      {
+        "Name": "Defect 1",
+        "Coordinates": { "Value": [1024, 768], "Unit": "pixel" }
+      }
+    ]
+  }
+}
+```
+
+### Customer Specific
+Add your organization's fields:
+```json
+{
+  "Customer Specific": {
+    "Project ID": "PROJ-2025-123",
+    "Sample ID": "WAFER-456"
+  }
+}
+```
+
+### Tool Specific
+Add vendor-specific parameters not in Method Specific:
+```json
+{
+  "Tool Specific": {
+    "Zeiss SmartSEM": {
+      "Auto Brightness": true,
+      "Auto Contrast": true
+    }
+  }
+}
+```
+
+### History
+Link to previous analysis steps:
+```json
+{
+  "History": {
+    "Previous Files": [
+      "overview_image_001.json",
+      "zoom_image_002.json"
+    ]
+  }
+}
+```
 
 ## For Equipment Manufacturers
 
-### Implementation Checklist
+**Implementing this standard:**
 
-1. ✅ Generate JSON file when saving measurement images
-2. ✅ Populate 5 required general fields
-3. ✅ Populate 1-3 required method-specific fields
-4. ✅ Add optional fields as available from your tool API
-5. ✅ Validate against schema files
+1. When saving an image, generate a companion JSON file
+2. Populate the 5 required General Section fields
+3. Populate the 1-3 required Method Specific fields for your tool type
+4. Add any optional fields your tool can provide
+5. Save JSON file with same base name as image
 
-### Reading Metadata
+See [QUICK_START.md](QUICK_START.md) for detailed implementation guide.
 
-Your tool should be able to:
-- Load JSON metadata files
-- Extract customer sample IDs
-- Read stage coordinates and alignment marks
-- Access POIs/ROIs from previous steps
+## For Data Scientists
 
-This enables workflow automation and data exchange between tools.
+**Reading metadata:**
 
-See **[QUICK_START.md](QUICK_START.md)** for detailed implementation guide.
+```python
+import json
 
-## Example Workflow
+# Load metadata
+with open('measurement_001.json') as f:
+    metadata = json.load(f)
 
-**Scenario:** Transfer POIs between SAM (acoustic microscope) and FIB tools
+# Access fields
+filename = metadata["General Section"]["File Name"]
+voltage = metadata["Method Specific"]["Scanning Electron Microscopy"]["Accelerating Voltage"]["Value"]
+timestamp = metadata["General Section"]["Time Stamp"]
 
-1. **SAM Analysis**
-   - Sample mounted on Universal Sample Holder
-   - Alignment marks scanned automatically
-   - Delaminations identified and saved with JSON metadata
-   - POIs marked on defects
+# Check optional sections
+if "Data Evaluation" in metadata:
+    pois = metadata["Data Evaluation"].get("POI", [])
+    for poi in pois:
+        print(f"Found POI: {poi['Name']} at {poi['Coordinates']['Value']}")
+```
 
-2. **Data Transfer**
-   - JSON file contains: POIs, alignment marks, stage coordinates
-   - File loaded into FIB tool
+## Version Information
 
-3. **FIB Navigation**
-   - Alignment marks scanned on FIB
-   - Coordinate transformation applied using alignment marks
-   - FIB automatically navigates to POIs from SAM
-   - Cross-section performed at exact location
+### Current Version: 1.1 (Stable)
+- **Location:** `schema/v1.1/`
+- **Status:** Production-ready
+- **Compatibility:** Fully backward compatible with v1.0
+- **Use for:** All new implementations
 
-**Result:** Seamless handoff between tools without manual coordinate conversion.
+### Legacy Version: 1.0
+- **Location:** `schema/v1/`
+- **Status:** Superseded by v1.1
+- **Note:** v1.0 files work with v1.1 validators
 
-## Schema Files
-
-### Current Version (v2.0)
-
-**Root Schema:**
-- `schema/v2/famSchema.json` - Complete schema combining all sections
-
-**Individual Section Schemas:**
-- `schema/v2/generalSection.json`
-- `schema/v2/methodSpecific.json`
-- `schema/v2/dataEvaluation.json`
-- `schema/v2/customerSection.json`
-- `schema/v2/toolSpecific.json`
-- `schema/v2/historySection.json`
-
-### Legacy (v1.0 - preserved for reference)
-- `schema/v1/General Section.json`
-- `schema/v1/Method Specific.json`
-- `schema/v1/Data Evaluation.json`
-- `schema/v1/Customer Section.json`
-- `schema/v1/Tool Specific.json`
-- `schema/v1/History.json`
+### Future Version: 2.0-draft (Experimental)
+- **Location:** `schema/v2-draft/`
+- **Status:** ⚠️ **NOT FOR PRODUCTION USE**
+- **Note:** Contains breaking changes (camelCase property names). Postponed after stakeholder consultation. See [FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)
 
 ## Resources
 
-- **Documentation Website:** [Failure Analysis Metadata Header Documentation](https://failure-analysis-metadata-header.github.io/)
-- **Quick Start:** [QUICK_START.md](QUICK_START.md)
-- **Migration Guide:** [CHANGELOG_v2.md](CHANGELOG_v2.md)
-- **Examples:** [schema/examples/](schema/examples/)
+- **Schema Files:** [schema/v1.1/](schema/v1.1/)
+- **Examples:** [schema/v1.1/examples/](schema/v1.1/examples/)
+- **Changelog:** [CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md)
+- **Versioning:** [VERSIONING.md](documentation/VERSIONING.md)
+- **Future v2.0:** [FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)
 
 ## Contributing
 
-This is an open standard. Feedback and contributions welcome:
-- Open issues for suggestions
-- Submit pull requests for improvements
-- Share implementation experiences
+This standard is maintained by the Failure Analysis Metadata Header Initiative. For questions, suggestions, or to report issues:
+
+- **Website:** https://failure-analysis-metadata-header.github.io/
+- **GitHub:** https://github.com/Failure-Analysis-Metadata-Header/fa-metadata-schema
 
 ## License
 
-This schema is provided as-is for use in the semiconductor failure analysis community.
+The schema files and documentation are provided for use in the semiconductor failure analysis community.
 
+---
+
+**Last Updated:** December 9, 2025  
+**Schema Version:** 1.1  
+**Status:** Stable

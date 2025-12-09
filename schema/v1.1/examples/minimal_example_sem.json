@@ -1,0 +1,24 @@
+{
+    "General Section": {
+        "File Name": "sem_measurement_001.tiff",
+        "Time Stamp": "2025-12-09T10:30:00+01:00",
+        "Manufacturer": "ZEISS",
+        "Tool Name": "GeminiSEM 500",
+        "Method": "SEM"
+    },
+    "Method Specific": {
+        "Scanning Electron Microscopy": {
+            "Accelerating Voltage": {
+                "Value": 5.0,
+                "Unit": "kV"
+            },
+            "Working Distance": {
+                "Value": 8.5,
+                "Unit": "mm"
+            },
+            "Signal Type(s)": [
+                "SE2"
+            ]
+        }
+    }
+}

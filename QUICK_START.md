@@ -1,51 +1,54 @@
 # FA Metadata Header - Quick Start Guide
 
+**Version 1.1** | December 2025
+
 ## Overview
 
 The FA Metadata Header is a standardized JSON schema for storing metadata alongside failure analysis images. It enables seamless data exchange between different analysis tools and supports automation and ML-based analysis.
 
 ## Key Principles
 
-- **Minimal required fields** - Easy to implement for equipment manufacturers
+- **Minimal required fields** - Easy to implement for equipment manufacturers (only 5-8 fields!)
 - **Modular structure** - Six independent sections that can be combined
 - **Extensible** - Tool and customer-specific sections for custom data
+- **Backward compatible** - v1.1 works with v1.0 implementations
 
 ## Schema Structure
 
 ```json
 {
-  "generalSection": { },      // Core metadata (5 required fields)
-  "methodSpecific": { },      // Analysis method data (3-4 required per method)
-  "dataEvaluation": { },      // POIs, ROIs (optional)
-  "customerSpecific": { },    // Your organization's fields (optional)
-  "toolSpecific": { },        // Vendor-specific data (optional)
-  "history": { }              // Workflow links (optional)
+  "General Section": { },      // Core metadata (5 required fields)
+  "Method Specific": { },      // Analysis method data (1-3 required per method)
+  "Data Evaluation": { },      // POIs, ROIs (optional)
+  "Customer Specific": { },    // Your organization's fields (optional)
+  "Tool Specific": { },        // Vendor-specific data (optional)
+  "History": { }               // Workflow links (optional)
 }
 ```
 
 ## Required Fields - Absolute Minimum
 
 ### General Section (5 required)
-- `fileName` - Name of the measurement file
-- `timeStamp` - ISO8601 format (e.g., "2025-11-13T16:05:25+01:00")
-- `manufacturer` - Tool manufacturer name
-- `toolName` - Tool model/name
-- `method` - Analysis method ("SEM", "FIB", "Optical", etc.)
+- `"File Name"` - Name of the measurement file
+- `"Time Stamp"` - ISO8601 format (e.g., "2025-12-09T16:05:25+01:00")
+- `"Manufacturer"` - Tool manufacturer name
+- `"Tool Name"` - Tool model/name
+- `"Method"` - Analysis method ("SEM", "FIB", or "Optical")
 
 ### Method-Specific Section (varies by method)
 
 **SEM:** 3 required fields
-- `acceleratingVoltage` - Beam voltage
-- `workingDistance` - Lens-to-sample distance
-- `signalTypes` - Array of signal types used (e.g., ["SE2"])
+- `"Accelerating Voltage"` - Beam voltage
+- `"Working Distance"` - Lens-to-sample distance
+- `"Signal Type(s)"` - Array of signal types used (e.g., ["SE2"])
 
 **FIB:** 3 required fields  
-- `acceleratingVoltage`
-- `workingDistance`
-- `signalTypes`
+- `"Accelerating Voltage"`
+- `"Working Distance"`
+- `"Signal Type(s)"`
 
 **Optical:** 1 required field
-- `objectiveMagnification` - Objective lens magnification
+- `"Objective Lens Magnification"` - Objective lens magnification
 
 ## Implementation for Manufacturers
 
@@ -62,24 +65,24 @@ my_image.json       → Metadata file
 
 ```json
 {
-  "generalSection": {
-    "fileName": "sem_sample_001.tiff",
-    "timeStamp": "2025-11-13T14:30:00+01:00",
-    "manufacturer": "ZEISS",
-    "toolName": "GeminiSEM 500",
-    "method": "SEM"
+  "General Section": {
+    "File Name": "sem_sample_001.tiff",
+    "Time Stamp": "2025-12-09T14:30:00+01:00",
+    "Manufacturer": "ZEISS",
+    "Tool Name": "GeminiSEM 500",
+    "Method": "SEM"
   },
-  "methodSpecific": {
-    "scanningElectronMicroscopy": {
-      "acceleratingVoltage": {
-        "value": 5.0,
-        "unit": "kV"
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": {
+        "Value": 5.0,
+        "Unit": "kV"
       },
-      "workingDistance": {
-        "value": 8.5,
-        "unit": "mm"
+      "Working Distance": {
+        "Value": 8.5,
+        "Unit": "mm"
       },
-      "signalTypes": ["SE2"]
+      "Signal Type(s)": ["SE2"]
     }
   }
 }
@@ -91,26 +94,26 @@ Include additional fields if your tool can provide them:
 
 ```json
 {
-  "generalSection": {
-    "fileName": "sem_sample_001.tiff",
-    "timeStamp": "2025-11-13T14:30:00+01:00",
-    "manufacturer": "ZEISS",
-    "toolName": "GeminiSEM 500",
-    "method": "SEM",
-    "imageWidth": { "value": 1024, "unit": "px" },
-    "imageHeight": { "value": 1024, "unit": "px" },
-    "pixelWidth": { "value": 50.2, "unit": "nm" },
-    "serialNumber": "12345-ABC"
+  "General Section": {
+    "File Name": "sem_sample_001.tiff",
+    "Time Stamp": "2025-12-09T14:30:00+01:00",
+    "Manufacturer": "ZEISS",
+    "Tool Name": "GeminiSEM 500",
+    "Method": "SEM",
+    "Image Width": { "Value": 1024, "Unit": "px" },
+    "Image Height": { "Value": 1024, "Unit": "px" },
+    "Pixel Width": { "Value": 50.2, "Unit": "nm" },
+    "Serial Number": "12345-ABC"
   },
-  "methodSpecific": {
-    "scanningElectronMicroscopy": {
-      "acceleratingVoltage": { "value": 5.0, "unit": "kV" },
-      "workingDistance": { "value": 8.5, "unit": "mm" },
-      "signalTypes": ["SE2", "BSE"],
-      "signalMixing": true,
-      "signalProportion": [0.7, 0.3],
-      "magnification": "5000x",
-      "detectors": ["Everhart-Thornley", "Backscatter"]
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": { "Value": 5.0, "Unit": "kV" },
+      "Working Distance": { "Value": 8.5, "Unit": "mm" },
+      "Signal Type(s)": ["SE2", "BSE"],
+      "Signal Mixing": true,
+      "Signal Proportion": [0.7, 0.3],
+      "Magnification": "5000x",
+      "Detector(s)": ["Everhart-Thornley", "Backscatter"]
     }
   }
 }
@@ -126,60 +129,89 @@ Load the JSON file to access:
 
 ## Schema Files
 
-All schema files are in `/schema/v2/`:
-
-**Root Schema (recommended for validation):**
-- `famSchema.json` - Complete schema combining all sections
+All schema files are in `schema/v1.1/`:
 
 **Individual Section Schemas:**
-- `generalSection.json` - Core metadata
-- `methodSpecific.json` - SEM, FIB, Optical methods
-- `dataEvaluation.json` - POIs and ROIs
-- `customerSection.json` - Organization-specific fields
-- `toolSpecific.json` - Vendor-specific fields
-- `historySection.json` - Workflow tracking
+- `General Section.json` - Core metadata (5 required fields)
+- `Method Specific.json` - SEM, FIB, Optical methods (1-3 required fields each)
+- `Data Evaluation.json` - POIs and ROIs (all optional)
+- `Customer Section.json` - Organization-specific fields (all optional)
+- `Tool Specific.json` - Vendor-specific fields (all optional)
+- `History.json` - Workflow tracking (all optional)
+
+**Examples:**
+- `examples/minimal_example_sem.json` - SEM with only 8 fields
+- `examples/minimal_example_fib.json` - FIB with only 8 fields
+- `examples/minimal_example_optical.json` - Optical with only 6 fields
 
 ## Value Format Convention
 
 Numeric values with units use this structure:
 ```json
 {
-  "value": 5.0,
-  "unit": "kV"
+  "Value": 5.0,
+  "Unit": "kV"
 }
 ```
 
-## Common Pitfalls
+## Important Notes
 
-❌ **Don't** use spaces in property names  
-✅ **Do** use camelCase: `fileName` not `"File Name"`
+✅ **Use property names with spaces** - This is v1.1, not v2.0-draft  
+Examples: `"File Name"`, `"Time Stamp"`, `"General Section"`
 
-❌ **Don't** make fields required if they're not always available  
-✅ **Do** instead mark fields as optional and nullable: `"type": ["string", "null"]`
+✅ **Capitalize Value and Unit** - Use `"Value"` and `"Unit"`, not lowercase
 
-❌ **Don't** include fields with no value  
-✅ **Do** omit optional fields if data is unavailable
+✅ **Only 5-8 required fields total** - v1.1 dramatically reduced requirements from v1.0
+
+⚠️ **v2.0-draft exists but is NOT for production** - It uses camelCase names and is experimental
+
+## Compatibility
+
+- **v1.1 is fully backward compatible with v1.0** - No migration needed
+- **v1.0 files validate against v1.1 schemas** - Old implementations still work
+- **v1.1 uses same property names as v1.0** - Only requirement counts changed
 
 ## Support & Validation
 
-- Validate your JSON against `schema/v2/famSchema.json` using any JSON Schema validator
-- Schema version: 2.0 (Nov 2025)
-- Standard: JSON Schema Draft 2020-12
+- Validate your JSON against `schema/v1.1/General Section.json` and `schema/v1.1/Method Specific.json`
+- Schema version: 1.1 (December 2025)
+- Standard: JSON Schema Draft 07
 
 **Example validation (Python):**
 ```python
 import json
 from jsonschema import validate
 
-with open('schema/v2/famSchema.json') as schema_file:
-    schema = json.load(schema_file)
+# Load schemas
+with open('schema/v1.1/General Section.json') as f:
+    general_schema = json.load(f)
 
-with open('your_metadata.json') as data_file:
-    data = json.load(data_file)
+with open('schema/v1.1/Method Specific.json') as f:
+    method_schema = json.load(f)
 
-validate(instance=data, schema=schema)
+# Load your metadata
+with open('your_metadata.json') as f:
+    data = json.load(f)
+
+# Validate each section
+validate(instance=data["General Section"], 
+         schema=general_schema["General Section"])
+validate(instance=data["Method Specific"], 
+         schema=method_schema["Method Specific"])
+
+print("✓ Validation successful!")
 ```
 
 ## Examples
 
-See `/schema/v2/examples/` for complete implementation examples from different tool vendors.
+See `schema/v1.1/examples/` for minimal implementation examples:
+- `minimal_example_sem.json` - Only 8 fields (5 General + 3 SEM)
+- `minimal_example_fib.json` - Only 8 fields (5 General + 3 FIB)
+- `minimal_example_optical.json` - Only 6 fields (5 General + 1 Optical)
+
+## Additional Resources
+
+- **[README.md](README.md)** - Main documentation
+- **[CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md)** - What changed from v1.0
+- **[VERSIONING.md](documentation/VERSIONING.md)** - Version strategy
+- **[FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)** - About v2.0-draft

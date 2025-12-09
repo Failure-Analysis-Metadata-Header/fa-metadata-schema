@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "History Schema",
+    "description": "The History section is intended to store data of previous related measurements or images. Like the link to the previous JSON header file.",
+    "version": "1.1",
+    "History": {
+        "description": "The History section is intended to store data of previous related measurements or images. Like the link to the previous JSON header file.",
+        "type": [
+            "object",
+            "null"
+        ],
+        "properties": {}
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "General Section": {
+        "File Name": "fib_measurement_001.tiff",
+        "Time Stamp": "2025-12-09T11:15:00+01:00",
+        "Manufacturer": "FEI",
+        "Tool Name": "Helios G4 UX",
+        "Method": "FIB"
+    },
+    "Method Specific": {
+        "Focused Ion Beam": {
+            "Accelerating Voltage": {
+                "Value": 30.0,
+                "Unit": "kV"
+            },
+            "Working Distance": {
+                "Value": 4.0,
+                "Unit": "mm"
+            },
+            "Signal Type(s)": [
+                "SE"
+            ]
+        }
+    }
+}
