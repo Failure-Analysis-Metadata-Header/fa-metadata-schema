@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DRAFT - FA Metadata Tool Specific Section v2.0 (NOT FOR PRODUCTION USE)",
+  "version": "2.0-draft",
+  "description": "⚠️ WARNING: This is a DRAFT schema with breaking changes. Use v1.1 for production. This v2-draft uses camelCase property names which are NOT backward compatible with v1.x. Tool/equipment-specific metadata. Vendors can define custom fields here.",
+  "type": "object",
+  "properties": {
+    "toolSpecific": {
+      "description": "Contains tool/equipment-specific metadata not covered in method-specific section.",
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "vendorName": {
+          "description": "Name of the tool vendor/manufacturer.",
+          "type": "string"
+        },
+        "softwareVersion": {
+          "description": "Version of the tool control software.",
+          "type": "string"
+        },
+        "customParameters": {
+          "description": "Tool-specific custom parameters.",
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

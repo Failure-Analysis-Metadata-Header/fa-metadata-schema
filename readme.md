@@ -1,175 +1,287 @@
-# Standardized Failure Analysis Metadata Header Documentation
-Visit website: [Failure Analysis Matedata Header Documentation](https://failure-analysis-metadata-header.github.io/)
+# FA Metadata Header Standard
 
-In semiconductor failure analysis (FA), multiple analysis steps using different technologies are typically carried out to identify the causal failure. In order to enable a higher degree of automation, the machines used for the different analysis steps must be able to communicate with each other through a standardized interface. The goal of the standardized metadata header is to provide such an interface by providing a standard schema for the storage of metadata associated with analysis images or other measurement data types.
+**Version 1.1** | December 2025
 
-Each image created during a failure analysis should be accompanied by a JSON metadata header that adheres to the same schema. This will allow failure analysis software systems to easily incorporate the metadata in their databases and exchange these metadata between different analysis machines, thereby enabling increased automation as well as laying the ground for ML-based analysis of FA data.
+## What is this?
 
-This documentation describes the structure of the JSON Header and how the different sections shall be used. Furthermore, usage examples of the JSON Header are sketched out for better understanding.
+A lightweight JSON schema for storing metadata alongside semiconductor failure analysis images. Enables seamless data exchange between different analysis tools (SEM, FIB, Optical microscopes, etc.) and supports automation and ML analysis.
 
-The Header has a federal structure and contains standardized data fields/labels and non-standardized areas for multi-purpose data fields.
+## Quick Links
 
-**Contents**
+- **[Quick Start Guide](QUICK_START.md)** - For equipment manufacturers implementing the standard
+- **[Change Log v1.1](changelog/CHANGELOG_v1.1.md)** - What changed from v1.0 and why
+- **[Versioning Strategy](documentation/VERSIONING.md)** - How we manage schema versions
+- **[Schema Files](schema/v1.1/)** - JSON Schema definitions
+- **[Examples](schema/v1.1/examples/)** - Sample implementations
+- **[FA40 Documentation](documentation/fa40_description.md)** - Documentation from the FA4.0 Project
 
-- [Header Sections](#header-sections)
-  - [Customer](#customer)
-  - [General](#general)
-  - [Method](#method)
-  - [Tool](#tool)
-  - [Data Evaluation](#data-evaluation)
-- [Manufacturer Information](#manufacturer-information)
-- [JSON Header Workflow](#json-header-workflow)
+## Why Version 1.1?
 
-## Header Sections
+Version 1.1 is a **non-breaking update** focused on **ease of implementation**:
 
-This section describes the different sections that make up the JSON Header and what they are used for.
-In the future, further sections may be added. The modular schemas of the header allow extension and adding of new sections.
-The following image gives an overview of the overall structure of the header:
-![plot](documentation/images/Header_Overall_Structure_new.PNG)
-The different sections are generated based on seperate JSON-Schema files (Each section has an own schema file). This allows easy interchangeability of new versions for different sub sections and also easy customization (e.g. Infineon and Bosch may have different CustomerSection-Schema Files without affecting the other sections)
+- ✅ **80% fewer required fields** (5 instead of 26+ core fields)
+- ✅ **Backward compatible** with v1.0 (no migration needed)
+- ✅ **Better schema quality** (proper JSON Schema format, fixed validation bugs)
+- ✅ **Clearer documentation** (concise, action-oriented)
 
-### General
+**What didn't change:** All property names remain identical to v1.0 for full backward compatibility.
 
-The general section contains all general information about the image to which the JSON Header relates. For example, this includes things like
+See [CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md) for complete details.
 
-- file format
-- file size
-- image height and width
-- pixel size
-- bit depth
-- color mode
-- file name
-- ...
+## Core Concept
 
-The general section with its data fields/labels is illustrated in the following graphic. The illustrations for the other sections can be found in the detailed report: **Link to Markos Report**
+Each analysis image gets a companion JSON file with standardized metadata:
 
-![plot](documentation/images/Header_GeneralSection_Overview.png)
+```
+measurement_001.tiff    ← Your image file
+measurement_001.json    ← Metadata file
+```
 
-Furthermore, the general section contains a **Coordinates Sub Section**, which should be used to store all coordinates needed to determine the position of a part on a standard holder. This includes stage coordinate marks, stage rotation and general stage coordinate system information. Transformed coordinates of marked objects on the image can also be saved in this section.
-This coordinate sub section also contains the coordinates of the three alignment marks of the standardized sample holder (**Universal Sample Holder**). The following tools are thus able to align their coordinate system according to the alignment marks.
-The following images show the Universal Sample Holder with its alignment marks (left) and an exemplary an excerpt of the alignment marks and the Coordinate Sub Section of the header:
+**Minimal example (SEM):**
+```json
+{
+  "General Section": {
+    "File Name": "measurement_001.tiff",
+    "Time Stamp": "2025-12-09T14:30:00+01:00",
+    "Manufacturer": "ZEISS",
+    "Tool Name": "GeminiSEM 500",
+    "Method": "SEM"
+  },
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": { "Value": 5.0, "Unit": "kV" },
+      "Working Distance": { "Value": 8.5, "Unit": "mm" },
+      "Signal Type(s)": ["SE2"]
+    }
+  }
+}
+```
 
-<div align="center">
-  <img src="documentation/images/UniversalSampleHolder-AlignmentMarks.png"/>
-  <img src="documentation/images/Alignment_Marks_SubSection.PNG" width = "200" height="400"/>
-  <img src="documentation/images/Stage_Coordinates.PNG" width = "250" height="400"/>  
-</div>
+That's it! Just 8 fields minimum for SEM, 6 for Optical. Add more as available.
 
-<!-- ![plot](documentation/images/UniversalSampleHolder-AlignmentMarks.png) ![plot](documentation/images/Header_Example_AlignmentMarkSubSection.png) -->
+## Schema Structure
 
-### Method
+### Individual Section Schemas
 
-The method section contains information that is specific for a certain analysis method, such as scanning electron microscopy (SEM), focused ion beam (FIB) or X-ray. For each method, the method section schema must be extended with a new object in the method section. The exemplary structure is as follows:
+Six modular schemas that define the structure:
 
-- Method Specific
-  - SEM
-    - Accelerating Voltage
-    - Decelerating voltage
-    - ...
-  - FIB
-  - Xray
-  - <new method>
+| Section | Schema File | Required? | Purpose |
+|---------|-------------|-----------|---------|
+| **General** | `v1.1/General Section.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
+| **Method Specific** | `v1.1/Method Specific.json` | ✅ Yes | Analysis method parameters (SEM/FIB/Optical) |
+| **Data Evaluation** | `v1.1/Data Evaluation.json` | Optional | Marked features (POIs, ROIs) |
+| **Customer** | `v1.1/Customer Section.json` | Optional | Your organization's custom fields |
+| **Tool Specific** | `v1.1/Tool Specific.json` | Optional | Vendor-specific parameters |
+| **History** | `v1.1/History.json` | Optional | Previous workflow steps |
 
-Existing metadata should be mapped to the data fields/labels in the respective method section.
+### Validation
 
-_Hint_: Existing metadata with no matching data fields/labels could be stored in the private/tool specific section.
+Validate your JSON files using any JSON Schema validator:
 
-_Hint_: Each method has its own schema file. The schema files can be merged/combined into one global method specific schema file, if desired. Otherwise, within the header creation software, the respective schema needs to be selected.
+```python
+import jsonschema
+import json
 
-### Tool
+# Load schema
+with open('schema/v1.1/General Section.json') as f:
+    general_schema = json.load(f)
 
-The tool section contains all information related to a specific tool which is not standardized in the tool's dedicated method section. The structure is similar to the Method Specific Section: for each tool, a new object, named by the name of the tool, must be inserted in the tool section schema. The tool vendors are responsible for filling the Tool Specific Section. The section must follow the overall JSON schema rules, but the individual data fields/labels can be determined by the tool vendor. This allows a high degree of freedom to the individual tool vendor.
-_Hint:_ As optional step, the tool vendor can provide its JSON schema file of the Tool Specific Section to the customer, to enable and simplify the further usage of the tool specific meta-data.
+# Load your metadata
+with open('measurement.json') as f:
+    metadata = json.load(f)
+
+# Validate
+jsonschema.validate(
+    instance=metadata["General Section"],
+    schema=general_schema["General Section"]
+)
+```
+
+## Minimum Required Fields
+
+### General Section (5 fields)
+
+```json
+{
+  "General Section": {
+    "File Name": "measurement.tiff",
+    "Time Stamp": "2025-12-09T14:30:00+01:00",
+    "Manufacturer": "ZEISS",
+    "Tool Name": "GeminiSEM 500",
+    "Method": "SEM"
+  }
+}
+```
+
+### Method-Specific Sections
+
+**SEM (3 fields):**
+```json
+{
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": { "Value": 5.0, "Unit": "kV" },
+      "Working Distance": { "Value": 8.5, "Unit": "mm" },
+      "Signal Type(s)": ["SE2"]
+    }
+  }
+}
+```
+
+**FIB (3 fields):**
+```json
+{
+  "Method Specific": {
+    "Focused Ion Beam": {
+      "Accelerating Voltage": { "Value": 30.0, "Unit": "kV" },
+      "Working Distance": { "Value": 4.0, "Unit": "mm" },
+      "Signal Type(s)": ["SE"]
+    }
+  }
+}
+```
+
+**Optical (1 field):**
+```json
+{
+  "Method Specific": {
+    "Optical Microscopy": {
+      "Objective Lens Magnification": { "Value": 50, "Unit": "x" }
+    }
+  }
+}
+```
+
+## Optional Sections
+
+Add these sections when you have the data:
 
 ### Data Evaluation
+Mark important features in your images:
+```json
+{
+  "Data Evaluation": {
+    "POI": [
+      {
+        "Name": "Defect 1",
+        "Coordinates": { "Value": [1024, 768], "Unit": "pixel" }
+      }
+    ]
+  }
+}
+```
 
-The data evaluation contains information about measurement evaluation. This includes, for example, points and regions of interests (POI and ROI, respectively) that have been marked on the associated image. There exists a **POI** and a **ROI** object in the **Data Evaluation** schema, which can be used accordingly. A POI is simply described by a name, it's x- and y-coordinates, label and ID. ROIs can be defined in the **ROI** section as either polygons or polylines and are defined by a name, multiple points, label, ID and additionally fill and stroke color as well as stroke width. Polygons require the additional area attribute.
+### Customer Specific
+Add your organization's fields:
+```json
+{
+  "Customer Specific": {
+    "Project ID": "PROJ-2025-123",
+    "Sample ID": "WAFER-456"
+  }
+}
+```
 
-### Customer
+### Tool Specific
+Add vendor-specific parameters not in Method Specific:
+```json
+{
+  "Tool Specific": {
+    "Zeiss SmartSEM": {
+      "Auto Brightness": true,
+      "Auto Contrast": true
+    }
+  }
+}
+```
 
-The customer section contains information that is specific to the customer. Here, customer typically refers to the analysis lab in which the JSON Header is used. The information contained in this section can be fully customized for the respective user/organization/company. Typical information would be internal sample IDs, order numbers or other information that is useful for processing of the sample.
+### History
+Link to previous analysis steps:
+```json
+{
+  "History": {
+    "Previous Files": [
+      "overview_image_001.json",
+      "zoom_image_002.json"
+    ]
+  }
+}
+```
 
-## Manufacturer Information
+## For Equipment Manufacturers
 
-This section contains information that is relevant for equipment manufacturers that want to integrate the JSON Header into their equipment.
+**Implementing this standard:**
 
-In order to facilitate generation and usage of the FA4.0 JSON Header, any equipment machine must be able to both read and write JSON files that adhere to the FA4.0 JSON Header schema.
+1. When saving an image, generate a companion JSON file
+2. Populate the 5 required General Section fields
+3. Populate the 1-3 required Method Specific fields for your tool type
+4. Add any optional fields your tool can provide
+5. Save JSON file with same base name as image
 
-### Read JSON Header Files
+See [QUICK_START.md](QUICK_START.md) for detailed implementation guide.
 
-The reading of JSON header files is necessary for several reasons. First, it allows to transfer information, stored in the JSON Header, between differnt tools. This could be POIs, ROIs and the location on the sample holder, for example. Moreover, in order for the tool to write a JSON file itself, it usually requires customer-specific information such as order or sample IDs that can be read via the JSON header. This information is crucial for identifying the resulting image and storing it properly in a database. Therefore, a tool user should be able to load a JSON file via the accompanying tool software.
+## For Data Scientists
 
-Coordinate-related information in the JSON Header, such as stage coordinates, must also be aligned to the local tool coordinate system in order to allow transfer of POIs/ROIs between tools. If the tool should facilitate a sample holder-based workflow to allow for easy transfer of coordinates between tools, it must provide functionality to read the sample holder reference points and align the coordinate system accordingly with the coordinates defined in the JSON Header.
+**Reading metadata:**
 
-### Write JSON Header Files
+```python
+import json
 
-Any JSON Header files that are created by the tool must adhere to a specified version of the FA4.0 JSON Header schema. Depending on the tool, the information will most likely be written to the sections General, Method and Tool. When saving an image after loading a JSON Header file, a new JSON Header file should the be automatically stored. The name of the JSON file must be identical to the image file except for the file extension. For example:
+# Load metadata
+with open('measurement_001.json') as f:
+    metadata = json.load(f)
 
-- my_example_image.png
-- my_example_image.json
+# Access fields
+filename = metadata["General Section"]["File Name"]
+voltage = metadata["Method Specific"]["Scanning Electron Microscopy"]["Accelerating Voltage"]["Value"]
+timestamp = metadata["General Section"]["Time Stamp"]
 
-## JSON Header Workflow
+# Check optional sections
+if "Data Evaluation" in metadata:
+    pois = metadata["Data Evaluation"].get("POI", [])
+    for poi in pois:
+        print(f"Found POI: {poi['Name']} at {poi['Coordinates']['Value']}")
+```
 
-The Standardized FA JSON Header is used for image meta data storage and can be used as a transfer file to exchange the meta data between different tools in a workflow. In the following an exemplary workflow is illustrated between a scanning acoustic microscope (tool A) and focused ion beam (tool B) using the JSON Header together with the Universal Sample Holder: 
+## Version Information
 
-- A Flip Chip (such as one illustrated in the image below) is analyzed after a thermal stress test which potentially induces delaminations between the solder bumps and the interconnection layer of the die. 
-<div align="center">
-  <img src="documentation/images/schematic_crossection.PNG" width="500" height="200" />
-  <img src="documentation/images/sample_overview.jpg" width="300" height="200" />  
-</div>
+### Current Version: 1.1 (Stable)
+- **Location:** `schema/v1.1/`
+- **Status:** Production-ready
+- **Compatibility:** Fully backward compatible with v1.0
+- **Use for:** All new implementations
 
-- The chip is attached to the Universal Sample Holder and it's alignment marks are automatically scanned at the scanning acoustic microscope (SAM).
+### Legacy Version: 1.0
+- **Location:** `schema/v1/`
+- **Status:** Superseded by v1.1
+- **Note:** v1.0 files work with v1.1 validators
 
-- The SAM is able to generate images at different material interfaces in C-SAM mode. Possible delaminations or cracks within the chip appear white in the SAM image. In our case therefore, the delaminated regions at the interface between the solder bumps and the interconnection layer of the die show up as 'white bumps':
-<div align="center">
-  <img src="documentation/images/White_Bumps.jpg" width="500" height="350" />
-</div>
+### Future Version: 2.0-draft (Experimental)
+- **Location:** `schema/v2-draft/`
+- **Status:** ⚠️ **NOT FOR PRODUCTION USE**
+- **Note:** Contains breaking changes (camelCase property names). Postponed after stakeholder consultation. See [FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)
 
-- After inspecting the white bumps, the user saves the created SAM image together with its corresponding JSON file header which contains all general image and SAM specific meta data, but also the coordinates of the alignment marks from the Universal Sample Holder and the stage position of the SAM. The alignment marks and the stage position will be used for coordinate transformation between tool A and tool B. Optional: Upload the JSON file header and the image to an internal Database.
+## Resources
 
-<div align="center">
-  <img src="documentation/images/UniversalSampleHolder-AlignmentMarks.png"/>
-  <img src="documentation/images/Alignment_Marks_SubSection.PNG" width = "200" height="400"/>
-  <img src="documentation/images/Stage_Coordinates.PNG" width = "250" height="400"/>  
-</div>
+- **Schema Files:** [schema/v1.1/](schema/v1.1/)
+- **Examples:** [schema/v1.1/examples/](schema/v1.1/examples/)
+- **Changelog:** [CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md)
+- **Versioning:** [VERSIONING.md](documentation/VERSIONING.md)
+- **Future v2.0:** [FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)
 
-- Furthermore, an additional application can be used which reads the image and the JSON file header, where the user marks the inspected white bumps as, e.g. points of interest (POIs). The SAM coordinates of the POIs are saved under the Data Evaluation section in the JSON file header.
+## Contributing
 
-<div align="center">
-  <img src="documentation/images/Xeia_Demo.PNG" height="450" />
-</div>
+This standard is maintained by the Failure Analysis Metadata Header Initiative. For questions, suggestions, or to report issues:
 
-- In the last step of the workflow, the user wants to perform a focused ion beam (FIB) cut at tool B to verify the root cause failure of the inspected white bumps in the SAM image. The Uiversal Sample Holder is inserted into the FIB and the alignment marks are again automatically scanned.
-  
-- The FIB tool can only generate images of the chip surface and not at different material interfaces like the SAM. Thus, it is difficult for the user to navigate to the explicit POIs, since they are not visible at the chip surface. 
-- To navigate to the POIs, the FIB loads the JSON file header and reads the coordinates of the POIs and alignment marks in the SAM coordinates. It subsequently performs a coordinate transformation with the help of the alignment marks to retrieve the FIB coordinates of the POIs:
+- **Website:** https://failure-analysis-metadata-header.github.io/
+- **GitHub:** https://github.com/Failure-Analysis-Metadata-Header/fa-metadata-schema
 
-<div align="center">
-  <img src="documentation/images/Coordinate_Transformation.png" />
-</div>
+## License
 
-- Finally the the user can navigate to the white bumps of interest and perform a FIB cut to verify the root cause failure:
-<div align="center">
-  <img src="documentation/images/autoxeia_move.png" width="350" height="350" />
-  <center>
-    --->
-  </center>
-  <img src="documentation/images/Final_FIB_Cut.png" width="350" height="350" />
-</div>
+The schema files and documentation are provided for use in the semiconductor failure analysis community.
 
+---
 
-<!-- Old Version: The JSON Header can be used for general image metadata storage and to transfer this metadata between different tools. An exemplary workflow could look like the following:
-
-- Create initial JSON file from database
-  - This initial JSON file would hold no image information but only customer-specific information such as order or part IDs
-- Load initial JSON file to tool A
-- Create Image with tool A
-- Save JSON Header for image with tool A
-  - This JSON header would contain information about the image as well as any image or sample holder related coordinates that were used while taking the image
-- Optional: Upload JSON Header and Image to database
-- Load JSON header with tool B
-  - The JSON header to be loaded could either be newly created from the database (if information was uploaded), or the file that was created in the previous steps could be used directly
-- Create image with tool B with the help of positional information stored in JSON Header
-- Save new JSON Header with tool B
-
-In this workflow, a set of certain POIs could be marked in the image taken with tool A and then be transferred to tool B, which can then take pictures of the same POIs based on the coordinates. This requires storing of all coordinate-related information and correct transformation between coordinate systems, if necessary. In case of using a sample holder, this workflow is greatly simplified as the coordinate system of the sample holder can be used. -->
+**Last Updated:** December 9, 2025  
+**Schema Version:** 1.1  
+**Status:** Stable

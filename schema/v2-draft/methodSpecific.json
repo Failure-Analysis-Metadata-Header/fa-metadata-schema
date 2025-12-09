@@ -1,0 +1,537 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DRAFT - FA Metadata Method Specific Section v2.0 (NOT FOR PRODUCTION USE)",
+  "version": "2.0-draft",
+  "description": "⚠️ WARNING: This is a DRAFT schema with breaking changes. Use v1.1 for production. This v2-draft uses camelCase property names which are NOT backward compatible with v1.x. Method-specific metadata for different analysis techniques (SEM, FIB, Optical, etc.).",
+  "type": "object",
+  "properties": {
+    "methodSpecific": {
+      "description": "Contains metadata specific to the analysis method used.",
+      "type": "object",
+      "properties": {
+        "scanningElectronMicroscopy": {
+          "type": "object",
+          "description": "SEM-specific metadata.",
+          "required": [
+            "acceleratingVoltage",
+            "workingDistance",
+            "signalTypes"
+          ],
+          "properties": {
+            "supplementaryMethod": {
+              "description": "Previously applied supplementary method (e.g., sample preparation).",
+              "type": "string",
+              "examples": [
+                "FIB",
+                "Polishing",
+                "Etching"
+              ]
+            },
+            "acceleratingVoltage": {
+              "description": "Voltage at the cathode generating the electric accelerating field.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "kV"
+                }
+              }
+            },
+            "deceleratingVoltage": {
+              "description": "Negative voltage applied at the stage to decelerate the beam.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "kV"
+                }
+              }
+            },
+            "workingDistance": {
+              "description": "Distance between objective lens and focal plane.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "mm"
+                }
+              }
+            },
+            "magnification": {
+              "description": "Magnification of the raster field.",
+              "type": "string",
+              "examples": [
+                "30 K X",
+                "5000x"
+              ]
+            },
+            "signalMixing": {
+              "description": "Indicates if multiple signals were mixed to generate the image.",
+              "type": "boolean"
+            },
+            "signalTypes": {
+              "description": "Type(s) of signal used to generate the image.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "examples": [
+                [
+                  "SE2"
+                ],
+                [
+                  "SE2",
+                  "BSE"
+                ]
+              ]
+            },
+            "detectors": {
+              "description": "Type of detector(s) used to collect the signal.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "signalProportion": {
+              "description": "Proportion of each signal used (0.0 to 1.0). Must match length of signalTypes.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            },
+            "apertureSize": {
+              "description": "Diameter of the aperture used.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "µm"
+                }
+              }
+            },
+            "apertureAlignment": {
+              "description": "Relative centering of aperture [X, Y] in beam path (-1.0 to 1.0).",
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": -1.0,
+                "maximum": 1.0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "stigmatorAlignment": {
+              "description": "Relative alignment of stigmator [X, Y] (-1.0 to 1.0).",
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": -1.0,
+                "maximum": 1.0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "brightness": {
+              "description": "Relative brightness per detector (0.0 to 1.0).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            },
+            "contrast": {
+              "description": "Relative contrast per detector (0.0 to 1.0).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            },
+            "emissionCurrent": {
+              "description": "Current emitted from the electron gun.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "µA"
+                }
+              }
+            },
+            "probeCurrent": {
+              "description": "Current hitting the specimen.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "pA"
+                }
+              }
+            },
+            "highCurrentMode": {
+              "description": "Indicates if high current mode is active.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "tiltCorrectionMode": {
+              "description": "Indicates if tilt correction mode is active.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "correctedTiltAngle": {
+              "description": "Tilt value corrected by tilt correction mode.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            },
+            "beamShift": {
+              "description": "Beam shift [X, Y] values.",
+              "type": "array",
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "scanRotationMode": {
+              "description": "Indicates if scan rotation mode is active.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "scanRotation": {
+              "description": "Scan rotation angle.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            }
+          }
+        },
+        "focusedIonBeam": {
+          "type": "object",
+          "description": "FIB-specific metadata.",
+          "required": [
+            "acceleratingVoltage",
+            "workingDistance",
+            "signalTypes"
+          ],
+          "properties": {
+            "fibSemIntersectionPoint": {
+              "description": "Working distance where electron and ion beams intersect (dual beam devices).",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "mm"
+                }
+              }
+            },
+            "fibTiltAngle": {
+              "description": "Tilt angle where stage is perpendicular to FIB column.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "degrees"
+                }
+              }
+            },
+            "acceleratingVoltage": {
+              "description": "Voltage at the cathode generating the electric accelerating field.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "kV"
+                }
+              }
+            },
+            "deceleratingVoltage": {
+              "description": "Negative voltage applied at the stage to decelerate the beam.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "kV"
+                }
+              }
+            },
+            "workingDistance": {
+              "description": "Distance between objective lens and focal plane.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "mm"
+                }
+              }
+            },
+            "magnification": {
+              "description": "Magnification of the raster field.",
+              "type": "string"
+            },
+            "signalMixing": {
+              "description": "Indicates if multiple signals were mixed.",
+              "type": "boolean"
+            },
+            "signalTypes": {
+              "description": "Type(s) of signal used.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "detectors": {
+              "description": "Type of detector(s) used.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "signalProportion": {
+              "description": "Proportion of each signal (0.0 to 1.0).",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0.0,
+                "maximum": 1.0
+              }
+            },
+            "ionCurrent": {
+              "description": "Ion beam current.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "pA"
+                }
+              }
+            }
+          }
+        },
+        "opticalMicroscopy": {
+          "type": "object",
+          "description": "Optical microscopy-specific metadata.",
+          "required": [
+            "objectiveMagnification"
+          ],
+          "properties": {
+            "objectiveMagnification": {
+              "description": "Magnification of the objective lens.",
+              "type": "string",
+              "examples": [
+                "10x",
+                "50x",
+                "100x"
+              ]
+            },
+            "opticalZoom": {
+              "description": "Optical zoom factor.",
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "digitalZoom": {
+              "description": "Digital zoom factor.",
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "contrastMethod": {
+              "description": "Contrast method used.",
+              "type": "string",
+              "examples": [
+                "Brightfield",
+                "Darkfield",
+                "DIC",
+                "Phase Contrast"
+              ]
+            },
+            "hdrMode": {
+              "description": "Indicates if HDR mode is active.",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "exposureTime": {
+              "description": "Exposure time for image capture.",
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "type": "string",
+                  "default": "ms",
+                  "examples": [
+                    "ms",
+                    "s"
+                  ]
+                }
+              }
+            },
+            "illuminationType": {
+              "description": "Type of illumination used.",
+              "type": "string",
+              "examples": [
+                "LED",
+                "Halogen",
+                "Laser"
+              ]
+            },
+            "numericalAperture": {
+              "description": "Numerical aperture of the objective.",
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

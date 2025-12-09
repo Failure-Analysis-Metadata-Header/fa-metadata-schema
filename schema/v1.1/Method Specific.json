@@ -1,0 +1,716 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Method Specific Schema",
+    "description": "The method specific section incorporates all necessary metadata for each measurement methods.",
+    "version": "1.1",
+    "Method Specific": {
+        "description": "The method specific section incorporates all necessary metadata for each measurement methods.",
+        "type": "object",
+        "properties": {
+            "Scanning Electron Microscopy": {
+                "type": "object",
+                "description": "The Scanning Electron Microscopy subsection describes all specific SEM-metadata which are adjustable in each SEM device.",
+                "properties": {
+                    "Supplementary Method": {
+                        "description": "Indicates the previously applied supplementary method, e.g. sample preparation. Is left empty if no supplementary method is indicated.",
+                        "type": "string",
+                        "example": "Focused Ion Beam"
+                    },
+                    "Accelerating Voltage": {
+                        "description": "The Accelerating Voltage describes the voltage at the cathode which generates the electric accelerating field. The unit is specified under the property 'Unit' and should preferably be chosen in [kV].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 2
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Decelerating Voltage": {
+                        "description": "The Decelerating Voltage describes a negative voltage which can be applied at the tool's stage, to deccelerate the beam before it hits the specimen for a lower landing voltage. The unit is specified under the property 'Unit' and should preferably be chosen in [kV].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 0
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Working Distance": {
+                        "description": "The working distance, is defined as the distance between the objective lens and the focal plane or the final crossover point of the beam. The unit is specified under the property 'Unit' and should preferably be chosen in [mm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 7.7
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Magnification": {
+                        "description": "The Magnification value indicates the magnification of the raster field.",
+                        "type": "string",
+                        "example": "30 K X"
+                    },
+                    "Signal Mixing": {
+                        "description": "Indicates if more Signals were mixed to generate the image. Equals true if Signal Mixing Mode is used.",
+                        "type": "boolean"
+                    },
+                    "Signal Type(s)": {
+                        "description": "The type(s) of signal used to generate the image.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": [
+                                "SE2",
+                                "BSE"
+                            ]
+                        },
+                        "minItems": 1
+                    },
+                    "Detector(s)": {
+                        "description": "The type of detector(s) used by the tool to collect the electron signal.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "Signal Proportion": {
+                        "description": "Describes the proportion of the used signal(s). The values are in the range of [0.0, 1.0].",
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "example": [
+                                0.72,
+                                0.28
+                            ]
+                        },
+                        "minItems": 1
+                    },
+                    "Aperture Size": {
+                        "description": "The size of the used aperture diameter. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Aperture Alignment X Y": {
+                        "description": "The relative centering of the aperture in x and y direction in the electron beam path. The first entry denotes the x-proportion and the second the y-proportion in the range of [-1.0, 1.0].",
+                        "type": "array",
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": -1.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.4,
+                                0.2
+                            ]
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "Stigmator Alignment X Y": {
+                        "description": "The relative alignment of the magnetic field in the objective lens to form or shift the elctronic beam in X and Y direction. The first entry denotes the x-proportion and the second the y-proportion in the range of [-1.0, 1.0].",
+                        "type": "array",
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": -1.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.2,
+                                0.1
+                            ]
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "Brightness": {
+                        "description": "The relative brightness of the image in the range of [0.0, 1.0]. A value of 1.0 corresponds to a white image and 0.0 to a black image. Brightness is an array, since for some devices the brightness can be ajdusted for each used detector which generated the image in a mixing mode.",
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": 0.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.7,
+                                0.667
+                            ]
+                        }
+                    },
+                    "Contrast": {
+                        "description": "The relative contrast of the image in the range of [0.0, 1.0]. Higher values correspond to a high contrast. Constrast is an array, since for some devices the constrast can be ajdusted for each used detector which generated the image in a mixing mode.",
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": 0.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.7,
+                                0.667
+                            ]
+                        }
+                    },
+                    "Emission Current": {
+                        "description": "The value indicates the emitted current out of the electron gun. The unit is specified under the property 'Unit' and should preferably be chosen in [µA].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 95
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Probe Current": {
+                        "description": "The value indicates the current which hits the specimen. The unit is specified under the property 'Unit' and should preferably be chosen in [pA].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "High Current Mode": {
+                        "description": "Indicates if the high current mode is used. Equals true if high current mode is used",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "Tilt Correction Mode": {
+                        "description": "Indicates if the tilt correction mode is used to equalize the image. Equals true if the tilt correction mode is used",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "Corrected Tilt Angle": {
+                        "description": "The corrected tilt value by tilt correction mode. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Beam Shift X": {
+                        "description": "Shift of the electron beam in x-direction. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Beam Shift Y": {
+                        "description": "Shift of the electron beam in y-direction. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Scan Rotation Mode": {
+                        "description": "Indicates if the scan rotation mode is used to rotate the image. Equals true if scan rotation mode is used",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "Scan Rotation": {
+                        "description": "The value indicates the angle of the scan direction relative to the tools global frame. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "Accelerating Voltage",
+                    "Working Distance",
+                    "Signal Type(s)"
+                ]
+            },
+            "Focused Ion Beam": {
+                "type": "object",
+                "description": "The Focused Ion Beam subsection describes all specific FIB-metadata which are adjustable in each FIB device.",
+                "properties": {
+                    "FIB-SEM Intersection Point": {
+                        "description": "Indicates the working distance where the electron and ion beam intersect for dual beam devices (equal to FIB-SEM coincedence point). The unit is specified under the property 'Unit' and should preferably be chosen in [mm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 5.0
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "FIB Tilt Angle": {
+                        "description": "Indicates the tilt value of the stage, where the stage is perpendicular to the FIB column. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 55.0
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Accelerating Voltage": {
+                        "description": "The Accelerating Voltage describes the voltage at the cathode which generates the electric accelerating field. The unit is specified under the property 'Unit' and should preferably be chosen in [kV].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 2
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Decelerating Voltage": {
+                        "description": "The Decelerating Voltage describes a negative voltage which can be applied at the tool's stage, to deccelerate the beam before it hits the specimen for a lower landing voltage. The unit is specified under the property 'Unit' and should preferably be chosen in [kV].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 0
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Working Distance": {
+                        "description": "The working distance, is defined as the distance between the objective lens and the focal plane or the final crossover point of the beam. The unit is specified under the property 'Unit' and should preferably be chosen in [mm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 7.7
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Magnification": {
+                        "description": "The Magnification value indicates the magnification of the raster field.",
+                        "type": "string",
+                        "example": "30 K X"
+                    },
+                    "Signal Mixing": {
+                        "description": "Indicates if more Signals were mixed to generate the image. Equals true if Signal Mixing Mode is used.",
+                        "type": "boolean"
+                    },
+                    "Signal Type(s)": {
+                        "description": "The type(s) of signal used to generate the image.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": [
+                                "SE2",
+                                "BSD"
+                            ]
+                        },
+                        "minItems": 1
+                    },
+                    "Detector(s)": {
+                        "description": "The type of detector(s) used by the tool to collect the electron signal.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "Signal Proportion": {
+                        "description": "Describes the proportion of the used signal(s). The values are in the range of [0.0, 1.0].",
+                        "type": "array",
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "example": [
+                                0.72,
+                                0.28
+                            ]
+                        },
+                        "minItems": 1
+                    },
+                    "Aperture Size": {
+                        "description": "The size of the used aperture diameter. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Aperture Alignment X Y": {
+                        "description": "The relative centering of the aperture in x and y direction in the electron beam path. The first entry denotes the x-proportion and the second the y-proportion in the range of [-1.0, 1.0].",
+                        "type": "array",
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": -1.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.4,
+                                0.2
+                            ]
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "Stigmator Alignment X Y": {
+                        "description": "The relative alignment of the magnetic field in the objective lens to form or shift the elctronic beam in X and Y direction. The first entry denotes the x-proportion and the second the y-proportion in the range of [-1.0, 1.0].",
+                        "type": "array",
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": -1.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.2,
+                                0.1
+                            ]
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "Brightness": {
+                        "description": "The relative brightness of the image in the range of [0.0, 1.0]. A value of 1.0 corresponds to a white image and 0.0 to a black image. Brightness is an array, since for some devices the brightness can be ajdusted for each used detector which generated the image in a mixing mode.",
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": 0.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.7,
+                                0.667
+                            ]
+                        }
+                    },
+                    "Contrast": {
+                        "description": "The relative contrast of the image in the range of [0.0, 1.0]. Higher values correspond to a high contrast. Constrast is an array, since for some devices the constrast can be ajdusted for each used detector which generated the image in a mixing mode.",
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "type": [
+                                "number",
+                                "null"
+                            ],
+                            "minimum": 0.0,
+                            "maximum": 1.0,
+                            "example": [
+                                0.7,
+                                0.667
+                            ]
+                        }
+                    },
+                    "Emission Current": {
+                        "description": "The value indicates the emitted current out of the ion gun. The unit is specified under the property 'Unit' and should preferably be chosen in [µA].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ],
+                                "example": 95.0
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Probe Current": {
+                        "description": "The value indicates the current which hits the specimen. The unit is specified under the property 'Unit' and should preferably be chosen in [pA].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "High Current Mode": {
+                        "description": "Indicates if the high current mode is used. Equals true if high current mode is used",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "Tilt Correction Mode": {
+                        "description": "Indicates if the tilt correction mode is used to equalize the image. Equals true if the tilt correction mode is used",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "Corrected Tilt Angle": {
+                        "description": "The corrected tilt value by tilt correction mode. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": "object",
+                        "properties": {
+                            "values": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Beam Shift X": {
+                        "description": "Shift of the electron beam in x-direction. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Beam Shift Y": {
+                        "description": "Shift of the electron beam in y-direction. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "Scan Rotation Mode": {
+                        "description": "Indicates if the scan rotation mode is used to rotate the image. Equals true if scan rotation mode is used",
+                        "type": "boolean"
+                    },
+                    "Scan Rotation": {
+                        "description": "The value indicates the angle of the scan direction relative to the tools global frame. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "Accelerating Voltage",
+                    "Working Distance",
+                    "Signal Type(s)"
+                ]
+            },
+            "Optical Microscopy": {
+                "description": "The Optical Microscopy subsection describes all specific metadata which are common in each Optical Microscopy device.",
+                "type": "object",
+                "properties": {
+                    "Objective Lens Magnification": {
+                        "description": "The objective Lens Magnification determines the factor by which the object is magnified by the obcetive lens relative to its actual size.",
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "example": 10
+                    },
+                    "Optical Zoom": {
+                        "description": "The Optical Zoom is the magnification factor created in the tube of the objective.",
+                        "type": [
+                            "number",
+                            "null"
+                        ],
+                        "example": 2
+                    },
+                    "Digital Zoom": {
+                        "description": "The Digital Zoom value is the factor by which the image is digitally magnified, by cropping and resizing the original image.",
+                        "type": [
+                            "number",
+                            "null"
+                        ]
+                    },
+                    "Contrast Method": {
+                        "description": "Specifies with which method the sample has been illuminated, to create the image.",
+                        "type": "string",
+                        "example": "Brightfield"
+                    },
+                    "HDR Mode": {
+                        "description": "Indicates if the HDR (High Dynamic Range) Mode is used. Is true if HDR Mode was on.",
+                        "type": [
+                            "boolean",
+                            "null"
+                        ]
+                    },
+                    "Exposure Time": {
+                        "description": "The exposure time determines the duration that the detector of the microscope is exposed to the reflected light. The value is preferably given in [ms].",
+                        "type": "object",
+                        "properties": {
+                            "Value": {
+                                "type": [
+                                    "number",
+                                    "null"
+                                ]
+                            },
+                            "Unit": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "Objective Lens Magnification"
+                ]
+            }
+        }
+    }
+}

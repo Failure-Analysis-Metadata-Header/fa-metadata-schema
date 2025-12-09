@@ -1,0 +1,17 @@
+{
+    "General Section": {
+        "File Name": "optical_measurement_001.tiff",
+        "Time Stamp": "2025-12-09T14:20:00+01:00",
+        "Manufacturer": "Leica",
+        "Tool Name": "DM6 M",
+        "Method": "Optical"
+    },
+    "Method Specific": {
+        "Optical Microscopy": {
+            "Objective Lens Magnification": {
+                "Value": 50,
+                "Unit": "x"
+            }
+        }
+    }
+}
