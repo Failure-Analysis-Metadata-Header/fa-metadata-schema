@@ -102,12 +102,10 @@ The ROI-Rectangle type provides a guaranteed rectangular shape representation fo
 ## Required vs. Optional Fields
 
 ### v1.1 Required Fields
-- `Name`, `Label`, `ID`
-- `Center Coordinates`, `Width`, `Height`
-- `Area`, `FillColor`, `StrokeColor`, `StrokeWidth`
+- `Name`, `Center Coordinates`, `Width`, `Height`
 
 ### v1.1 Optional Fields
-- `Rotation Angle` (defaults to 0° if omitted)
+- `Label`, `ID`, `Area`, `FillColor`, `StrokeColor`, `StrokeWidth`, `Rotation Angle` (defaults to 0° if omitted)
 
 ### v2-draft Required Fields
 - `name`, `centerCoordinates`, `width`, `height`
