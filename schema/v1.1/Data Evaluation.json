@@ -107,13 +107,7 @@
                             "type": "object",
                             "required": [
                                 "Name",
-                                "Label",
-                                "ID",
-                                "Coordinates",
-                                "Area",
-                                "FillColor",
-                                "StrokeColor",
-                                "StrokeWidth"
+                                "Coordinates"
                             ],
                             "example": {
                                 "ROI-Polygon": [
@@ -308,11 +302,7 @@
                             "type": "object",
                             "required": [
                                 "Name",
-                                "Label",
-                                "ID",
-                                "Coordinates",
-                                "StrokeColor",
-                                "StrokeWidth"
+                                "Coordinates"
                             ],
                             "example": {
                                 "ROI-Polyline": [
@@ -425,6 +415,238 @@
                                 },
                                 "StrokeColor": {
                                     "description": "The color of the stroke the polyline was drawn with, encoded in RGB.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                },
+                                "StrokeWidth": {
+                                    "description": "The width of the stroke. The unit is specified under the property 'Unit' and should preferably be chosen in pixels.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "ROI-Rectangle": {
+                        "description": "ROI-Rectangle is an array which contains all ROI-Rectangles selected by the user. A rectangle is defined by its center coordinates, width, height, and optional rotation angle. This provides a guaranteed rectangular shape representation suitable for bounding boxes and ML annotation workflows. ROI-Rectangle contains the name of the rectangle, the center coordinates, dimensions, optional rotation, the area of the rectangle, the filling color as well as color and width of the stroke.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Center Coordinates",
+                                "Width",
+                                "Height",
+                            ],
+                            "example": {
+                                "ROI-Rectangle": [
+                                    {
+                                        "Name": "ROI-Rectangle-1",
+                                        "Label": "Defect Bounding Box",
+                                        "ID": "rect_001",
+                                        "Center Coordinates": {
+                                            "Value": [
+                                                2500.0,
+                                                3000.0
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "Width": {
+                                            "Value": 500.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Height": {
+                                            "Value": 300.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Rotation Angle": {
+                                            "Value": 15.0,
+                                            "Unit": "deg"
+                                        },
+                                        "Area": {
+                                            "Value": 150000.0,
+                                            "Unit": "µm²"
+                                        },
+                                        "FillColor": [
+                                            1.0,
+                                            0.0,
+                                            0.0,
+                                            0.3
+                                        ],
+                                        "StrokeColor": [
+                                            1.0,
+                                            0.0,
+                                            0.0
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 2,
+                                            "Unit": "px"
+                                        }
+                                    },
+                                    {
+                                        "Name": "ROI-Rectangle-2",
+                                        "Label": "Crack Region",
+                                        "ID": "rect_002",
+                                        "Center Coordinates": {
+                                            "Value": [
+                                                1800.0,
+                                                2200.0
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "Width": {
+                                            "Value": 400.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Height": {
+                                            "Value": 250.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Area": {
+                                            "Value": 100000.0,
+                                            "Unit": "µm²"
+                                        },
+                                        "FillColor": [
+                                            0.0,
+                                            1.0,
+                                            0.0,
+                                            0.25
+                                        ],
+                                        "StrokeColor": [
+                                            0.0,
+                                            1.0,
+                                            0.0
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 3,
+                                            "Unit": "px"
+                                        }
+                                    }
+                                ]
+                            },
+                            "properties": {
+                                "Name": {
+                                    "description": "The name of the specific ROI-Rectangle which can be any string.",
+                                    "type": "string"
+                                },
+                                "Label": {
+                                    "description": "The label categorizes the segmented ROI-Rectangle to a certain class. The class should represent a certain failure mode or object type.",
+                                    "type": "string"
+                                },
+                                "ID": {
+                                    "description": "Unique ID to the labeled ROI-Rectangle.",
+                                    "type": "string"
+                                },
+                                "Center Coordinates": {
+                                    "description": "The (x, y) coordinates of the rectangle center point in the tool's coordinate frame. The first element denotes the x-coordinate and the second the y-coordinate. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": "array",
+                                            "maxItems": 2,
+                                            "minItems": 2,
+                                            "items": {
+                                                "type": [
+                                                    "number",
+                                                    "null"
+                                                ]
+                                            }
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Width": {
+                                    "description": "The width of the rectangle measured along its local x-axis (before rotation). The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Height": {
+                                    "description": "The height of the rectangle measured along its local y-axis (before rotation). The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Rotation Angle": {
+                                    "description": "The rotation angle of the rectangle around its center point, measured counter-clockwise from the positive x-axis. This property is optional and defaults to 0 degrees (axis-aligned rectangle) if not specified. The unit should be specified as 'deg' (degrees) or 'rad' (radians) under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Area": {
+                                    "description": "The area of the rectangle (width × height) in the unit of the tool's coordinate frame. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "FillColor": {
+                                    "description": "The fill color of the rectangle encoded in RGBA (Red, Green, Blue, Alpha). Values should range from 0.0 to 1.0.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 4,
+                                    "maxItems": 4
+                                },
+                                "StrokeColor": {
+                                    "description": "The color of the stroke the rectangle was drawn with, encoded in RGB (Red, Green, Blue). Values should range from 0.0 to 1.0.",
                                     "type": "array",
                                     "items": {
                                         "type": [

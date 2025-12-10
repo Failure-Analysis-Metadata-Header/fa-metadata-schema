@@ -274,6 +274,188 @@
                   }
                 }
               }
+            },
+            "rectangles": {
+              "description": "Array of rectangle ROIs defined by center coordinates, dimensions, and optional rotation. Provides guaranteed rectangular shapes suitable for bounding boxes and ML annotation workflows.",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "centerCoordinates",
+                  "width",
+                  "height"
+                ],
+                "properties": {
+                  "name": {
+                    "description": "Name of the rectangle.",
+                    "type": "string"
+                  },
+                  "label": {
+                    "description": "Label categorizing the ROI (e.g., failure mode class or object type).",
+                    "type": "string"
+                  },
+                  "id": {
+                    "description": "Unique ID for the rectangle.",
+                    "type": "string"
+                  },
+                  "centerCoordinates": {
+                    "description": "X and Y coordinates of the rectangle's center point.",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "array",
+                        "items": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                      },
+                      "unit": {
+                        "type": "string",
+                        "examples": [
+                          "px",
+                          "µm",
+                          "nm"
+                        ]
+                      }
+                    }
+                  },
+                  "width": {
+                    "description": "Width of the rectangle measured along its local x-axis (before rotation).",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "examples": [
+                          "µm",
+                          "nm",
+                          "px"
+                        ]
+                      }
+                    }
+                  },
+                  "height": {
+                    "description": "Height of the rectangle measured along its local y-axis (before rotation).",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "examples": [
+                          "µm",
+                          "nm",
+                          "px"
+                        ]
+                      }
+                    }
+                  },
+                  "rotationAngle": {
+                    "description": "Optional rotation angle of the rectangle around its center point, measured counter-clockwise from the positive x-axis. Defaults to 0 (axis-aligned) if not specified.",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "deg",
+                          "rad"
+                        ],
+                        "examples": [
+                          "deg",
+                          "rad"
+                        ]
+                      }
+                    }
+                  },
+                  "area": {
+                    "description": "Area of the rectangle (width × height).",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "examples": [
+                          "µm²",
+                          "nm²",
+                          "px²"
+                        ]
+                      }
+                    }
+                  },
+                  "fillColor": {
+                    "description": "Fill color in RGBA format [R, G, B, A] (0.0 to 1.0).",
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 0.0,
+                      "maximum": 1.0
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "strokeColor": {
+                    "description": "Stroke color in RGB format [R, G, B] (0.0 to 1.0).",
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "minimum": 0.0,
+                      "maximum": 1.0
+                    },
+                    "minItems": 3,
+                    "maxItems": 3
+                  },
+                  "strokeWidth": {
+                    "description": "Width of the stroke.",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "default": "px"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
