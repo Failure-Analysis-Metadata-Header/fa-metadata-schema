@@ -1,0 +1,157 @@
+{
+    "General Section": {
+        "File Name": "defect_analysis_001.tiff",
+        "Time Stamp": "2025-12-09T10:30:00+01:00",
+        "Manufacturer": "ZEISS",
+        "Tool Name": "GeminiSEM 500",
+        "Method": "SEM"
+    },
+    "Method Specific": {
+        "Scanning Electron Microscopy": {
+            "Accelerating Voltage": {
+                "Value": 5.0,
+                "Unit": "kV"
+            },
+            "Working Distance": {
+                "Value": 8.5,
+                "Unit": "mm"
+            },
+            "Signal Type(s)": [
+                "SE2"
+            ]
+        }
+    },
+    "Data Evaluation": {
+        "Image Label": "Delamination Analysis - Multiple Defect Regions",
+        "Image ID": "img_20251209_001",
+        "ROI (Region of Interest)": {
+            "ROI-Rectangle": [
+                {
+                    "Name": "Defect Region 1",
+                    "Label": "Delamination",
+                    "ID": "rect_001",
+                    "Center Coordinates": {
+                        "Value": [
+                            2500.0,
+                            3000.0
+                        ],
+                        "Unit": "µm"
+                    },
+                    "Width": {
+                        "Value": 500.0,
+                        "Unit": "µm"
+                    },
+                    "Height": {
+                        "Value": 300.0,
+                        "Unit": "µm"
+                    },
+                    "Rotation Angle": {
+                        "Value": 15.0,
+                        "Unit": "deg"
+                    },
+                    "Area": {
+                        "Value": 150000.0,
+                        "Unit": "µm²"
+                    },
+                    "FillColor": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.3
+                    ],
+                    "StrokeColor": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ],
+                    "StrokeWidth": {
+                        "Value": 2,
+                        "Unit": "px"
+                    }
+                },
+                {
+                    "Name": "Defect Region 2",
+                    "Label": "Crack",
+                    "ID": "rect_002",
+                    "Center Coordinates": {
+                        "Value": [
+                            1800.0,
+                            2200.0
+                        ],
+                        "Unit": "µm"
+                    },
+                    "Width": {
+                        "Value": 400.0,
+                        "Unit": "µm"
+                    },
+                    "Height": {
+                        "Value": 250.0,
+                        "Unit": "µm"
+                    },
+                    "Area": {
+                        "Value": 100000.0,
+                        "Unit": "µm²"
+                    },
+                    "FillColor": [
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.25
+                    ],
+                    "StrokeColor": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "StrokeWidth": {
+                        "Value": 3,
+                        "Unit": "px"
+                    }
+                },
+                {
+                    "Name": "Chip Boundary",
+                    "Label": "Boundary",
+                    "ID": "rect_003",
+                    "Center Coordinates": {
+                        "Value": [
+                            5000.0,
+                            4500.0
+                        ],
+                        "Unit": "µm"
+                    },
+                    "Width": {
+                        "Value": 1200.0,
+                        "Unit": "µm"
+                    },
+                    "Height": {
+                        "Value": 800.0,
+                        "Unit": "µm"
+                    },
+                    "Rotation Angle": {
+                        "Value": -45.0,
+                        "Unit": "deg"
+                    },
+                    "Area": {
+                        "Value": 960000.0,
+                        "Unit": "µm²"
+                    },
+                    "FillColor": [
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.15
+                    ],
+                    "StrokeColor": [
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "StrokeWidth": {
+                        "Value": 2,
+                        "Unit": "px"
+                    }
+                }
+            ]
+        }
+    }
+}
