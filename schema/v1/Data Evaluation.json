@@ -1,347 +1,682 @@
 {
-"Data Evaluation": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Data Evaluation Schema",
     "description": "The Data Evaluation section contains metadata about a measurement evaluation.",
-    "type": ["object", "null"],
-    "properties": {
-      "Image Label": {
-        "description": "The label to the image. The image label can for example be an image caption or represent a failure mode and takes any string.",
-        "type": "string"      
-      },
-      "Image ID": {
-        "description": "The unique ID to the image.",
-        "type": "string"
-      },
-      "POI": {
-        "description": ".POI (point of interest) is an array which contains all the 0-N POIs selected by the user. One POI is a point on the image, defined by its name and (x, y)-coordinates.",
-        "type": [ "array", "null" ],
-        "items": {
-          "type": "object",
-          "required": [
-            "Name",
-            "Coordinates"
-          ],
-          "example": {
-            "POI": [
-              {
-                "Name": "POI-1",
-                "Label": "Delamination",
-                "ID": "4643",
-                "Coordinates": {
-                  "Value": [
-                  1234.57,
-                  3481.19
-                  ],
-                  "Unit": "µm"
-                }
-              },
-              {
-                "Name": "POI-2",
-                "Label": "Delamination",
-                "ID": "23563134",
-                "Coordinates": {
-                  "Value": [
-                  1933.57,
-                  8732.19
-                  ],
-                  "Unit": "µm"
-                }
-              }
-            ]
-          },
-          "properties": {
-            "Name": {
-              "description": "The name of the specific POI which can be any string.",
-              "type": "string"
-            },
-            "Label": {
-             "description": "The label cathegorizes the selected POI to a certain class. The class should represent a certain failure mode.",
-             "type": "string"
-            },
-            "ID": {
-             "description": "Unique ID to the labeled POI.",
-             "type": "string"  
-            },
-            "Coordinates": {
-              "description": "(x, y) coordinates of the specific POI in the tools coordinate frame. The first element denotes the x-coordinate and the second the y-coordinate. The unit is specified under the property 'Unit'.",
-              "type": "object",
-              "properties": {
-                "Value": {
-                  "type": "array",
-                  "maxItems": 2,
-                  "items": {
-                  "type": ["number", "null"]
-                  }
-                },
-                "Unit": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "ROI (Region of Interest)": {
-        "description": "An ROI is any by the user segmented area in the image. This subsection contains metadata of each type of ROIs which were segmented by the user. It provides information like area of the ROI or coordinate of points that frame the region of the ROI.",
-        "type": [ "object", "null" ],
+    "version": "1.1",
+    "Data Evaluation": {
+        "description": "The Data Evaluation section contains metadata about a measurement evaluation.",
+        "type": [
+            "object",
+            "null"
+        ],
         "properties": {
-          "ROI-Polygon": {
-            "description": "ROI-Polygon is an array which contains all ROI-Polygons selected by the user. A polygon is any drawn plane consisting of vertices selected by the user, which are connected over straight lines to form a closed area. ROI-Polygon contains the name of the polygon, the coordinates of the vertices, the area of the closed polygon, the filling color as well as color and width of the stroke.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "Name",
-                "Label",
-                "ID",
-                "Coordinates",
-                "Area",
-                "FillColor",
-                "StrokeColor",
-                "StrokeWidth"
-              ],
-              "example": {
-                "ROI-Polygon": [
-                  {
-                    "Name": "ROI-Polygon-1",
-                    "Label": "Delamination",
-                    "ID": "8743263",
-                    "Coordinates": {
-                      "Value":                         
-                      [
-                      [ 1264.23, 2172.23 ],
-                      [ 2464.15, 4521.15 ],
-                      [ 5435.14, 55484.5 ],
-                      [ 4465.55, 54642.48 ]
+            "Image Label": {
+                "description": "The label to the image. The image label can for example be an image caption or represent a failure mode and takes any string.",
+                "type": "string"
+            },
+            "Image ID": {
+                "description": "The unique ID to the image.",
+                "type": "string"
+            },
+            "POI": {
+                "description": ".POI (point of interest) is an array which contains all the 0-N POIs selected by the user. One POI is a point on the image, defined by its name and (x, y)-coordinates.",
+                "type": [
+                    "array",
+                    "null"
+                ],
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "Name",
+                        "Coordinates"
                     ],
-                    "Unit": "µm"
+                    "example": {
+                        "POI": [
+                            {
+                                "Name": "POI-1",
+                                "Label": "Delamination",
+                                "ID": "4643",
+                                "Coordinates": {
+                                    "Value": [
+                                        1234.57,
+                                        3481.19
+                                    ],
+                                    "Unit": "µm"
+                                }
+                            },
+                            {
+                                "Name": "POI-2",
+                                "Label": "Delamination",
+                                "ID": "23563134",
+                                "Coordinates": {
+                                    "Value": [
+                                        1933.57,
+                                        8732.19
+                                    ],
+                                    "Unit": "µm"
+                                }
+                            }
+                        ]
                     },
-                    "Area": {
-                      "Value": 23.9,
-                      "Unit": "µm²" 
-                    },
-                    "FillColor": [ 0.8500, 0.3250, 0.0980 ],
-                    "StrokeColor": [ 0.4660, 0.6740, 0.1880 ],
-                    "StrokeWidth": {
-                      "Value": 3,
-                      "Unit": "px"
-                    }
-                  },
-                  {
-                    "Name": "ROI-Polygon-2",
-                    "Label": "Delamination",
-                    "ID": "63984",
-                    "Coordinates": {
-                      "Value": [
-                      [ 1154.23, 2543.23 ],
-                      [ 4726.15, 4115.15 ],
-                      [ 5621.14, 7452.56 ],
-                      [ 5433.55, 6563.48 ]
-                      ],
-                      "Unit": "µm"
-                    },
-                    "Area": {
-                      "Value": 93.2,
-                      "Unit" : "µm²"
-                    },
-                    "FillColor": [ 0.8500, 0.3250, 0.0980, 0, 5000 ],
-                    "StrokeColor": [ 0.4660, 0.6740, 0.1880 ],
-                    "StrokeWidth": {
-                      "Value": 3,
-                      "Unit": "px"               
-                  }
-                  }
-                ]
-              },
-              "properties": {
-                "Name": {
-                  "descrition": "The Name of the specific ROI-Polygon which can be any string.",
-                  "type": "string"
-                },
-                "Label": {
-                 "description": "The label cathegorizes the segmented ROI-Polygon to a certain class. The class should represent a certain failure mode.",
-                 "type": "string"
-                },
-                "ID": {
-                 "description": "Unique ID to the labeled ROI-Polygon.",
-                 "type": "string"  
-                },
-                "Coordinates": {
-                  "description": "Represents an N x 2 matrix whose rows contain the x and y coordinates in the tools coordinate frame of the vertices which define the polygon. The vertices are connected over straight lines and are rudimentary numbered from the first row (first vertice coordinate of the polygon) to the bottom row which represents the last vertice which is also connected to the first vertice to close the polygon. In the json format the matrix is defined as an array of arrays. The unit is specified under the property 'Unit'.",
-                  "type": "object",
-                  "properties": {
-                    "Value": { 
-                      "type": "array",
-                      "items": {
-                      "type": "array",
-                        "items": {
-                        "type": ["number", "null"]
+                    "properties": {
+                        "Name": {
+                            "description": "The name of the specific POI which can be any string.",
+                            "type": "string"
                         },
-                      "maxItems": 2
-                      }
-                    },
-                    "Unit": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "Area": {
-                  "description": "The area of the drawn polygon in the unit of the tools coordinate frame. The unit is specified under the property 'Unit'.",
-                  "type": "object", 
-                  "properties": {
-                    "Value": {
-                      "type": ["number", "null"]
-                    },
-                    "Unit": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "FillColor": {
-                  "description": "The fill color of the polygon encoded in RGBA.",
-                  "type": "array",
-                  "items": {
-                    "type": ["number", "null"]
-                  },
-                  "minItems": 4,
-                  "maxItems": 4
-                },
-                "StrokeColor": {
-                  "description": "The color of the stroke the polygon was drawn with, encoded in RGB.",
-                  "type": "array",
-                  "items": {
-                    "type": ["number", "null"]
-                  },
-                  "minItems": 3,
-                  "maxItems": 3
-                },
-                "StrokeWidth": {
-                  "description": "The width of the stroke. The unit is specified under the property 'Unit' and should preferable be chosen in pixels.",
-                  "type": "object",
-                  "properties": {
-                    "Value": {
-                      "type": ["number", "null"]
-                    },
-                    "Unit": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "ROI-Polyline": {
-            "description": "ROI-Polyline is an array which contains all ROI-Polylines selected by the user. A polyline is specified by an array of vertices that are connected over straight lines. The first vertice is the starting point and the last vertice the end point of the polyline (an arrowhed marker is applied to the end of the line). ROI-Polyline contains the name of the polyline, the coordinates of the vertices  as well as color and width of the stroke. ",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "Name",
-                "Label",
-                "ID",
-                "Coordinates",
-                "StrokeColor",
-                "StrokeWidth"
-              ],
-              "example": {
-                "ROI-Polyline": [
-                  {
-                    "Name": "ROI-Polyline-1",
-                    "Label": "Crack",
-                    "ID": "203953",
-                    "Coordinates": { 
-                      "Value": [
-                      [ 1264.23, 2172.23 ],
-                      [ 2464.15, 4521.15 ],
-                      [ 5435.14, 55484.5 ],
-                      [ 4465.55, 54642.48 ]
-                      ],
-                      "Unit": "µm"
-                    },
-                    "StrokeColor": [ 0.4660, 0.6740, 0.1880 ],
-                    "StrokeWidth": {
-                      "Value": 3, 
-                      "Unit": "px"
-                    }
-                  },
-                  {
-                    "Name": "ROI-Polyline-2",
-                    "Label": "Crack",
-                    "ID": "0574323",
-                    "Coordinates": {
-                      "Value": [
-                      [ 1154.23, 2543.23 ],
-                      [ 4726.15, 4115.15 ],
-                      [ 5621.14, 7452.56 ],
-                      [ 5433.55, 6563.48 ]
-                    ],
-                      "Unit": "µm"
-                    },
-                    "StrokeColor": [ 0.4660, 0.6740, 0.1880 ],
-                    "StrokeWidth": {
-                      "Value": 3,
-                      "Unit": "px"
-                    }
-                  }
-                ]
-              },
-              "properties": {
-                "Name": {
-                  "description": "The name of the specific polyline which can be any string.",
-                  "type": "string"
-                },
-                "Label": {
-                 "description": "The label cathegorizes the segmented polyline to a certain class. The class should represent a certain failure mode.",
-                 "type": "string"
-                },
-                "ID": {
-                 "description": "Unique ID to the labeled polyline.",
-                 "type": "string"  
-                },
-                "Coordinates": {
-                  "description": "Represents an N x 2 matrix whose rows contain the x and y coordinates in the tools coordinate frame of the vertices which define the polyline. The vertices are connected over straight lines and are rudimentary numbered from the first row (start point of the polyline) to the bottom row which represents the endpoint of the line (arrowhead marker is applied to the end of the line). In the json format the matrix is defined as an array of arrays. The unit is specified under the property 'Unit'.",
-                  "type": "object",
-                  "properties": {
-                    "Value": { 
-                      "type": "array",
-                      "items": {
-                      "type": "array",
-                        "items": {
-                        "type": ["number", "null"]
+                        "Label": {
+                            "description": "The label cathegorizes the selected POI to a certain class. The class should represent a certain failure mode.",
+                            "type": "string"
                         },
-                      "maxItems": 2
-                      }
-                    },
-                    "Unit": {
-                      "type": "string"
+                        "ID": {
+                            "description": "Unique ID to the labeled POI.",
+                            "type": "string"
+                        },
+                        "Coordinates": {
+                            "description": "(x, y) coordinates of the specific POI in the tools coordinate frame. The first element denotes the x-coordinate and the second the y-coordinate. The unit is specified under the property 'Unit'.",
+                            "type": "object",
+                            "properties": {
+                                "Value": {
+                                    "type": "array",
+                                    "maxItems": 2,
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    }
+                                },
+                                "Unit": {
+                                    "type": "string"
+                                }
+                            }
+                        }
                     }
-                  }
-                },
-                "StrokeColor": {
-                  "description": "The color of the stroke the polyline was drawn with, encoded in RGB.",
-                  "type": "array",
-                  "items": {
-                    "type": ["number", "null"]
-                  },
-                  "minItems": 3,
-                  "maxItems": 3
-                },
-                "StrokeWidth": {
-                  "description": "The width of the stroke. The unit is specified under the property 'Unit' and should preferable be chosen in pixels.",
-                  "type": "object",
-                  "properties": {
-                    "Value": {
-                      "type": ["number", "null"]
-                    },
-                    "Unit": {
-                      "type": "string"
-                    }
-                  }
                 }
-              }
+            },
+            "ROI (Region of Interest)": {
+                "description": "An ROI is any by the user segmented area in the image. This subsection contains metadata of each type of ROIs which were segmented by the user. It provides information like area of the ROI or coordinate of points that frame the region of the ROI.",
+                "type": [
+                    "object",
+                    "null"
+                ],
+                "properties": {
+                    "ROI-Polygon": {
+                        "description": "ROI-Polygon is an array which contains all ROI-Polygons selected by the user. A polygon is any drawn plane consisting of vertices selected by the user, which are connected over straight lines to form a closed area. ROI-Polygon contains the name of the polygon, the coordinates of the vertices, the area of the closed polygon, the filling color as well as color and width of the stroke.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Coordinates"
+                            ],
+                            "example": {
+                                "ROI-Polygon": [
+                                    {
+                                        "Name": "ROI-Polygon-1",
+                                        "Label": "Delamination",
+                                        "ID": "8743263",
+                                        "Coordinates": {
+                                            "Value": [
+                                                [
+                                                    1264.23,
+                                                    2172.23
+                                                ],
+                                                [
+                                                    2464.15,
+                                                    4521.15
+                                                ],
+                                                [
+                                                    5435.14,
+                                                    55484.5
+                                                ],
+                                                [
+                                                    4465.55,
+                                                    54642.48
+                                                ]
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "Area": {
+                                            "Value": 23.9,
+                                            "Unit": "µm²"
+                                        },
+                                        "FillColor": [
+                                            0.8500,
+                                            0.3250,
+                                            0.0980
+                                        ],
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 3,
+                                            "Unit": "px"
+                                        }
+                                    },
+                                    {
+                                        "Name": "ROI-Polygon-2",
+                                        "Label": "Delamination",
+                                        "ID": "63984",
+                                        "Coordinates": {
+                                            "Value": [
+                                                [
+                                                    1154.23,
+                                                    2543.23
+                                                ],
+                                                [
+                                                    4726.15,
+                                                    4115.15
+                                                ],
+                                                [
+                                                    5621.14,
+                                                    7452.56
+                                                ],
+                                                [
+                                                    5433.55,
+                                                    6563.48
+                                                ]
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "Area": {
+                                            "Value": 93.2,
+                                            "Unit": "µm²"
+                                        },
+                                        "FillColor": [
+                                            0.8500,
+                                            0.3250,
+                                            0.0980,
+                                            0,
+                                            5000
+                                        ],
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 3,
+                                            "Unit": "px"
+                                        }
+                                    }
+                                ]
+                            },
+                            "properties": {
+                                "Name": {
+                                    "descrition": "The Name of the specific ROI-Polygon which can be any string.",
+                                    "type": "string"
+                                },
+                                "Label": {
+                                    "description": "The label cathegorizes the segmented ROI-Polygon to a certain class. The class should represent a certain failure mode.",
+                                    "type": "string"
+                                },
+                                "ID": {
+                                    "description": "Unique ID to the labeled ROI-Polygon.",
+                                    "type": "string"
+                                },
+                                "Coordinates": {
+                                    "description": "Represents an N x 2 matrix whose rows contain the x and y coordinates in the tools coordinate frame of the vertices which define the polygon. The vertices are connected over straight lines and are rudimentary numbered from the first row (first vertice coordinate of the polygon) to the bottom row which represents the last vertice which is also connected to the first vertice to close the polygon. In the json format the matrix is defined as an array of arrays. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "maxItems": 2
+                                            }
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Area": {
+                                    "description": "The area of the drawn polygon in the unit of the tools coordinate frame. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "FillColor": {
+                                    "description": "The fill color of the polygon encoded in RGBA.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 4,
+                                    "maxItems": 4
+                                },
+                                "StrokeColor": {
+                                    "description": "The color of the stroke the polygon was drawn with, encoded in RGB.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                },
+                                "StrokeWidth": {
+                                    "description": "The width of the stroke. The unit is specified under the property 'Unit' and should preferably be chosen in pixels.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "ROI-Polyline": {
+                        "description": "ROI-Polyline is an array which contains all ROI-Polylines selected by the user. A polyline is specified by an array of vertices that are connected over straight lines. The first vertice is the starting point and the last vertice the end point of the polyline (an arrowhed marker is applied to the end of the line). ROI-Polyline contains the name of the polyline, the coordinates of the vertices  as well as color and width of the stroke. ",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Coordinates"
+                            ],
+                            "example": {
+                                "ROI-Polyline": [
+                                    {
+                                        "Name": "ROI-Polyline-1",
+                                        "Label": "Crack",
+                                        "ID": "203953",
+                                        "Coordinates": {
+                                            "Value": [
+                                                [
+                                                    1264.23,
+                                                    2172.23
+                                                ],
+                                                [
+                                                    2464.15,
+                                                    4521.15
+                                                ],
+                                                [
+                                                    5435.14,
+                                                    55484.5
+                                                ],
+                                                [
+                                                    4465.55,
+                                                    54642.48
+                                                ]
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 3,
+                                            "Unit": "px"
+                                        }
+                                    },
+                                    {
+                                        "Name": "ROI-Polyline-2",
+                                        "Label": "Crack",
+                                        "ID": "0574323",
+                                        "Coordinates": {
+                                            "Value": [
+                                                [
+                                                    1154.23,
+                                                    2543.23
+                                                ],
+                                                [
+                                                    4726.15,
+                                                    4115.15
+                                                ],
+                                                [
+                                                    5621.14,
+                                                    7452.56
+                                                ],
+                                                [
+                                                    5433.55,
+                                                    6563.48
+                                                ]
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "StrokeColor": [
+                                            0.4660,
+                                            0.6740,
+                                            0.1880
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 3,
+                                            "Unit": "px"
+                                        }
+                                    }
+                                ]
+                            },
+                            "properties": {
+                                "Name": {
+                                    "description": "The name of the specific polyline which can be any string.",
+                                    "type": "string"
+                                },
+                                "Label": {
+                                    "description": "The label cathegorizes the segmented polyline to a certain class. The class should represent a certain failure mode.",
+                                    "type": "string"
+                                },
+                                "ID": {
+                                    "description": "Unique ID to the labeled polyline.",
+                                    "type": "string"
+                                },
+                                "Coordinates": {
+                                    "description": "Represents an N x 2 matrix whose rows contain the x and y coordinates in the tools coordinate frame of the vertices which define the polyline. The vertices are connected over straight lines and are rudimentary numbered from the first row (start point of the polyline) to the bottom row which represents the endpoint of the line (arrowhead marker is applied to the end of the line). In the json format the matrix is defined as an array of arrays. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "maxItems": 2
+                                            }
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "StrokeColor": {
+                                    "description": "The color of the stroke the polyline was drawn with, encoded in RGB.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                },
+                                "StrokeWidth": {
+                                    "description": "The width of the stroke. The unit is specified under the property 'Unit' and should preferably be chosen in pixels.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "ROI-Rectangle": {
+                        "description": "ROI-Rectangle is an array which contains all ROI-Rectangles selected by the user. A rectangle is defined by its center coordinates, width, height, and optional rotation angle. This provides a guaranteed rectangular shape representation suitable for bounding boxes and ML annotation workflows. ROI-Rectangle contains the name of the rectangle, the center coordinates, dimensions, optional rotation, the area of the rectangle, the filling color as well as color and width of the stroke.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "Name",
+                                "Center Coordinates",
+                                "Width",
+                                "Height",
+                            ],
+                            "example": {
+                                "ROI-Rectangle": [
+                                    {
+                                        "Name": "ROI-Rectangle-1",
+                                        "Label": "Defect Bounding Box",
+                                        "ID": "rect_001",
+                                        "Center Coordinates": {
+                                            "Value": [
+                                                2500.0,
+                                                3000.0
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "Width": {
+                                            "Value": 500.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Height": {
+                                            "Value": 300.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Rotation Angle": {
+                                            "Value": 15.0,
+                                            "Unit": "deg"
+                                        },
+                                        "Area": {
+                                            "Value": 150000.0,
+                                            "Unit": "µm²"
+                                        },
+                                        "FillColor": [
+                                            1.0,
+                                            0.0,
+                                            0.0,
+                                            0.3
+                                        ],
+                                        "StrokeColor": [
+                                            1.0,
+                                            0.0,
+                                            0.0
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 2,
+                                            "Unit": "px"
+                                        }
+                                    },
+                                    {
+                                        "Name": "ROI-Rectangle-2",
+                                        "Label": "Crack Region",
+                                        "ID": "rect_002",
+                                        "Center Coordinates": {
+                                            "Value": [
+                                                1800.0,
+                                                2200.0
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "Width": {
+                                            "Value": 400.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Height": {
+                                            "Value": 250.0,
+                                            "Unit": "µm"
+                                        },
+                                        "Area": {
+                                            "Value": 100000.0,
+                                            "Unit": "µm²"
+                                        },
+                                        "FillColor": [
+                                            0.0,
+                                            1.0,
+                                            0.0,
+                                            0.25
+                                        ],
+                                        "StrokeColor": [
+                                            0.0,
+                                            1.0,
+                                            0.0
+                                        ],
+                                        "StrokeWidth": {
+                                            "Value": 3,
+                                            "Unit": "px"
+                                        }
+                                    }
+                                ]
+                            },
+                            "properties": {
+                                "Name": {
+                                    "description": "The name of the specific ROI-Rectangle which can be any string.",
+                                    "type": "string"
+                                },
+                                "Label": {
+                                    "description": "The label categorizes the segmented ROI-Rectangle to a certain class. The class should represent a certain failure mode or object type.",
+                                    "type": "string"
+                                },
+                                "ID": {
+                                    "description": "Unique ID to the labeled ROI-Rectangle.",
+                                    "type": "string"
+                                },
+                                "Center Coordinates": {
+                                    "description": "The (x, y) coordinates of the rectangle center point in the tool's coordinate frame. The first element denotes the x-coordinate and the second the y-coordinate. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": "array",
+                                            "maxItems": 2,
+                                            "minItems": 2,
+                                            "items": {
+                                                "type": [
+                                                    "number",
+                                                    "null"
+                                                ]
+                                            }
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Width": {
+                                    "description": "The width of the rectangle measured along its local x-axis (before rotation). The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Height": {
+                                    "description": "The height of the rectangle measured along its local y-axis (before rotation). The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Rotation Angle": {
+                                    "description": "The rotation angle of the rectangle around its center point, measured counter-clockwise from the positive x-axis. This property is optional and defaults to 0 degrees (axis-aligned rectangle) if not specified. The unit should be specified as 'deg' (degrees) or 'rad' (radians) under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "Area": {
+                                    "description": "The area of the rectangle (width × height) in the unit of the tool's coordinate frame. The unit is specified under the property 'Unit'.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "FillColor": {
+                                    "description": "The fill color of the rectangle encoded in RGBA (Red, Green, Blue, Alpha). Values should range from 0.0 to 1.0.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 4,
+                                    "maxItems": 4
+                                },
+                                "StrokeColor": {
+                                    "description": "The color of the stroke the rectangle was drawn with, encoded in RGB (Red, Green, Blue). Values should range from 0.0 to 1.0.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                },
+                                "StrokeWidth": {
+                                    "description": "The width of the stroke. The unit is specified under the property 'Unit' and should preferably be chosen in pixels.",
+                                    "type": "object",
+                                    "properties": {
+                                        "Value": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "Unit": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
 }
