@@ -452,7 +452,7 @@
                                 "Name",
                                 "Center Coordinates",
                                 "Width",
-                                "Height",
+                                "Height"
                             ],
                             "example": {
                                 "ROI-Rectangle": [
