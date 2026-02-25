@@ -172,11 +172,14 @@
               "maxItems": 2
             },
             "brightness": {
-              "description": "Relative brightness per detector (0.0 to 1.0).",
+              "description": "Relative brightness (0.0 to 1.0), either as a single value or per detector.",
               "type": [
                 "array",
+                "number",
                 "null"
               ],
+              "minimum": 0.0,
+              "maximum": 1.0,
               "items": {
                 "type": [
                   "number",
