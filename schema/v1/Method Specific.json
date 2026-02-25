@@ -163,11 +163,14 @@
                         "maxItems": 2
                     },
                     "Brightness": {
-                        "description": "The relative brightness of the image in the range of [0.0, 1.0]. A value of 1.0 corresponds to a white image and 0.0 to a black image. Brightness is an array, since for some devices the brightness can be ajdusted for each used detector which generated the image in a mixing mode.",
+                        "description": "The relative brightness of the image in the range of [0.0, 1.0]. A value of 1.0 corresponds to a white image and 0.0 to a black image. Brightness can be provided as a single value or as an array for detector mixing mode.",
                         "type": [
                             "array",
+                            "number",
                             "null"
                         ],
+                        "minimum": 0.0,
+                        "maximum": 1.0,
                         "items": {
                             "type": [
                                 "number",
@@ -499,11 +502,14 @@
                         "maxItems": 2
                     },
                     "Brightness": {
-                        "description": "The relative brightness of the image in the range of [0.0, 1.0]. A value of 1.0 corresponds to a white image and 0.0 to a black image. Brightness is an array, since for some devices the brightness can be ajdusted for each used detector which generated the image in a mixing mode.",
+                        "description": "The relative brightness of the image in the range of [0.0, 1.0]. A value of 1.0 corresponds to a white image and 0.0 to a black image. Brightness can be provided as a single value or as an array for detector mixing mode.",
                         "type": [
                             "array",
+                            "number",
                             "null"
                         ],
+                        "minimum": 0.0,
+                        "maximum": 1.0,
                         "items": {
                             "type": [
                                 "number",
