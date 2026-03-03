@@ -290,141 +290,153 @@
                             "Unit": {
                                 "type": "string"
                             }
-                        }
-                    }
-                }
-            },
-            "Alignment Marks Sub Section": {
-                "description": "This subsection is reserved for parameter of the alignment marks of the universal sample holder",
-                "type": "object",
-                "properties": {
-                    "Offset(x y z)": {
-                        "description": "The offset vector for the calculation of the transformation matrix in the order of (X,Y,Z).",
-                        "type": "object",
-                        "properties": {
-                            "Value": {
-                                "type": "array",
-                                "items": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ]
+                        },
+                        "Image On Stage Placement": {
+                            "description": "The coordinates of the 3 corners of the image pixels specified in the tool's global coordinate frame.",
+                            "properties": {
+                                "topleft": {
+                                    "description": "The coordinates of the 3 corners of the image pixels specified in the tool's global coordinate frame."
                                 },
-                                "minItems": 3,
-                                "maxItems": 3
-                            },
-                            "Unit": {
-                                "type": "string"
+                                "bottomleft": {
+                                    "description": "Position of the bottom left corner of the bottom left pixel (0, Image Height - 1) of the image on the tool's stage in the order of (X,Y,Z). "
+                                },
+                                "bottomright": {
+                                    "description": "Position of the bottom right corner of the bottom right pixel (Image Width - 1, Image Height - 1) of the image on the tool's stage in the order of (X,Y,Z). "
+                                }
                             }
                         }
                     },
-                    "Position of the Fiducials": {
-                        "description": "The coordinates of the 3 Alignment Marks relative to the tool's global coordinate frame.",
+                    "Alignment Marks Sub Section": {
+                        "description": "This subsection is reserved for parameter of the alignment marks of the universal sample holder",
                         "type": "object",
                         "properties": {
-                            "Mark1": {
-                                "description": "Position of Alignment Mark1 in the order of (X,Y,Z). ",
+                            "Offset(x y z)": {
+                                "description": "The offset vector for the calculation of the transformation matrix in the order of (X,Y,Z).",
+                                "type": "object",
+                                "properties": {
+                                    "Value": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": [
+                                                "number",
+                                                "null"
+                                            ]
+                                        },
+                                        "minItems": 3,
+                                        "maxItems": 3
+                                    },
+                                    "Unit": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "Position of the Fiducials": {
+                                "description": "The coordinates of the 3 Alignment Marks relative to the tool's global coordinate frame.",
+                                "type": "object",
+                                "properties": {
+                                    "Mark1": {
+                                        "description": "Position of Alignment Mark1 in the order of (X,Y,Z). ",
+                                        "type": "object",
+                                        "example": {
+                                            "Value": [
+                                                194506.96,
+                                                312372.13,
+                                                30838
+                                            ],
+                                            "Unit": "µm"
+                                        },
+                                        "properties": {
+                                            "Value": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "minItems": 3,
+                                                "maxItems": 3
+                                            },
+                                            "Unit": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "Mark2": {
+                                        "description": "Position of Alignment Mark2 in the order of (X,Y,Z). ",
+                                        "type": "object",
+                                        "properties": {
+                                            "Value": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "minItems": 3,
+                                                "maxItems": 3
+                                            },
+                                            "Unit": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "Mark3": {
+                                        "description": "Position of Alignment Mark3 in the order of (X,Y,Z). ",
+                                        "type": "object",
+                                        "properties": {
+                                            "Value": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": [
+                                                        "number",
+                                                        "null"
+                                                    ]
+                                                },
+                                                "minItems": 3,
+                                                "maxItems": 3
+                                            },
+                                            "Unit": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "Type of Fiducials": {
+                                "description": "Shape of the Alignment Marks.",
+                                "type": "string",
+                                "example": "circle"
+                            },
+                            "Fiducial Size": {
+                                "description": "Describes a size property of the fiducial. Example: the diameter for circles. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
                                 "type": "object",
                                 "example": {
-                                    "Value": [
-                                        194506.96,
-                                        312372.13,
-                                        30838
-                                    ],
+                                    "Value": 300,
                                     "Unit": "µm"
                                 },
                                 "properties": {
                                     "Value": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": [
-                                                "number",
-                                                "null"
-                                            ]
-                                        },
-                                        "minItems": 3,
-                                        "maxItems": 3
+                                        "type": [
+                                            "number",
+                                            "null"
+                                        ]
                                     },
                                     "Unit": {
                                         "type": "string"
                                     }
                                 }
-                            },
-                            "Mark2": {
-                                "description": "Position of Alignment Mark2 in the order of (X,Y,Z). ",
-                                "type": "object",
-                                "properties": {
-                                    "Value": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": [
-                                                "number",
-                                                "null"
-                                            ]
-                                        },
-                                        "minItems": 3,
-                                        "maxItems": 3
-                                    },
-                                    "Unit": {
-                                        "type": "string"
-                                    }
-                                }
-                            },
-                            "Mark3": {
-                                "description": "Position of Alignment Mark3 in the order of (X,Y,Z). ",
-                                "type": "object",
-                                "properties": {
-                                    "Value": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": [
-                                                "number",
-                                                "null"
-                                            ]
-                                        },
-                                        "minItems": 3,
-                                        "maxItems": 3
-                                    },
-                                    "Unit": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "Type of Fiducials": {
-                        "description": "Shape of the Alignment Marks.",
-                        "type": "string",
-                        "example": "circle"
-                    },
-                    "Fiducial Size": {
-                        "description": "Describes a size property of the fiducial. Example: the diameter for circles. The unit is specified under the property 'Unit' and should preferably be chosen in [µm].",
-                        "type": "object",
-                        "example": {
-                            "Value": 300,
-                            "Unit": "µm"
-                        },
-                        "properties": {
-                            "Value": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ]
-                            },
-                            "Unit": {
-                                "type": "string"
                             }
                         }
                     }
-                }
+                },
+                "required": [
+                    "File Name",
+                    "Time Stamp",
+                    "Manufacturer",
+                    "Tool Name",
+                    "Method"
+                ]
             }
-        },
-        "required": [
-            "File Name",
-            "Time Stamp",
-            "Manufacturer",
-            "Tool Name",
-            "Method"
-        ]
-    }
-}
+        }

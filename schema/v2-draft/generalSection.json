@@ -345,6 +345,20 @@
                 }
               }
             }
+          },
+          "imageOnStagePlacement": {
+            "description": "The coordinates of the 3 corners of the image pixels specified in the tool's global coordinate frame.",
+            "properties": {
+              "topleft": {
+                "description": "The coordinates of the 3 corners of the image pixels specified in the tool's global coordinate frame."
+              },
+              "bottomleft": {
+                "description": "Position of the bottom left corner of the bottom left pixel (0, Image Height - 1) of the image on the tool's stage in the order of (X,Y,Z). "
+              },
+              "bottomright": {
+                "description": "Position of the bottom right corner of the bottom right pixel (Image Width - 1, Image Height - 1) of the image on the tool's stage in the order of (X,Y,Z). "
+              }
+            }
           }
         },
         "alignmentMarks": {
