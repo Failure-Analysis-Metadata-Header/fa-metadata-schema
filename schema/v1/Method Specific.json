@@ -585,7 +585,7 @@
                         "description": "The corrected tilt value by tilt correction mode. The unit is specified under the property 'Unit' and should preferably be chosen in [degrees].",
                         "type": "object",
                         "properties": {
-                            "values": {
+                            "Value": {
                                 "type": [
                                     "number",
                                     "null"
