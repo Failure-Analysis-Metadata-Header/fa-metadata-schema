@@ -1,94 +1,20 @@
 {
-    "methodspecific": {
-        "title": "method specific",
-        "description": "the method specific section incorporates the all neccessary metadata for each measurement methods.",
-        "type": "object",
-        "properties": {
-            "newSubfileType": {
-                "description": "The new subfile type",
-                "type": "string",
-                "example": "2"
-            },
-            "imageWidth": {
-                "description": "The image width",
-                "type": "integer",
-                "example": "0"
-            },
-            "imageLength": {
-                "description": "The image length",
-                "type": "integer",
-                "example": "0"
-            },
-            "bitsPerSample": {
-                "description": "Bits per Sample",
-                "type": "integer",
-                "example": "7"
-            },
-            "compression": {
-                "description": "The compression ratio",
-                "type": "integer",
-                "example": "3"
-            },
-            "photometricInterpretation": {
-                "description": "the type of PhotometricInterpretation",
-                "type": "string",
-                "example": "Palette"
-            },
-            "stripOffsets": {
-                "description": "StripOffsets",
-                "type": "integer",
-                "example": "1918676"
-            },
-            "orientation": {
-                "description": "Orientation",
-                "type": "string",
-                "example": "TopLeft"
-            },
-            "samplesPerPixel": {
-                "description": "SamplesPerPixel",
-                "type": "integer",
-                "example": "1"
-            },
-            "rowsPerStrip": {
-                "description": "RowsPerStrip",
-                "type": "integer",
-                "example": "1307"
-            },
-            "stripByteCounts": {
-                "description": "StripByteCounts",
-                "type": "integer",
-                "example": "1918676"
-            },
-            "xResolution": {
-                "description": "XResolution",
-                "type": "numerical",
-                "example": "96.0"
-            },
-            "yResolution": {
-                "description": "YResolution",
-                "type": "numerical",
-                "example": "96.0"
-            },
-            "resolutionUnit": {
-                "description": "Resolution Unit",
-                "type": "string",
-                "example": "Inch"
-            },
-            "colorMap": {
-                "description": "ColorMap",
-                "type": "string",
-                "example": "RGB"
-            },
-            "sampleFormat": {
-                "description": "SampleFormat",
-                "type": "string",
-                "example": "tmp"
-            },
-            "cz_SEM": {
-                "description": "CZ_SEM",
-                "type": "string",
-                "example": "tmp"
-            }
-        }
+  "Method Specific": {
+    "Scanning Electron Microscopy": {
+      "Accelerating Voltage": {
+        "Value": 5.0,
+        "Unit": "kV"
+      },
+      "Working Distance": {
+        "Value": 8.5,
+        "Unit": "mm"
+      },
+      "Signal Type(s)": [
+        "SE2"
+      ],
+      "Detector(s)": [
+        "SE Detector"
+      ]
     }
+  }
 }
