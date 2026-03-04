@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "DRAFT - FA Metadata General Section v2.0 (NOT FOR PRODUCTION USE)",
-  "version": "2.0-draft",
+  "title": "General Section",
+  "version": "2.0",
   "description": "⚠️ WARNING: This is a DRAFT schema with breaking changes. Use v1.1 for production. This v2-draft uses camelCase property names (e.g., 'fileName' instead of 'File Name') which are NOT backward compatible with v1.x. General section containing core metadata applicable to all analysis methods and tools.",
   "type": "object",
   "properties": {
@@ -27,22 +27,14 @@
         "fileFormat": {
           "description": "File format/extension of the measurement file.",
           "type": "string",
-          "examples": [
-            ".tiff",
-            ".png",
-            ".jpg",
-            ".bmp"
-          ]
+          "examples": [".tiff", ".png", ".jpg", ".bmp"]
         },
         "fileSize": {
           "description": "The file size in bytes.",
           "type": "object",
           "properties": {
             "value": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": ["number", "null"]
             },
             "unit": {
               "type": "string",
@@ -66,36 +58,23 @@
         "version": {
           "description": "Version of the metadata header standard.",
           "type": "string",
-          "examples": [
-            "2.0",
-            "1.0"
-          ]
+          "examples": ["2.0", "1.0"]
         },
         "timeStamp": {
           "description": "Time when the measurement file was generated, in ISO8601 format (YYYY-MM-DDThh:mm:ss±hh:mm).",
           "type": "string",
           "format": "date-time",
-          "examples": [
-            "2025-11-13T16:05:25+01:00"
-          ]
+          "examples": ["2025-11-13T16:05:25+01:00"]
         },
         "manufacturer": {
           "description": "Manufacturer name of the measurement tool.",
           "type": "string",
-          "examples": [
-            "ZEISS",
-            "FEI",
-            "Hitachi",
-            "Tescan"
-          ]
+          "examples": ["ZEISS", "FEI", "Hitachi", "Tescan"]
         },
         "toolName": {
           "description": "Name/model of the measurement tool.",
           "type": "string",
-          "examples": [
-            "GeminiSEM 500",
-            "Magellan 400"
-          ]
+          "examples": ["GeminiSEM 500", "Magellan 400"]
         },
         "serialNumber": {
           "description": "Unique manufacturer serial number of the measurement tool.",
@@ -104,23 +83,14 @@
         "method": {
           "description": "Primary analysis method used.",
           "type": "string",
-          "examples": [
-            "SEM",
-            "FIB",
-            "Optical",
-            "X-Ray",
-            "AFM"
-          ]
+          "examples": ["SEM", "FIB", "Optical", "X-Ray", "AFM"]
         },
         "imageWidth": {
           "description": "Width of the image in pixels.",
           "type": "object",
           "properties": {
             "value": {
-              "type": [
-                "integer",
-                "null"
-              ]
+              "type": ["integer", "null"]
             },
             "unit": {
               "type": "string",
@@ -133,10 +103,7 @@
           "type": "object",
           "properties": {
             "value": {
-              "type": [
-                "integer",
-                "null"
-              ]
+              "type": ["integer", "null"]
             },
             "unit": {
               "type": "string",
@@ -149,18 +116,12 @@
           "type": "object",
           "properties": {
             "value": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": ["number", "null"]
             },
             "unit": {
               "type": "string",
               "default": "nm",
-              "examples": [
-                "nm",
-                "µm"
-              ]
+              "examples": ["nm", "µm"]
             }
           }
         },
@@ -169,48 +130,28 @@
           "type": "object",
           "properties": {
             "value": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": ["number", "null"]
             },
             "unit": {
               "type": "string",
               "default": "nm",
-              "examples": [
-                "nm",
-                "µm"
-              ]
+              "examples": ["nm", "µm"]
             }
           }
         },
         "bitDepth": {
           "description": "Number of bits per pixel (e.g., 8-bit = 256 gray levels).",
-          "type": [
-            "integer",
-            "null"
-          ],
-          "examples": [
-            8,
-            16,
-            32
-          ]
+          "type": ["integer", "null"],
+          "examples": [8, 16, 32]
         },
         "compressedBitsPerPixel": {
           "description": "Amount of compressed bits per pixel (if compression applied).",
-          "type": [
-            "number",
-            "null"
-          ]
+          "type": ["number", "null"]
         },
         "colorMode": {
           "description": "Color mode of the image.",
           "type": "string",
-          "examples": [
-            "Grayscale",
-            "RGB",
-            "RGBA"
-          ]
+          "examples": ["Grayscale", "RGB", "RGBA"]
         },
         "customer": {
           "description": "Name of the organization/customer performing the measurement.",
@@ -219,10 +160,7 @@
         "sampleHolder": {
           "description": "Name/type of the sample holder used.",
           "type": "string",
-          "examples": [
-            "Universal Sample Holder",
-            "Custom Pin Stub"
-          ]
+          "examples": ["Universal Sample Holder", "Custom Pin Stub"]
         },
         "toolCalibrated": {
           "description": "Indicates if the tool is currently calibrated.",
@@ -235,10 +173,7 @@
             "stageCoordinateSystem": {
               "description": "Orientation of the tool's coordinate system.",
               "type": "string",
-              "enum": [
-                "rightHanded",
-                "leftHanded"
-              ]
+              "enum": ["rightHanded", "leftHanded"]
             },
             "globalOrLocalFrame": {
               "description": "Indicates whether stage movements are in global frame (true) or local frame (false).",
@@ -251,10 +186,7 @@
                 "value": {
                   "type": "array",
                   "items": {
-                    "type": [
-                      "number",
-                      "null"
-                    ],
+                    "type": ["number", "null"],
                     "minimum": -180,
                     "maximum": 180
                   },
@@ -274,20 +206,14 @@
                 "value": {
                   "type": "array",
                   "items": {
-                    "type": [
-                      "number",
-                      "null"
-                    ]
+                    "type": ["number", "null"]
                   },
                   "minItems": 3,
                   "maxItems": 3
                 },
                 "unit": {
                   "type": "string",
-                  "examples": [
-                    "mm",
-                    "µm"
-                  ]
+                  "examples": ["mm", "µm"]
                 }
               }
             },
@@ -296,10 +222,7 @@
               "type": "object",
               "properties": {
                 "value": {
-                  "type": [
-                    "number",
-                    "null"
-                  ],
+                  "type": ["number", "null"],
                   "minimum": -360,
                   "maximum": 360
                 },
@@ -314,10 +237,7 @@
               "type": "object",
               "properties": {
                 "value": {
-                  "type": [
-                    "number",
-                    "null"
-                  ],
+                  "type": ["number", "null"],
                   "minimum": -360,
                   "maximum": 360
                 },
@@ -332,10 +252,7 @@
               "type": "object",
               "properties": {
                 "value": {
-                  "type": [
-                    "number",
-                    "null"
-                  ],
+                  "type": ["number", "null"],
                   "minimum": -360,
                   "maximum": 360
                 },
@@ -358,20 +275,14 @@
                 "value": {
                   "type": "array",
                   "items": {
-                    "type": [
-                      "number",
-                      "null"
-                    ]
+                    "type": ["number", "null"]
                   },
                   "minItems": 3,
                   "maxItems": 3
                 },
                 "unit": {
                   "type": "string",
-                  "examples": [
-                    "µm",
-                    "mm"
-                  ]
+                  "examples": ["µm", "mm"]
                 }
               }
             },
@@ -386,10 +297,7 @@
                     "value": {
                       "type": "array",
                       "items": {
-                        "type": [
-                          "number",
-                          "null"
-                        ]
+                        "type": ["number", "null"]
                       },
                       "minItems": 3,
                       "maxItems": 3
@@ -406,10 +314,7 @@
                     "value": {
                       "type": "array",
                       "items": {
-                        "type": [
-                          "number",
-                          "null"
-                        ]
+                        "type": ["number", "null"]
                       },
                       "minItems": 3,
                       "maxItems": 3
@@ -426,10 +331,7 @@
                     "value": {
                       "type": "array",
                       "items": {
-                        "type": [
-                          "number",
-                          "null"
-                        ]
+                        "type": ["number", "null"]
                       },
                       "minItems": 3,
                       "maxItems": 3
@@ -444,21 +346,14 @@
             "fiducialType": {
               "description": "Shape of the alignment marks.",
               "type": "string",
-              "examples": [
-                "circle",
-                "cross",
-                "square"
-              ]
+              "examples": ["circle", "cross", "square"]
             },
             "fiducialSize": {
               "description": "Size property of the fiducials (e.g., diameter for circles).",
               "type": "object",
               "properties": {
                 "value": {
-                  "type": [
-                    "number",
-                    "null"
-                  ]
+                  "type": ["number", "null"]
                 },
                 "unit": {
                   "type": "string",
