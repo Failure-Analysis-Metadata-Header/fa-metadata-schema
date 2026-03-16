@@ -1,0 +1,105 @@
+{
+    "$schema": "./connector-schema.json",
+    "name": "Standard TIFF Tags",
+    "version": "1.0.0",
+    "description": "Maps baseline TIFF 6.0 standard tags to FAMH v1.1 fields. Only covers tags that can be written to the target without value transformation. Tags that require conversion (DateTime, XResolution/YResolution, PhotometricInterpretation) are listed as comments below and will be supported once the 'transform' field is implemented — see connectors/transforms/ for their definitions.",
+    "targetSchemaVersion": "1.1",
+    "mappings": [
+        {
+            "source": {
+                "type": "tiff-tag",
+                "name": "ImageWidth"
+            },
+            "target": "/General Section/Image Width/Value",
+            "description": "TIFF tag 256: image width in pixels"
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "px"
+            },
+            "target": "/General Section/Image Width/Unit",
+            "description": "Image Width unit is always pixels when sourced from TIFF"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "name": "ImageLength"
+            },
+            "target": "/General Section/Image Height/Value",
+            "description": "TIFF tag 257: image height in pixels"
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "px"
+            },
+            "target": "/General Section/Image Height/Unit",
+            "description": "Image Height unit is always pixels when sourced from TIFF"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "name": "BitsPerSample"
+            },
+            "target": "/General Section/Bit Depth",
+            "description": "TIFF tag 258: number of bits per sample/channel (e.g. 8, 16)"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "name": "Make"
+            },
+            "target": "/General Section/Manufacturer",
+            "description": "TIFF tag 271: equipment manufacturer (e.g. \"ZEISS\", \"FEI\")",
+            "required": false
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "name": "Model"
+            },
+            "target": "/General Section/Tool Name",
+            "description": "TIFF tag 272: equipment model name (e.g. \"GeminiSEM 500\")",
+            "required": false
+        }
+    ],
+    "_pendingMappings": [
+        {
+            "_note": "Requires transform 'datetime-tiff-to-iso8601'. TIFF DateTime format is 'YYYY:MM:DD HH:MM:SS' (no timezone); ISO 8601 is required by FAMH.",
+            "source": {
+                "type": "tiff-tag",
+                "name": "DateTime"
+            },
+            "transform": "datetime-tiff-to-iso8601",
+            "target": "/General Section/Time Stamp"
+        },
+        {
+            "_note": "Requires transform 'resolution-to-nm-per-px'. XResolution is a rational (pixels/inch or pixels/cm depending on ResolutionUnit tag). Most SEM tools set ResolutionUnit=1 (no absolute unit), making this meaningless — use vendor-specific tags instead.",
+            "source": {
+                "type": "tiff-tag",
+                "name": "XResolution"
+            },
+            "transform": "resolution-to-nm-per-px",
+            "target": "/General Section/Pixel Width/Value"
+        },
+        {
+            "_note": "Requires transform 'resolution-to-nm-per-px'. See XResolution note above.",
+            "source": {
+                "type": "tiff-tag",
+                "name": "YResolution"
+            },
+            "transform": "resolution-to-nm-per-px",
+            "target": "/General Section/Pixel Height/Value"
+        },
+        {
+            "_note": "Requires transform 'photometric-to-color-mode'. PhotometricInterpretation is an integer (0/1=Grayscale, 2=RGB, 3=Palette, 6=YCbCr) that must be mapped to the FAMH color mode string.",
+            "source": {
+                "type": "tiff-tag",
+                "name": "PhotometricInterpretation"
+            },
+            "transform": "photometric-to-color-mode",
+            "target": "/General Section/Color Mode"
+        }
+    ]
+}

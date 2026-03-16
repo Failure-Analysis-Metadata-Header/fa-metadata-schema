@@ -1,0 +1,18 @@
+{
+    "$schema": "./transform-schema.json",
+    "id": "rational-to-float",
+    "name": "Rational String to Float",
+    "description": "Converts a TIFF rational value — as produced by `famdo extract` — from its string representation 'numerator/denominator' to a floating-point number. The TIFF spec encodes rational numbers as two LONGs (numerator and denominator). famdo extract serialises these as the string 'N/D'. This transform performs the division and returns the result as a JSON number. Useful as a prerequisite step before resolution-to-nm-per-px.",
+    "input": {
+        "type": "rational",
+        "description": "Rational string as returned by `famdo extract` for Rational-type tags. Format: '<numerator>/<denominator>' where both parts are non-negative integers.",
+        "example": "96000/1000"
+    },
+    "output": {
+        "type": "number",
+        "description": "Floating-point result of numerator ÷ denominator.",
+        "example": 96.0
+    },
+    "parameters": [],
+    "notes": "Division by zero (denominator = 0) is an error condition that must be handled by the implementation. The result is a 64-bit IEEE 754 double."
+}

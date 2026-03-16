@@ -1,0 +1,135 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "transform-schema.json",
+    "title": "FA Metadata Header – Connector Transform Definition",
+    "description": "Defines the structure of a transform definition file. Transforms describe how a raw source value (e.g. a TIFF tag value) is converted into the form expected by the FAMH schema target field.",
+    "version": "1.0.0",
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "description",
+        "input",
+        "output"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "URI of the transform schema (transform-schema.json)"
+        },
+        "id": {
+            "type": "string",
+            "description": "Unique, stable identifier for this transform. Used to reference it in connector mappings via the 'transform' field.",
+            "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "name": {
+            "type": "string",
+            "description": "Human-readable transform name"
+        },
+        "description": {
+            "type": "string",
+            "description": "Detailed explanation of what the transform does, including any edge cases or limitations"
+        },
+        "input": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "description": "Describes the expected input to the transform",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "JSON Schema primitive type or 'rational' for TIFF rational values",
+                    "enum": [
+                        "string",
+                        "number",
+                        "integer",
+                        "boolean",
+                        "array",
+                        "object",
+                        "rational"
+                    ]
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Human-readable description of the expected input format or constraints"
+                },
+                "example": {
+                    "description": "A representative example of a valid input value"
+                }
+            }
+        },
+        "output": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "description": "Describes what the transform produces",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "JSON Schema primitive type of the output",
+                    "enum": [
+                        "string",
+                        "number",
+                        "integer",
+                        "boolean",
+                        "array",
+                        "object"
+                    ]
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Human-readable description of the output format"
+                },
+                "example": {
+                    "description": "A representative example of a valid output value"
+                }
+            }
+        },
+        "parameters": {
+            "type": "array",
+            "description": "Optional configurable parameters that modify the transform behaviour",
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "type",
+                    "description"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "string",
+                            "number",
+                            "integer",
+                            "boolean"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "required": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "default": {
+                        "description": "Default value used when the parameter is not specified"
+                    }
+                }
+            }
+        },
+        "notes": {
+            "type": "string",
+            "description": "Additional implementation notes, caveats, or references"
+        }
+    }
+}

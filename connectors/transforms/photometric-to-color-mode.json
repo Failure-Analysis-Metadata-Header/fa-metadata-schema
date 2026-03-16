@@ -1,0 +1,18 @@
+{
+    "$schema": "./transform-schema.json",
+    "id": "photometric-to-color-mode",
+    "name": "TIFF PhotometricInterpretation to Color Mode",
+    "description": "Maps the integer value of the TIFF PhotometricInterpretation tag (tag 262) to the FAMH Color Mode string. Most FA images are grayscale (SEM, FIB) or RGB (optical), so only the common values are mapped. Unknown or uncommon values are represented as their integer string fallback.",
+    "input": {
+        "type": "integer",
+        "description": "PhotometricInterpretation tag value as an integer. Common values: 0 = WhiteIsZero, 1 = BlackIsZero, 2 = RGB, 3 = Palette/Indexed, 4 = TransparencyMask, 6 = YCbCr, 32803 = CFA (RAW).",
+        "example": 1
+    },
+    "output": {
+        "type": "string",
+        "description": "FAMH Color Mode string.",
+        "example": "Grayscale"
+    },
+    "parameters": [],
+    "notes": "Lookup table: 0 → \"Grayscale\" (white is zero), 1 → \"Grayscale\" (black is zero — the normal case for SEM/FIB), 2 → \"RGB\", 3 → \"Palette\", 6 → \"YCbCr\", any other value → the integer cast to string as a fallback. The distinction between WhiteIsZero (0) and BlackIsZero (1) is lost in the output; both map to \"Grayscale\"."
+}
