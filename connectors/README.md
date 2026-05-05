@@ -34,14 +34,15 @@ Each entry in `mappings` has the following fields:
 ### Source types
 
 #### `tiff-tag`
-Reads the value of a named TIFF tag from the image file.
+Reads the value of a TIFF tag from the image file.
 
 ```json
-{ "type": "tiff-tag", "name": "ImageWidth" }
+{ "type": "tiff-tag", "id": 256, "name": "ImageWidth" }
 ```
 
-- `name` is the tag name as it appears in the `tag` field of `famdo extract` output — the Rust debug representation of the TIFF tag enum (e.g. `"ImageWidth"`, `"Make"`, `"DateTime"`, `"BitsPerSample"`).
-- For unknown or private tags the form is `"Unknown(id)"` where `id` is the decimal tag number (e.g. `"Unknown(34682)"`).
+- `id` is the canonical TIFF tag ID and should be used for matching across tools. Standard tags keep the same numeric ID regardless of extractor.
+- `name` is optional and is kept for readability and documentation. Tools should treat it as informational.
+- When a tool exposes both numeric IDs and human-readable names, connector authors should include both.
 
 #### `constant`
 Injects a fixed literal value into the target field, regardless of the image content. Useful for units and other fields that are always the same for a given source format.
@@ -79,7 +80,7 @@ Injects a fixed literal value into the target field, regardless of the image con
   "targetSchemaVersion": "1.1",
   "mappings": [
     {
-      "source": { "type": "tiff-tag", "name": "ImageWidth" },
+      "source": { "type": "tiff-tag", "id": 256, "name": "ImageWidth" },
       "target": "/General Section/Image Width/Value"
     },
     {
@@ -87,7 +88,7 @@ Injects a fixed literal value into the target field, regardless of the image con
       "target": "/General Section/Image Width/Unit"
     },
     {
-      "source": { "type": "tiff-tag", "name": "Make" },
+      "source": { "type": "tiff-tag", "id": 271, "name": "Make" },
       "target": "/General Section/Manufacturer"
     }
   ]
@@ -124,7 +125,7 @@ Once implemented, transforms will be referenced by ID in the mapping object:
 
 ```json
 {
-  "source": { "type": "tiff-tag", "name": "DateTime" },
+  "source": { "type": "tiff-tag", "id": 306, "name": "DateTime" },
   "transform": "datetime-tiff-to-iso8601",
   "target": "/General Section/Time Stamp"
 }
@@ -146,7 +147,7 @@ Once implemented, transforms will be referenced by ID in the mapping object:
 
 ### 1 – Extract tag names from your image
 
-Use `famdo extract` to see what tags are present in a sample image and what values they contain:
+Use `famdo extract` to see what tags are present in a sample image and what values they contain. `famdo` is a convenient reference extractor, but other TIFF tools can be used too as long as they expose the raw TIFF tag IDs:
 
 ```bash
 famdo extract my_image.tif -o extracted.json
@@ -167,6 +168,8 @@ The output JSON has the structure:
 ```
 
 Use the `tag` string values directly as `name` in `tiff-tag` source objects.
+
+The connector should still use the numeric TIFF tag ID as the canonical identifier. If your extractor reports IDs separately, copy those into `id` and keep the human-readable name in `name`. If your extractor reports only names, you should look up the corresponding TIFF tag IDs before finalizing the connector.
 
 ### 2 – Create the connector file
 

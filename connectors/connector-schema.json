@@ -91,17 +91,22 @@
             "type": "object",
             "required": [
                 "type",
-                "name"
+                "id"
             ],
             "additionalProperties": false,
             "properties": {
                 "type": {
                     "const": "tiff-tag",
-                    "description": "Read the value from a named TIFF tag"
+                    "description": "Read the value from a TIFF tag identified by its numeric tag ID"
+                },
+                "id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Canonical TIFF tag ID (for example 256 for ImageWidth, 271 for Make). Use the numeric ID for reliable cross-tool identification."
                 },
                 "name": {
                     "type": "string",
-                    "description": "TIFF tag name as it appears in the 'tag' field of `famdo extract` output (Rust debug representation of the tag enum, e.g. \"ImageWidth\", \"Make\", \"DateTime\"). For unknown/private tags use the form \"Unknown(id)\" where id is the decimal tag number."
+                    "description": "Optional human-readable TIFF tag name for readability and documentation (for example \"ImageWidth\", \"Make\", \"DateTime\"). Tools should use `id` for matching and treat `name` as informational."
                 }
             }
         },

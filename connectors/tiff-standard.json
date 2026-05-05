@@ -8,6 +8,7 @@
         {
             "source": {
                 "type": "tiff-tag",
+                "id": 256,
                 "name": "ImageWidth"
             },
             "target": "/General Section/Image Width/Value",
@@ -24,6 +25,7 @@
         {
             "source": {
                 "type": "tiff-tag",
+                "id": 257,
                 "name": "ImageLength"
             },
             "target": "/General Section/Image Height/Value",
@@ -40,6 +42,7 @@
         {
             "source": {
                 "type": "tiff-tag",
+                "id": 258,
                 "name": "BitsPerSample"
             },
             "target": "/General Section/Bit Depth",
@@ -48,6 +51,7 @@
         {
             "source": {
                 "type": "tiff-tag",
+                "id": 271,
                 "name": "Make"
             },
             "target": "/General Section/Manufacturer",
@@ -57,6 +61,7 @@
         {
             "source": {
                 "type": "tiff-tag",
+                "id": 272,
                 "name": "Model"
             },
             "target": "/General Section/Tool Name",
@@ -69,6 +74,7 @@
             "_note": "Requires transform 'datetime-tiff-to-iso8601'. TIFF DateTime format is 'YYYY:MM:DD HH:MM:SS' (no timezone); ISO 8601 is required by FAMH.",
             "source": {
                 "type": "tiff-tag",
+                "id": 306,
                 "name": "DateTime"
             },
             "transform": "datetime-tiff-to-iso8601",
@@ -78,6 +84,7 @@
             "_note": "Requires transform 'resolution-to-nm-per-px'. XResolution is a rational (pixels/inch or pixels/cm depending on ResolutionUnit tag). Most SEM tools set ResolutionUnit=1 (no absolute unit), making this meaningless — use vendor-specific tags instead.",
             "source": {
                 "type": "tiff-tag",
+                "id": 282,
                 "name": "XResolution"
             },
             "transform": "resolution-to-nm-per-px",
@@ -87,6 +94,7 @@
             "_note": "Requires transform 'resolution-to-nm-per-px'. See XResolution note above.",
             "source": {
                 "type": "tiff-tag",
+                "id": 283,
                 "name": "YResolution"
             },
             "transform": "resolution-to-nm-per-px",
@@ -96,6 +104,7 @@
             "_note": "Requires transform 'photometric-to-color-mode'. PhotometricInterpretation is an integer (0/1=Grayscale, 2=RGB, 3=Palette, 6=YCbCr) that must be mapped to the FAMH color mode string.",
             "source": {
                 "type": "tiff-tag",
+                "id": 262,
                 "name": "PhotometricInterpretation"
             },
             "transform": "photometric-to-color-mode",
