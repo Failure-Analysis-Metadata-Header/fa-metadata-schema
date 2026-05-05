@@ -3,13 +3,22 @@
     "id": "datetime-tiff-to-iso8601",
     "name": "TIFF DateTime to ISO 8601",
     "description": "Converts a TIFF DateTime string to an ISO 8601 datetime string. The TIFF 6.0 specification defines DateTime (tag 306) as a fixed-length ASCII string in the format 'YYYY:MM:DD HH:MM:SS'. ISO 8601 — required by the FAMH Time Stamp field — uses 'YYYY-MM-DDTHH:MM:SS' and optionally includes a timezone offset. Because TIFF DateTime carries no timezone information, the offset must be supplied as a parameter or omitted (resulting in a naive datetime string).",
-    "input": {
-        "type": "string",
-        "description": "TIFF DateTime string as returned by `famdo extract`. Format: 'YYYY:MM:DD HH:MM:SS' (fixed 19 characters, colons as date separators).",
-        "example": "2025:12:09 14:30:00"
+    "appliesTo": {
+        "sourceFormat": "TIFF",
+        "targetConvention": "FAMH Time Stamp"
     },
+    "inputs": [
+        {
+            "name": "value",
+            "type": "string",
+            "format": "tiff-datetime",
+            "description": "TIFF DateTime string. Format: 'YYYY:MM:DD HH:MM:SS' (fixed 19 characters, colons as date separators).",
+            "example": "2025:12:09 14:30:00"
+        }
+    ],
     "output": {
         "type": "string",
+        "format": "iso8601-date-time",
         "description": "ISO 8601 datetime string. Format: 'YYYY-MM-DDTHH:MM:SS[+HH:MM]'.",
         "example": "2025-12-09T14:30:00+01:00"
     },
@@ -17,9 +26,26 @@
         {
             "name": "timezone_offset",
             "type": "string",
+            "format": "utc-offset",
             "description": "UTC offset to append to the output, e.g. \"+01:00\" or \"Z\". If omitted the output has no timezone suffix (naive datetime).",
             "required": false,
-            "default": null
+            "default": ""
+        }
+    ],
+    "behavior": {
+        "onMissingInput": "error",
+        "onInvalidInput": "error"
+    },
+    "examples": [
+        {
+            "description": "Convert a TIFF DateTime string with an explicit timezone.",
+            "inputs": {
+                "value": "2025:12:09 14:30:00"
+            },
+            "parameters": {
+                "timezone_offset": "+01:00"
+            },
+            "output": "2025-12-09T14:30:00+01:00"
         }
     ],
     "notes": "Replacement rules: replace the first two colons in the date part with dashes, replace the space separator with 'T', then append the timezone offset if provided. Example: '2025:12:09 14:30:00' + offset '+01:00' → '2025-12-09T14:30:00+01:00'."

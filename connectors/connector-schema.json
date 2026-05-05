@@ -53,18 +53,10 @@
                 "source",
                 "target"
             ],
-            "description": "A single field mapping from a source value to a target FAMH field. The reserved property 'transform' (not yet enforced) will reference a named transform from the transforms/ directory (e.g. \"transform\": \"datetime-tiff-to-iso8601\") once transform support is implemented.",
+            "description": "A single field mapping from a source value to a target FAMH field. The optional `transform` property references a transform definition from transforms/ and may also bind additional named inputs or parameters.",
             "properties": {
                 "source": {
-                    "description": "Origin of the value to write to the target field",
-                    "oneOf": [
-                        {
-                            "$ref": "#/definitions/tiffTagSource"
-                        },
-                        {
-                            "$ref": "#/definitions/constantSource"
-                        }
-                    ]
+                    "$ref": "#/definitions/sourceSpec"
                 },
                 "target": {
                     "type": "string",
@@ -81,11 +73,59 @@
                     "default": false
                 },
                 "transform": {
-                    "type": "string",
-                    "description": "Reserved for future use. ID of a transform from transforms/ to apply to the source value before writing to the target (e.g. \"datetime-tiff-to-iso8601\")."
+                    "description": "Optional transform to apply before writing to the target. Use the string shorthand for simple one-input transforms, or the object form when you need to name the primary input, bind additional inputs, or pass parameters.",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/definitions/transformInvocation"
+                        }
+                    ]
                 }
             },
             "additionalProperties": false
+        },
+        "sourceSpec": {
+            "description": "Origin of a value used by a mapping or a transform input binding",
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/tiffTagSource"
+                },
+                {
+                    "$ref": "#/definitions/constantSource"
+                }
+            ]
+        },
+        "transformInvocation": {
+            "type": "object",
+            "required": [
+                "id",
+                "primaryInput"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Transform definition ID from the transforms/ directory."
+                },
+                "primaryInput": {
+                    "type": "string",
+                    "description": "Name of the transform input that receives the mapping's top-level `source` value."
+                },
+                "inputs": {
+                    "type": "object",
+                    "description": "Optional additional named transform inputs. Each property name is a transform input name and each value is a source specification.",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/sourceSpec"
+                    }
+                },
+                "parameters": {
+                    "type": "object",
+                    "description": "Optional transform parameters keyed by parameter name. Values may be any JSON literals understood by the consuming tool.",
+                    "additionalProperties": true
+                }
+            }
         },
         "tiffTagSource": {
             "type": "object",

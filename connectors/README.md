@@ -29,7 +29,7 @@ Each entry in `mappings` has the following fields:
 | `target` | yes | JSON Pointer (RFC 6901) to the field in the FAMH output document |
 | `description` | no | Human-readable annotation |
 | `required` | no | If `true`, the tool should error when the source value is absent (default: `false`) |
-| `transform` | no | **Reserved, not yet implemented.** ID of a transform from `transforms/` to apply to the source value before writing to the target (e.g. `"datetime-tiff-to-iso8601"`) |
+| `transform` | no | Optional transform invocation. Can be a string ID for a simple one-input transform or an object that names the primary input, binds additional inputs, and passes parameters. |
 
 ### Source types
 
@@ -70,6 +70,52 @@ Injects a fixed literal value into the target field, regardless of the image con
 
 > **Note:** Spaces in property names do **not** need to be escaped in JSON Pointer — only `/` (as `~1`) and `~` (as `~0`) require escaping.
 
+### Transform invocation
+
+When a mapping includes a transform, the top-level `source` still provides the main value for the mapping. In the object form, `transform.primaryInput` names which transform input receives that source value.
+
+Use the string shorthand when the transform only needs that one primary input:
+
+```json
+{
+  "source": { "type": "tiff-tag", "id": 306, "name": "DateTime" },
+  "transform": "datetime-tiff-to-iso8601",
+  "target": "/General Section/Time Stamp"
+}
+```
+
+Use the object form when the transform needs more than one runtime input or when you want to pass transform parameters:
+
+```json
+{
+  "source": { "type": "tiff-tag", "id": 282, "name": "XResolution" },
+  "transform": {
+    "id": "resolution-to-nm-per-px",
+    "primaryInput": "resolution",
+    "inputs": {
+      "resolution_unit": { "type": "tiff-tag", "id": 296, "name": "ResolutionUnit" }
+    }
+  },
+  "target": "/General Section/Pixel Width/Value"
+}
+```
+
+If a transform definition declares optional parameters, pass them through `transform.parameters`:
+
+```json
+{
+  "source": { "type": "tiff-tag", "id": 306, "name": "DateTime" },
+  "transform": {
+    "id": "datetime-tiff-to-iso8601",
+    "primaryInput": "value",
+    "parameters": {
+      "timezone_offset": "+01:00"
+    }
+  },
+  "target": "/General Section/Time Stamp"
+}
+```
+
 ### Minimal connector example
 
 ```json
@@ -101,13 +147,16 @@ Injects a fixed literal value into the target field, regardless of the image con
 
 Some source values cannot be written directly to the FAMH target because their format differs from what the schema expects. In these cases a **transform** is needed to convert the value first.
 
-> **Transforms are not yet implemented.** The `transform` field is reserved in the connector schema. The transform definitions below document the planned conversions so that implementations are consistent once support is added.
+> **Tool support may still be partial.** The connector schema now defines how transform invocations are expressed, but consuming tools may not yet implement every transform or invocation feature.
 
 Transform definitions live in [`transforms/`](transforms/) and are validated against [`transforms/transform-schema.json`](transforms/transform-schema.json). Each file describes:
 
-- The input type and format
+- The runtime input set (`inputs`), including type and optional format hints
 - The output type and format
 - Any configurable parameters
+- Optional `appliesTo` scope for source-format-specific assumptions (for example TIFF)
+- Optional `behavior` rules for missing, invalid, or unknown values
+- Optional worked `examples`
 - Implementation notes and edge cases
 
 ### Available transform definitions
@@ -119,15 +168,36 @@ Transform definitions live in [`transforms/`](transforms/) and are validated aga
 | `resolution-to-nm-per-px` | [transforms/resolution-to-nm-per-px.json](transforms/resolution-to-nm-per-px.json) | Convert XResolution/YResolution + ResolutionUnit to nm/px |
 | `photometric-to-color-mode` | [transforms/photometric-to-color-mode.json](transforms/photometric-to-color-mode.json) | Map `PhotometricInterpretation` integer to FAMH Color Mode string |
 
-### Using a transform in a mapping (future syntax)
+The current transform catalog intentionally mixes generic transforms and TIFF-specific transforms:
 
-Once implemented, transforms will be referenced by ID in the mapping object:
+- `rational-to-float` is generic for any extractor that represents fractions as strings like `"N/D"`.
+- `datetime-tiff-to-iso8601`, `resolution-to-nm-per-px`, and `photometric-to-color-mode` are explicitly TIFF-specific and mark that via `appliesTo.sourceFormat` and TIFF-oriented `format` hints.
+
+### Using a transform in a mapping
+
+Simple one-input transforms can use the string shorthand:
 
 ```json
 {
   "source": { "type": "tiff-tag", "id": 306, "name": "DateTime" },
   "transform": "datetime-tiff-to-iso8601",
   "target": "/General Section/Time Stamp"
+}
+```
+
+Transforms with multiple runtime inputs should use the object form:
+
+```json
+{
+  "source": { "type": "tiff-tag", "id": 282, "name": "XResolution" },
+  "transform": {
+    "id": "resolution-to-nm-per-px",
+    "primaryInput": "resolution",
+    "inputs": {
+      "resolution_unit": { "type": "tiff-tag", "id": 296, "name": "ResolutionUnit" }
+    }
+  },
+  "target": "/General Section/Pixel Width/Value"
 }
 ```
 
@@ -185,7 +255,7 @@ Create a new JSON file in this directory (e.g. `my-tool.json`) referencing `conn
 }
 ```
 
-Map each extracted tag to the appropriate JSON Pointer target. For tags whose values need conversion, document them in `_pendingMappings` (like `tiff-standard.json`) until transform support is available.
+Map each extracted tag to the appropriate JSON Pointer target. For tags whose values need conversion, use a `transform` entry and bind any additional transform inputs or parameters that the transform definition requires.
 
 ### 3 – Validate the connector
 

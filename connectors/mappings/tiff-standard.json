@@ -2,7 +2,7 @@
     "$schema": "./connector-schema.json",
     "name": "Standard TIFF Tags",
     "version": "1.0.0",
-    "description": "Maps baseline TIFF 6.0 standard tags to FAMH v1.1 fields. Only covers tags that can be written to the target without value transformation. Tags that require conversion (DateTime, XResolution/YResolution, PhotometricInterpretation) are listed as comments below and will be supported once the 'transform' field is implemented — see connectors/transforms/ for their definitions.",
+    "description": "Maps baseline TIFF 6.0 standard tags to FAMH v1.1 fields. Direct mappings are included for fields that can be copied as-is, and transform invocations are included for fields that require conversion such as DateTime, XResolution/YResolution, and PhotometricInterpretation.",
     "targetSchemaVersion": "1.1",
     "mappings": [
         {
@@ -67,48 +67,88 @@
             "target": "/General Section/Tool Name",
             "description": "TIFF tag 272: equipment model name (e.g. \"GeminiSEM 500\")",
             "required": false
-        }
-    ],
-    "_pendingMappings": [
+        },
         {
-            "_note": "Requires transform 'datetime-tiff-to-iso8601'. TIFF DateTime format is 'YYYY:MM:DD HH:MM:SS' (no timezone); ISO 8601 is required by FAMH.",
             "source": {
                 "type": "tiff-tag",
                 "id": 306,
                 "name": "DateTime"
             },
-            "transform": "datetime-tiff-to-iso8601",
-            "target": "/General Section/Time Stamp"
+            "transform": {
+                "id": "datetime-tiff-to-iso8601",
+                "primaryInput": "value"
+            },
+            "target": "/General Section/Time Stamp",
+            "description": "TIFF tag 306: capture timestamp converted from TIFF DateTime format to ISO 8601"
         },
         {
-            "_note": "Requires transform 'resolution-to-nm-per-px'. XResolution is a rational (pixels/inch or pixels/cm depending on ResolutionUnit tag). Most SEM tools set ResolutionUnit=1 (no absolute unit), making this meaningless — use vendor-specific tags instead.",
             "source": {
                 "type": "tiff-tag",
                 "id": 282,
                 "name": "XResolution"
             },
-            "transform": "resolution-to-nm-per-px",
-            "target": "/General Section/Pixel Width/Value"
+            "transform": {
+                "id": "resolution-to-nm-per-px",
+                "primaryInput": "resolution",
+                "inputs": {
+                    "resolution_unit": {
+                        "type": "tiff-tag",
+                        "id": 296,
+                        "name": "ResolutionUnit"
+                    }
+                }
+            },
+            "target": "/General Section/Pixel Width/Value",
+            "description": "TIFF tag 282 combined with tag 296: convert XResolution and ResolutionUnit into a pixel width value"
         },
         {
-            "_note": "Requires transform 'resolution-to-nm-per-px'. See XResolution note above.",
+            "source": {
+                "type": "constant",
+                "value": "nm"
+            },
+            "target": "/General Section/Pixel Width/Unit",
+            "description": "FAMH Pixel Width should preferably use nanometres as its unit"
+        },
+        {
             "source": {
                 "type": "tiff-tag",
                 "id": 283,
                 "name": "YResolution"
             },
-            "transform": "resolution-to-nm-per-px",
-            "target": "/General Section/Pixel Height/Value"
+            "transform": {
+                "id": "resolution-to-nm-per-px",
+                "primaryInput": "resolution",
+                "inputs": {
+                    "resolution_unit": {
+                        "type": "tiff-tag",
+                        "id": 296,
+                        "name": "ResolutionUnit"
+                    }
+                }
+            },
+            "target": "/General Section/Pixel Height/Value",
+            "description": "TIFF tag 283 combined with tag 296: convert YResolution and ResolutionUnit into a pixel height value"
         },
         {
-            "_note": "Requires transform 'photometric-to-color-mode'. PhotometricInterpretation is an integer (0/1=Grayscale, 2=RGB, 3=Palette, 6=YCbCr) that must be mapped to the FAMH color mode string.",
+            "source": {
+                "type": "constant",
+                "value": "nm"
+            },
+            "target": "/General Section/Pixel Height/Unit",
+            "description": "FAMH Pixel Height should preferably use nanometres as its unit"
+        },
+        {
             "source": {
                 "type": "tiff-tag",
                 "id": 262,
                 "name": "PhotometricInterpretation"
             },
-            "transform": "photometric-to-color-mode",
-            "target": "/General Section/Color Mode"
+            "transform": {
+                "id": "photometric-to-color-mode",
+                "primaryInput": "value"
+            },
+            "target": "/General Section/Color Mode",
+            "description": "TIFF tag 262: map PhotometricInterpretation to the FAMH Color Mode string"
         }
     ]
 }
