@@ -182,7 +182,7 @@
                             "left handed"
                         ]
                     },
-                    "global or local frame movement": {
+                    "Global or Local Frame Movement": {
                         "description": "This value indicates whether chained movements of the tool's stage are defined around a global fixed frame or around its local frame. True indicates that the stage moves around a global frame and false that it moves around its local frame.",
                         "type": "boolean",
                         "example": true
