@@ -1,0 +1,222 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "transform-schema.json",
+    "title": "FA Metadata Header – Connector Transform Definition",
+    "description": "Defines the structure of a transform definition file. Transforms describe how a raw source value (e.g. a TIFF tag value) is converted into the form expected by the FAMH schema target field.",
+    "version": "1.0.0",
+    "type": "object",
+    "required": [
+        "id",
+        "name",
+        "description",
+        "inputs",
+        "output"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "URI of the transform schema (transform-schema.json)"
+        },
+        "id": {
+            "type": "string",
+            "description": "Unique, stable identifier for this transform. Used to reference it in connector mappings via the 'transform' field.",
+            "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "name": {
+            "type": "string",
+            "description": "Human-readable transform name"
+        },
+        "description": {
+            "type": "string",
+            "description": "Detailed explanation of what the transform does, including any edge cases or limitations"
+        },
+        "appliesTo": {
+            "type": "object",
+            "description": "Optional scope information that makes source-format-specific or target-convention-specific assumptions explicit.",
+            "additionalProperties": false,
+            "properties": {
+                "sourceFormat": {
+                    "type": "string",
+                    "description": "Optional source metadata family or file format the transform assumes, for example \"TIFF\"."
+                },
+                "targetConvention": {
+                    "type": "string",
+                    "description": "Optional target-side convention or schema expectation the transform is designed for, for example \"FAMH Color Mode\"."
+                }
+            }
+        },
+        "inputs": {
+            "type": "array",
+            "minItems": 1,
+            "description": "Ordered list of runtime inputs required by the transform. Use multiple entries when the conversion depends on more than one source value.",
+            "items": {
+                "$ref": "#/definitions/inputSpec"
+            }
+        },
+        "output": {
+            "description": "Describes what the transform produces",
+            "$ref": "#/definitions/valueSpec"
+        },
+        "parameters": {
+            "type": "array",
+            "description": "Optional configurable parameters that modify the transform behaviour",
+            "items": {
+                "$ref": "#/definitions/parameterSpec"
+            }
+        },
+        "behavior": {
+            "type": "object",
+            "description": "Optional machine-readable handling rules for common edge cases.",
+            "additionalProperties": false,
+            "properties": {
+                "onMissingInput": {
+                    "type": "string",
+                    "enum": [
+                        "error",
+                        "skip",
+                        "null"
+                    ],
+                    "description": "What to do when one of the declared inputs is missing."
+                },
+                "onInvalidInput": {
+                    "type": "string",
+                    "enum": [
+                        "error",
+                        "skip",
+                        "null"
+                    ],
+                    "description": "What to do when the input exists but does not match the declared type or format."
+                },
+                "onUnknownValue": {
+                    "type": "string",
+                    "enum": [
+                        "error",
+                        "skip",
+                        "null",
+                        "passthrough",
+                        "string-fallback"
+                    ],
+                    "description": "What to do when the input is well-formed but not covered by a transform-specific lookup table or rule set."
+                }
+            }
+        },
+        "examples": {
+            "type": "array",
+            "description": "Optional worked examples that show how named inputs, parameters, and output fit together.",
+            "items": {
+                "$ref": "#/definitions/exampleSpec"
+            }
+        },
+        "notes": {
+            "type": "string",
+            "description": "Additional implementation notes, caveats, or references"
+        }
+    },
+    "definitions": {
+        "valueSpec": {
+            "type": "object",
+            "required": [
+                "type"
+            ],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "JSON Schema primitive type.",
+                    "enum": [
+                        "string",
+                        "number",
+                        "integer",
+                        "boolean",
+                        "array",
+                        "object"
+                    ]
+                },
+                "format": {
+                    "type": "string",
+                    "description": "Optional format or encoding hint, for example \"fraction\", \"tiff-datetime\", or \"iso8601-date-time\"."
+                },
+                "unit": {
+                    "type": "string",
+                    "description": "Optional unit hint for numeric values, for example \"nm/px\"."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Human-readable description of the value shape or constraints."
+                },
+                "example": {
+                    "description": "A representative example of a valid value."
+                }
+            }
+        },
+        "inputSpec": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/valueSpec"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Stable input name used in examples and in implementation bindings."
+                        }
+                    }
+                }
+            ]
+        },
+        "parameterSpec": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/valueSpec"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "description"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "required": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "default": {
+                            "description": "Default value used when the parameter is not specified."
+                        }
+                    }
+                }
+            ]
+        },
+        "exampleSpec": {
+            "type": "object",
+            "required": [
+                "inputs",
+                "output"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "inputs": {
+                    "type": "object",
+                    "description": "Map of input names to example values for this transform invocation."
+                },
+                "parameters": {
+                    "type": "object",
+                    "description": "Optional map of parameter names to example values."
+                },
+                "output": {
+                    "description": "Expected output value for the example invocation."
+                }
+            }
+        }
+    }
+}

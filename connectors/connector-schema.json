@@ -1,0 +1,171 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "connector-schema.json",
+    "title": "FA Metadata Header – Connector File",
+    "description": "Defines the structure of a connector file that maps metadata sources (e.g. TIFF tags) to fields in the FAMH output document.",
+    "version": "1.0.0",
+    "type": "object",
+    "required": [
+        "name",
+        "version",
+        "targetSchemaVersion",
+        "mappings"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "URI of the connector schema (connector-schema.json)"
+        },
+        "name": {
+            "type": "string",
+            "description": "Human-readable connector name"
+        },
+        "version": {
+            "type": "string",
+            "description": "Connector version string (e.g. \"1.0.0\")"
+        },
+        "description": {
+            "type": "string",
+            "description": "What this connector does and which tool or source format it targets"
+        },
+        "targetSchemaVersion": {
+            "type": "string",
+            "description": "FAMH schema version this connector targets",
+            "enum": [
+                "1",
+                "1.1",
+                "2"
+            ]
+        },
+        "mappings": {
+            "type": "array",
+            "description": "Ordered list of source-to-target field mappings",
+            "items": {
+                "$ref": "#/definitions/mapping"
+            }
+        }
+    },
+    "definitions": {
+        "mapping": {
+            "type": "object",
+            "required": [
+                "source",
+                "target"
+            ],
+            "description": "A single field mapping from a source value to a target FAMH field. The optional `transform` property references a transform definition from transforms/ and may also bind additional named inputs or parameters.",
+            "properties": {
+                "source": {
+                    "$ref": "#/definitions/sourceSpec"
+                },
+                "target": {
+                    "type": "string",
+                    "description": "JSON Pointer (RFC 6901) to the target field in the FAMH output document. Example: \"/General Section/Image Width/Value\"",
+                    "pattern": "^/"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Optional human-readable description of this mapping"
+                },
+                "required": {
+                    "type": "boolean",
+                    "description": "Whether the mapping tool should error if the source value is absent",
+                    "default": false
+                },
+                "transform": {
+                    "description": "Optional transform to apply before writing to the target. Use the string shorthand for simple one-input transforms, or the object form when you need to name the primary input, bind additional inputs, or pass parameters.",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/definitions/transformInvocation"
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "sourceSpec": {
+            "description": "Origin of a value used by a mapping or a transform input binding",
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/tiffTagSource"
+                },
+                {
+                    "$ref": "#/definitions/constantSource"
+                }
+            ]
+        },
+        "transformInvocation": {
+            "type": "object",
+            "required": [
+                "id",
+                "primaryInput"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Transform definition ID from the transforms/ directory."
+                },
+                "primaryInput": {
+                    "type": "string",
+                    "description": "Name of the transform input that receives the mapping's top-level `source` value."
+                },
+                "inputs": {
+                    "type": "object",
+                    "description": "Optional additional named transform inputs. Each property name is a transform input name and each value is a source specification.",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/sourceSpec"
+                    }
+                },
+                "parameters": {
+                    "type": "object",
+                    "description": "Optional transform parameters keyed by parameter name. Values may be any JSON literals understood by the consuming tool.",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "tiffTagSource": {
+            "type": "object",
+            "required": [
+                "type",
+                "id"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "tiff-tag",
+                    "description": "Read the value from a TIFF tag identified by its numeric tag ID"
+                },
+                "id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Canonical TIFF tag ID (for example 256 for ImageWidth, 271 for Make). Use the numeric ID for reliable cross-tool identification."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Optional human-readable TIFF tag name for readability and documentation (for example \"ImageWidth\", \"Make\", \"DateTime\"). Tools should use `id` for matching and treat `name` as informational."
+                }
+            }
+        },
+        "constantSource": {
+            "type": "object",
+            "required": [
+                "type",
+                "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "constant",
+                    "description": "Inject a fixed literal value into the target field"
+                },
+                "value": {
+                    "description": "The fixed value to write. May be a string, number, boolean, array, or object."
+                }
+            }
+        }
+    }
+}

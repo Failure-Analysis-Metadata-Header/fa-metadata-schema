@@ -1,0 +1,154 @@
+{
+    "$schema": "./connector-schema.json",
+    "name": "Standard TIFF Tags",
+    "version": "1.0.0",
+    "description": "Maps baseline TIFF 6.0 standard tags to FAMH v1.1 fields. Direct mappings are included for fields that can be copied as-is, and transform invocations are included for fields that require conversion such as DateTime, XResolution/YResolution, and PhotometricInterpretation.",
+    "targetSchemaVersion": "1.1",
+    "mappings": [
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 256,
+                "name": "ImageWidth"
+            },
+            "target": "/General Section/Image Width/Value",
+            "description": "TIFF tag 256: image width in pixels"
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "px"
+            },
+            "target": "/General Section/Image Width/Unit",
+            "description": "Image Width unit is always pixels when sourced from TIFF"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 257,
+                "name": "ImageLength"
+            },
+            "target": "/General Section/Image Height/Value",
+            "description": "TIFF tag 257: image height in pixels"
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "px"
+            },
+            "target": "/General Section/Image Height/Unit",
+            "description": "Image Height unit is always pixels when sourced from TIFF"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 258,
+                "name": "BitsPerSample"
+            },
+            "target": "/General Section/Bit Depth",
+            "description": "TIFF tag 258: number of bits per sample/channel (e.g. 8, 16)"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 271,
+                "name": "Make"
+            },
+            "target": "/General Section/Manufacturer",
+            "description": "TIFF tag 271: equipment manufacturer (e.g. \"ZEISS\", \"FEI\")",
+            "required": false
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 272,
+                "name": "Model"
+            },
+            "target": "/General Section/Tool Name",
+            "description": "TIFF tag 272: equipment model name (e.g. \"GeminiSEM 500\")",
+            "required": false
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 306,
+                "name": "DateTime"
+            },
+            "transform": {
+                "id": "datetime-tiff-to-iso8601",
+                "primaryInput": "value"
+            },
+            "target": "/General Section/Time Stamp",
+            "description": "TIFF tag 306: capture timestamp converted from TIFF DateTime format to ISO 8601"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 282,
+                "name": "XResolution"
+            },
+            "transform": {
+                "id": "resolution-to-nm-per-px",
+                "primaryInput": "resolution",
+                "inputs": {
+                    "resolution_unit": {
+                        "type": "tiff-tag",
+                        "id": 296,
+                        "name": "ResolutionUnit"
+                    }
+                }
+            },
+            "target": "/General Section/Pixel Width/Value",
+            "description": "TIFF tag 282 combined with tag 296: convert XResolution and ResolutionUnit into a pixel width value"
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "nm"
+            },
+            "target": "/General Section/Pixel Width/Unit",
+            "description": "FAMH Pixel Width should preferably use nanometres as its unit"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 283,
+                "name": "YResolution"
+            },
+            "transform": {
+                "id": "resolution-to-nm-per-px",
+                "primaryInput": "resolution",
+                "inputs": {
+                    "resolution_unit": {
+                        "type": "tiff-tag",
+                        "id": 296,
+                        "name": "ResolutionUnit"
+                    }
+                }
+            },
+            "target": "/General Section/Pixel Height/Value",
+            "description": "TIFF tag 283 combined with tag 296: convert YResolution and ResolutionUnit into a pixel height value"
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "nm"
+            },
+            "target": "/General Section/Pixel Height/Unit",
+            "description": "FAMH Pixel Height should preferably use nanometres as its unit"
+        },
+        {
+            "source": {
+                "type": "tiff-tag",
+                "id": 262,
+                "name": "PhotometricInterpretation"
+            },
+            "transform": {
+                "id": "photometric-to-color-mode",
+                "primaryInput": "value"
+            },
+            "target": "/General Section/Color Mode",
+            "description": "TIFF tag 262: map PhotometricInterpretation to the FAMH Color Mode string"
+        }
+    ]
+}

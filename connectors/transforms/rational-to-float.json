@@ -1,0 +1,35 @@
+{
+    "$schema": "./transform-schema.json",
+    "id": "rational-to-float",
+    "name": "Rational String to Float",
+    "description": "Converts a string-encoded fraction in the form 'numerator/denominator' to a floating-point number. This is useful for TIFF rational values when an extractor serialises them as a string fraction, but the transform itself is not limited to TIFF.",
+    "inputs": [
+        {
+            "name": "value",
+            "type": "string",
+            "format": "fraction",
+            "description": "String fraction in the form '<numerator>/<denominator>' where both parts are integers.",
+            "example": "96000/1000"
+        }
+    ],
+    "output": {
+        "type": "number",
+        "description": "Floating-point result of numerator ÷ denominator.",
+        "example": 96.0
+    },
+    "parameters": [],
+    "behavior": {
+        "onMissingInput": "error",
+        "onInvalidInput": "error"
+    },
+    "examples": [
+        {
+            "description": "Converts a TIFF-style fraction string to a number.",
+            "inputs": {
+                "value": "96000/1000"
+            },
+            "output": 96.0
+        }
+    ],
+    "notes": "Division by zero (denominator = 0) is an error condition that must be handled by the implementation. If an extractor already emits rationals as structured objects, arrays, or floating-point numbers, normalize them before using this transform."
+}
