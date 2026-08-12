@@ -1,6 +1,6 @@
 # FA Metadata Header Standard
 
-**Version 1.1** | December 2025
+**Version 1 (current stable line)** | December 2025
 
 ## What is this?
 
@@ -11,13 +11,13 @@ A lightweight JSON schema for storing metadata alongside semiconductor failure a
 - **[Quick Start Guide](QUICK_START.md)** - For equipment manufacturers implementing the standard
 - **[Change Log v1.1](changelog/CHANGELOG_v1.1.md)** - What changed from v1.0 and why
 - **[Versioning Strategy](documentation/VERSIONING.md)** - How we manage schema versions
-- **[Schema Files](schema/v1.1/)** - JSON Schema definitions
-- **[Examples](schema/v1.1/examples/)** - Sample implementations
+- **[Schema Files](schema/v1/)** - JSON Schema definitions
+- **[Examples](schema/v1/examples/)** - Sample implementations
 - **[FA40 Documentation](documentation/fa40_description.md)** - Documentation from the FA4.0 Project
 
-## Why Version 1.1?
+## Why Version 1?
 
-Version 1.1 is a **non-breaking update** focused on **ease of implementation**:
+The current v1 schema line is focused on **ease of implementation**:
 
 - ✅ **80% fewer required fields** (5 instead of 26+ core fields)
 - ✅ **Backward compatible** with v1.0 (no migration needed)
@@ -67,12 +67,12 @@ Six modular schemas that define the structure:
 
 | Section | Schema File | Required? | Purpose |
 |---------|-------------|-----------|---------|
-| **General** | `v1.1/General Section.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
-| **Method Specific** | `v1.1/Method Specific.json` | ✅ Yes | Analysis method parameters (SEM/FIB/Optical) |
-| **Data Evaluation** | `v1.1/Data Evaluation.json` | Optional | Marked features (POIs, ROIs) |
-| **Customer** | `v1.1/Customer Section.json` | Optional | Your organization's custom fields |
-| **Tool Specific** | `v1.1/Tool Specific.json` | Optional | Vendor-specific parameters |
-| **History** | `v1.1/History.json` | Optional | Previous workflow steps |
+| **General** | `v1/General Section.json` | ✅ Yes | Core metadata (file, tool, timestamp) |
+| **Method Specific** | `v1/Method Specific.json` | ✅ Yes | Analysis method parameters (SEM/FIB/Optical) |
+| **Data Evaluation** | `v1/Data Evaluation.json` | Optional | Marked features (POIs, ROIs) |
+| **Customer** | `v1/Customer Section.json` | Optional | Your organization's custom fields |
+| **Tool Specific** | `v1/Tool Specific.json` | Optional | Vendor-specific parameters |
+| **History** | `v1/History.json` | Optional | Previous workflow steps |
 
 ### Validation
 
@@ -83,17 +83,16 @@ import jsonschema
 import json
 
 # Load schema
-with open('schema/v1.1/General Section.json') as f:
+with open("schema/v1/General Section.json") as f:
     general_schema = json.load(f)
 
 # Load your metadata
-with open('measurement.json') as f:
+with open("measurement.json") as f:
     metadata = json.load(f)
 
 # Validate
 jsonschema.validate(
-    instance=metadata["General Section"],
-    schema=general_schema["General Section"]
+    instance=metadata["General Section"], schema=general_schema["General Section"]
 )
 ```
 
@@ -146,7 +145,7 @@ jsonschema.validate(
 {
   "Method Specific": {
     "Optical Microscopy": {
-      "Objective Lens Magnification": { "Value": 50, "Unit": "x" }
+      "Objective Lens Magnification": 50
     }
   }
 }
@@ -228,12 +227,14 @@ See [QUICK_START.md](QUICK_START.md) for detailed implementation guide.
 import json
 
 # Load metadata
-with open('measurement_001.json') as f:
+with open("measurement_001.json") as f:
     metadata = json.load(f)
 
 # Access fields
 filename = metadata["General Section"]["File Name"]
-voltage = metadata["Method Specific"]["Scanning Electron Microscopy"]["Accelerating Voltage"]["Value"]
+voltage = metadata["Method Specific"]["Scanning Electron Microscopy"][
+    "Accelerating Voltage"
+]["Value"]
 timestamp = metadata["General Section"]["Time Stamp"]
 
 # Check optional sections
@@ -245,26 +246,21 @@ if "Data Evaluation" in metadata:
 
 ## Version Information
 
-### Current Version: 1.1 (Stable)
-- **Location:** `schema/v1.1/`
+### Current Version: 1 (Stable)
+- **Location:** `schema/v1/`
 - **Status:** Production-ready
-- **Compatibility:** Fully backward compatible with v1.0
+- **Compatibility:** v1.1 is treated as a sub-version of this stable line
 - **Use for:** All new implementations
 
-### Legacy Version: 1.0
-- **Location:** `schema/v1/`
-- **Status:** Superseded by v1.1
-- **Note:** v1.0 files work with v1.1 validators
-
-### Future Version: 2.0-draft (Experimental)
-- **Location:** `schema/v2-draft/`
+### Draft Version: 2.0-draft (Experimental)
+- **Location:** `schema/v2/`
 - **Status:** ⚠️ **NOT FOR PRODUCTION USE**
 - **Note:** Contains breaking changes (camelCase property names). Postponed after stakeholder consultation. See [FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)
 
 ## Resources
 
-- **Schema Files:** [schema/v1.1/](schema/v1.1/)
-- **Examples:** [schema/v1.1/examples/](schema/v1.1/examples/)
+- **Schema Files:** [schema/v1/](schema/v1/)
+- **Examples:** [schema/v1/examples/](schema/v1/examples/)
 - **Changelog:** [CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md)
 - **Versioning:** [VERSIONING.md](documentation/VERSIONING.md)
 - **Future v2.0:** [FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)

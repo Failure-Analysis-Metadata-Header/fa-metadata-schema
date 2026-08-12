@@ -11,7 +11,7 @@ The FA Metadata Header is a standardized JSON schema for storing metadata alongs
 - **Minimal required fields** - Easy to implement for equipment manufacturers (only 5-8 fields!)
 - **Modular structure** - Six independent sections that can be combined
 - **Extensible** - Tool and customer-specific sections for custom data
-- **Backward compatible** - v1.1 works with v1.0 implementations
+- **Stable naming** - v1.1 is treated as a sub-version of the current v1 line
 
 ## Schema Structure
 
@@ -129,7 +129,7 @@ Load the JSON file to access:
 
 ## Schema Files
 
-All schema files are in `schema/v1.1/`:
+All current stable schema files are in `schema/v1/`:
 
 **Individual Section Schemas:**
 - `General Section.json` - Core metadata (5 required fields)
@@ -156,25 +156,24 @@ Numeric values with units use this structure:
 
 ## Important Notes
 
-✅ **Use property names with spaces** - This is v1.1, not v2.0-draft  
+✅ **Use property names with spaces** - This is v1, not v2-draft
 Examples: `"File Name"`, `"Time Stamp"`, `"General Section"`
 
 ✅ **Capitalize Value and Unit** - Use `"Value"` and `"Unit"`, not lowercase
 
-✅ **Only 5-8 required fields total** - v1.1 dramatically reduced requirements from v1.0
+✅ **Only 5-8 required fields total** - The current v1 line keeps requirements minimal
 
-⚠️ **v2.0-draft exists but is NOT for production** - It uses camelCase names and is experimental
+⚠️ **v2-draft exists but is NOT for production** - It uses camelCase names and is experimental
 
 ## Compatibility
 
-- **v1.1 is fully backward compatible with v1.0** - No migration needed
-- **v1.0 files validate against v1.1 schemas** - Old implementations still work
-- **v1.1 uses same property names as v1.0** - Only requirement counts changed
+- **v1.1 is treated as part of the current v1 line**
+- **v2-draft uses different camelCase property names**
 
 ## Support & Validation
 
-- Validate your JSON against `schema/v1.1/General Section.json` and `schema/v1.1/Method Specific.json`
-- Schema version: 1.1 (December 2025)
+- Validate your JSON against `schema/v1/General Section.json` and `schema/v1/Method Specific.json`
+- Schema version: v1 (December 2025)
 - Standard: JSON Schema Draft 07
 
 **Example validation (Python):**
@@ -183,28 +182,26 @@ import json
 from jsonschema import validate
 
 # Load schemas
-with open('schema/v1.1/General Section.json') as f:
+with open("schema/v1/General Section.json") as f:
     general_schema = json.load(f)
 
-with open('schema/v1.1/Method Specific.json') as f:
+with open("schema/v1/Method Specific.json") as f:
     method_schema = json.load(f)
 
 # Load your metadata
-with open('your_metadata.json') as f:
+with open("your_metadata.json") as f:
     data = json.load(f)
 
 # Validate each section
-validate(instance=data["General Section"], 
-         schema=general_schema["General Section"])
-validate(instance=data["Method Specific"], 
-         schema=method_schema["Method Specific"])
+validate(instance=data["General Section"], schema=general_schema["General Section"])
+validate(instance=data["Method Specific"], schema=method_schema["Method Specific"])
 
 print("✓ Validation successful!")
 ```
 
 ## Examples
 
-See `schema/v1.1/examples/` for minimal implementation examples:
+See `schema/v1/examples/` for minimal implementation examples:
 - `minimal_example_sem.json` - Only 8 fields (5 General + 3 SEM)
 - `minimal_example_fib.json` - Only 8 fields (5 General + 3 FIB)
 - `minimal_example_optical.json` - Only 6 fields (5 General + 1 Optical)
@@ -214,4 +211,4 @@ See `schema/v1.1/examples/` for minimal implementation examples:
 - **[README.md](README.md)** - Main documentation
 - **[CHANGELOG_v1.1.md](changelog/CHANGELOG_v1.1.md)** - What changed from v1.0
 - **[VERSIONING.md](documentation/VERSIONING.md)** - Version strategy
-- **[FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)** - About v2.0-draft
+- **[FUTURE_V2_MIGRATION.md](documentation/FUTURE_V2_MIGRATION.md)** - About v2-draft
