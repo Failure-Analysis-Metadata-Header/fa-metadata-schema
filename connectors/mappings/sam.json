@@ -1,10 +1,42 @@
 {
     "$schema": "../connector-schema.json",
-    "name": "Standard TIFF Tags",
+    "name": "PVA TePla SAM TIFF",
     "version": "1.0.0",
-    "description": "Maps baseline TIFF 6.0 standard tags to FAMH v1.1 fields. Direct mappings are included for fields that can be copied as-is, and transform invocations are included for fields that require conversion such as DateTime, XResolution/YResolution, and PhotometricInterpretation.",
+    "description": "Maps stable TIFF metadata from PVA TePla SAM samples to FAMH v1.1. Standard acoustic-microscopy fields are intentionally limited to explicit SAM context until the FAMH vocabulary is extended.",
     "targetSchemaVersion": "1.1",
     "mappings": [
+        {
+            "source": {
+                "type": "runtime",
+                "field": "image-file-name"
+            },
+            "target": "/General Section/File Name",
+            "description": "Use the current input image filename."
+        },
+        {
+            "source": {
+                "type": "runtime",
+                "field": "mapping-timestamp"
+            },
+            "target": "/General Section/Time Stamp",
+            "description": "Use the UTC timestamp generated for the current mapping invocation."
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "PVA TePla SAM300"
+            },
+            "target": "/General Section/Tool Name",
+            "description": "The SAM300 instrument identifier is present in every representative sample filename; confirm this inferred tool name in the review sidecar."
+        },
+        {
+            "source": {
+                "type": "constant",
+                "value": "SAM"
+            },
+            "target": "/General Section/Method",
+            "description": "Scanning Acoustic Microscopy context supplied for these samples."
+        },
         {
             "source": {
                 "type": "tiff-tag",
@@ -12,7 +44,7 @@
                 "name": "ImageWidth"
             },
             "target": "/General Section/Image Width/Value",
-            "description": "TIFF tag 256: image width in pixels"
+            "description": "TIFF tag 256: image width in pixels."
         },
         {
             "source": {
@@ -20,7 +52,7 @@
                 "value": "px"
             },
             "target": "/General Section/Image Width/Unit",
-            "description": "Image Width unit is always pixels when sourced from TIFF"
+            "description": "Image Width unit is pixels."
         },
         {
             "source": {
@@ -29,7 +61,7 @@
                 "name": "ImageLength"
             },
             "target": "/General Section/Image Height/Value",
-            "description": "TIFF tag 257: image height in pixels"
+            "description": "TIFF tag 257: image height in pixels."
         },
         {
             "source": {
@@ -37,7 +69,7 @@
                 "value": "px"
             },
             "target": "/General Section/Image Height/Unit",
-            "description": "Image Height unit is always pixels when sourced from TIFF"
+            "description": "Image Height unit is pixels."
         },
         {
             "source": {
@@ -46,7 +78,7 @@
                 "name": "BitsPerSample"
             },
             "target": "/General Section/Bit Depth",
-            "description": "TIFF tag 258: number of bits per sample/channel (e.g. 8, 16)"
+            "description": "TIFF tag 258: 8 bits per sample in all representative samples."
         },
         {
             "source": {
@@ -55,31 +87,20 @@
                 "name": "Make"
             },
             "target": "/General Section/Manufacturer",
-            "description": "TIFF tag 271: equipment manufacturer (e.g. \"ZEISS\", \"FEI\")",
-            "required": false
+            "description": "TIFF tag 271: PVA Tepla Analytical Systems."
         },
         {
             "source": {
                 "type": "tiff-tag",
-                "id": 272,
-                "name": "Model"
-            },
-            "target": "/General Section/Tool Name",
-            "description": "TIFF tag 272: equipment model name (e.g. \"GeminiSEM 500\")",
-            "required": false
-        },
-        {
-            "source": {
-                "type": "tiff-tag",
-                "id": 306,
-                "name": "DateTime"
+                "id": 262,
+                "name": "PhotometricInterpretation"
             },
             "transform": {
-                "id": "datetime-tiff-to-iso8601",
+                "id": "photometric-to-color-mode",
                 "primaryInput": "value"
             },
-            "target": "/General Section/Time Stamp",
-            "description": "TIFF tag 306: capture timestamp converted from TIFF DateTime format to ISO 8601"
+            "target": "/General Section/Color Mode",
+            "description": "TIFF tag 262: convert indexed/palette photometric interpretation to FAMH Color Mode."
         },
         {
             "source": {
@@ -99,7 +120,7 @@
                 }
             },
             "target": "/General Section/Pixel Width/Value",
-            "description": "TIFF tag 282 combined with tag 296: convert XResolution and ResolutionUnit into a pixel width value"
+            "description": "TIFF tags 282 and 296: convert XResolution to nanometres per pixel."
         },
         {
             "source": {
@@ -107,7 +128,7 @@
                 "value": "nm"
             },
             "target": "/General Section/Pixel Width/Unit",
-            "description": "FAMH Pixel Width should preferably use nanometres as its unit"
+            "description": "Pixel Width unit is nanometres."
         },
         {
             "source": {
@@ -127,7 +148,7 @@
                 }
             },
             "target": "/General Section/Pixel Height/Value",
-            "description": "TIFF tag 283 combined with tag 296: convert YResolution and ResolutionUnit into a pixel height value"
+            "description": "TIFF tags 283 and 296: convert YResolution to nanometres per pixel."
         },
         {
             "source": {
@@ -135,20 +156,15 @@
                 "value": "nm"
             },
             "target": "/General Section/Pixel Height/Unit",
-            "description": "FAMH Pixel Height should preferably use nanometres as its unit"
+            "description": "Pixel Height unit is nanometres."
         },
         {
             "source": {
-                "type": "tiff-tag",
-                "id": 262,
-                "name": "PhotometricInterpretation"
+                "type": "constant",
+                "value": "SAM"
             },
-            "transform": {
-                "id": "photometric-to-color-mode",
-                "primaryInput": "value"
-            },
-            "target": "/General Section/Color Mode",
-            "description": "TIFF tag 262: map PhotometricInterpretation to the FAMH Color Mode string"
+            "target": "/Method Specific/Scanning Acoustic Microscopy/Modality",
+            "description": "Provisional method-specific context required to materialize the FAMH Method Specific section; review the vocabulary decision in the sidecar."
         }
     ]
 }

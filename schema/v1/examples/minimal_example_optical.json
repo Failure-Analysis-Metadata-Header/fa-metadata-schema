@@ -8,10 +8,7 @@
     },
     "Method Specific": {
         "Optical Microscopy": {
-            "Objective Lens Magnification": {
-                "Value": 50,
-                "Unit": "x"
-            }
+            "Objective Lens Magnification": 50
         }
     }
 }

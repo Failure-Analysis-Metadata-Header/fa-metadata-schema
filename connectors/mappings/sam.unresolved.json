@@ -1,0 +1,214 @@
+{
+    "$schema": "../unresolved-schema.json",
+    "version": "1.0.0",
+    "status": "needs-review",
+    "sourceImage": "/Users/MEK6RT/repos/famdo/scratch/tiff_samples/sam",
+    "connectorPath": "connectors/mappings/sam.json",
+    "unresolved": [
+        {
+            "kind": "human-decision",
+            "target": "/General Section/Tool Name",
+            "question": "Is PVA TePla SAM300 the correct instrument name for all samples, or should a more specific model/serial value be used?",
+            "reason": "TIFF Model (tag 272) is absent. The connector uses the stable SAM300 filename prefix as a provisional tool name."
+        },
+        {
+            "kind": "human-decision",
+            "target": "/Method Specific/Scanning Acoustic Microscopy/Modality",
+            "question": "Should Scanning Acoustic Microscopy and the Modality field become an official FAMH v1.1 method vocabulary, and which SAM-specific fields are required?",
+            "reason": "The current FAMH v1.1 Method Specific schema has no Scanning Acoustic Microscopy subsection, so this connector materializes a provisional field."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 666,
+            "name": "Unknown(666)",
+            "sampleValue": "Gate",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 667,
+            "name": "Unknown(667)",
+            "sampleValue": "0",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 668,
+            "name": "Unknown(668)",
+            "sampleValue": "Scan5",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 669,
+            "name": "Unknown(669)",
+            "sampleValue": "Scan5 Gate",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 670,
+            "name": "Unknown(670)",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA XML scan-definition tag is large and its field semantics require PVA-specific documentation before mapping."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 671,
+            "name": "Unknown(671)",
+            "sampleValue": "NoMultiScanImage",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 672,
+            "name": "Unknown(672)",
+            "sampleValue": "Amplitude",
+            "candidateTargets": [
+                "/Method Specific/Scanning Acoustic Microscopy/"
+            ],
+            "reason": "The value appears to describe the SAM channel, but its exact FAMH target and vocabulary are not established."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 673,
+            "name": "Unknown(673)",
+            "sampleValue": "False",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 674,
+            "name": "Unknown(674)",
+            "sampleValue": "False",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 675,
+            "name": "Unknown(675)",
+            "sampleValue": "-1",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 676,
+            "name": "Unknown(676)",
+            "sampleValue": "-1",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 677,
+            "name": "Unknown(677)",
+            "sampleValue": "False",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 678,
+            "name": "Unknown(678)",
+            "sampleValue": "False",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 679,
+            "name": "Unknown(679)",
+            "sampleValue": "2025",
+            "candidateTargets": [
+                "/General Section/Time Stamp"
+            ],
+            "reason": "The private value contains only a year in the inspected sample and cannot safely produce the required acquisition timestamp."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 680,
+            "name": "Unknown(680)",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA scan data is a large serialized value whose field semantics require PVA-specific documentation before mapping."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 682,
+            "name": "Unknown(682)",
+            "sampleValue": "0",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 683,
+            "name": "Unknown(683)",
+            "sampleValue": "0",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 684,
+            "name": "Unknown(684)",
+            "sampleValue": "2000",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "The value resembles an image dimension, but its private-tag semantics are not confirmed and it is not needed because standard tag 256 is available."
+        },
+        {
+            "kind": "vendor-specific-tag",
+            "id": 685,
+            "name": "Unknown(685)",
+            "sampleValue": "",
+            "candidateTargets": [
+                "/Tool Specific/"
+            ],
+            "reason": "Private PVA tag meaning is not defined by the TIFF sample or the current FAMH vocabulary."
+        },
+        {
+            "kind": "human-decision",
+            "question": "Should the second IFD in SAM300_30MHz_Chip_#1025_Test_ channel1 Scan2.TIFF be mapped separately?",
+            "reason": "One representative sample has IFD 1 in addition to IFD 0. famdo map currently reads IFD 0 only, and no semantics were inferred for the additional directory."
+        }
+    ]
+}
