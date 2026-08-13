@@ -59,7 +59,7 @@ This skill is for building files such as `connectors/mappings/my-tool.json` from
 
    ```json
    {
-     "$schema": "./connector-schema.json",
+     "$schema": "../connector-schema.json",
      "name": "<Connector Name>",
      "version": "1.0.0",
      "targetSchemaVersion": "1.1",

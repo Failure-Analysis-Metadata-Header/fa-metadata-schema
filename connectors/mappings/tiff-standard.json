@@ -1,5 +1,5 @@
 {
-    "$schema": "./connector-schema.json",
+    "$schema": "../connector-schema.json",
     "name": "Standard TIFF Tags",
     "version": "1.0.0",
     "description": "Maps baseline TIFF 6.0 standard tags to FAMH v1.1 fields. Direct mappings are included for fields that can be copied as-is, and transform invocations are included for fields that require conversion such as DateTime, XResolution/YResolution, and PhotometricInterpretation.",
