@@ -1,0 +1,142 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "unresolved-schema.json",
+    "title": "FA Metadata Header - Unresolved Connector Review",
+    "description": "Defines the machine-readable review sidecar created when a TIFF connector cannot be completed without human input.",
+    "version": "1.0.0",
+    "type": "object",
+    "required": [
+        "$schema",
+        "version",
+        "status",
+        "sourceImage",
+        "connectorPath",
+        "unresolved"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "URI of unresolved-schema.json"
+        },
+        "version": {
+            "const": "1.0.0",
+            "description": "Version of the unresolved review sidecar format"
+        },
+        "status": {
+            "const": "needs-review",
+            "description": "A sidecar exists only while the connector needs human review"
+        },
+        "sourceImage": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Path or identifier of the TIFF sample used during connector authoring"
+        },
+        "connectorPath": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Path or identifier of the connector being reviewed"
+        },
+        "unresolved": {
+            "type": "array",
+            "minItems": 1,
+            "description": "Items that must be resolved before the connector can be considered complete",
+            "items": {
+                "$ref": "#/definitions/unresolvedItem"
+            }
+        }
+    },
+    "definitions": {
+        "unresolvedItem": {
+            "type": "object",
+            "required": [
+                "kind",
+                "reason"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "enum": [
+                        "ambiguous-tag",
+                        "vendor-specific-tag",
+                        "unsupported-transform",
+                        "missing-context",
+                        "missing-required-target",
+                        "extraction-diagnostic",
+                        "human-decision"
+                    ],
+                    "description": "Why the item could not be mapped conservatively"
+                },
+                "id": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Numeric TIFF tag ID when the item refers to a tag"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Human-readable TIFF tag name when available"
+                },
+                "sampleValue": {
+                    "description": "Value observed in the sample TIFF, if available"
+                },
+                "target": {
+                    "type": "string",
+                    "pattern": "^/",
+                    "description": "FAMH target path that is missing or requires a decision"
+                },
+                "candidateTargets": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^/"
+                    },
+                    "description": "Plausible FAMH target paths when the mapping is ambiguous"
+                },
+                "transform": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Transform ID that is required but unavailable or unsupported"
+                },
+                "question": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Specific question a human reviewer must answer"
+                },
+                "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Why the connector authoring agent did not add a mapping"
+                }
+            },
+            "anyOf": [
+                {
+                    "required": [
+                        "id"
+                    ]
+                },
+                {
+                    "required": [
+                        "name"
+                    ]
+                },
+                {
+                    "required": [
+                        "target"
+                    ]
+                },
+                {
+                    "required": [
+                        "transform"
+                    ]
+                },
+                {
+                    "required": [
+                        "question"
+                    ]
+                }
+            ]
+        }
+    }
+}

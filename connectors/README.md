@@ -207,7 +207,7 @@ Transforms with multiple runtime inputs should use the object form:
 
 | File | Target version | Source | Description |
 |---|---|---|---|
-| [tiff-standard.json](tiff-standard.json) | v1.1 | Standard TIFF tags | Maps baseline TIFF 6.0 tags (ImageWidth, ImageLength, BitsPerSample, Make, Model) to FAMH fields. Tool-agnostic. |
+| [mappings/tiff-standard.json](mappings/tiff-standard.json) | v1.1 | Standard TIFF tags | Maps baseline TIFF 6.0 tags (ImageWidth, ImageLength, BitsPerSample, Make, Model) to FAMH fields. Tool-agnostic, but not sufficient by itself for every required FAMH field. |
 
 > Vendor-specific connectors (ZEISS, FEI/Thermo Fisher, Tescan, …) will be added to this directory as they are developed. Vendor tools typically embed rich acquisition parameters in private TIFF tags or in structured text within the `ImageDescription` tag (256), which will require an additional source type (`tiff-embedded-text`) and vendor-specific transform definitions.
 
@@ -215,7 +215,7 @@ Transforms with multiple runtime inputs should use the object form:
 
 ## Writing a New Connector
 
-### 1 – Extract tag names from your image
+### 1 – Extract metadata from your image
 
 Use `famdo extract` to see what tags are present in a sample image and what values they contain. `famdo` is a convenient reference extractor, but other TIFF tools can be used too as long as they expose the raw TIFF tag IDs:
 
@@ -230,24 +230,41 @@ The output JSON has the structure:
   "filename": "my_image.tif",
   "dimensions": { "width": 1024, "height": 768 },
   "tags": [
-    { "tag": "ImageWidth",  "value": 1024,   "type": "Short" },
-    { "tag": "Make",        "value": "ZEISS", "type": "ASCII" },
-    { "tag": "DateTime",    "value": "2025:12:09 14:30:00", "type": "ASCII" }
-  ]
+    { "id": 256, "tag": "ImageWidth", "value": 1024, "type": "Short" },
+    { "id": 271, "tag": "Make", "value": "ZEISS", "type": "ASCII" },
+    { "id": 306, "tag": "DateTime", "value": "2025:12:09 14:30:00", "type": "ASCII" }
+  ],
+  "ifds": [
+    {
+      "index": 0,
+      "dimensions": { "width": 1024, "height": 768 },
+      "tags": [
+        { "id": 256, "tag": "ImageWidth", "value": 1024, "type": "Short" },
+        { "id": 271, "tag": "Make", "value": "ZEISS", "type": "ASCII" },
+        { "id": 306, "tag": "DateTime", "value": "2025:12:09 14:30:00", "type": "ASCII" }
+      ]
+    }
+  ],
+  "diagnostics": []
 }
 ```
 
-Use the `tag` string values directly as `name` in `tiff-tag` source objects.
+The top-level `dimensions` and `tags` fields are the compatible IFD 0 view.
+The `ifds` array contains every image directory. `famdo map` currently reads
+IFD 0 only, so do not map tags from another IFD without confirming the intended
+semantics. Treat non-empty `diagnostics` as review items rather than guessing.
 
-The connector should still use the numeric TIFF tag ID as the canonical identifier. If your extractor reports IDs separately, copy those into `id` and keep the human-readable name in `name`. If your extractor reports only names, you should look up the corresponding TIFF tag IDs before finalizing the connector.
+The connector should use the numeric TIFF tag ID as the canonical identifier and
+may keep the human-readable `tag` value as `name`.
 
 ### 2 – Create the connector file
 
-Create a new JSON file in this directory (e.g. `my-tool.json`) referencing `connector-schema.json`:
+Create `connectors/mappings/my-tool.json` from the repository root, referencing
+the schema in the parent `connectors` directory:
 
 ```json
 {
-  "$schema": "./connector-schema.json",
+  "$schema": "../connector-schema.json",
   "name": "My Tool",
   "version": "1.0.0",
   "targetSchemaVersion": "1.1",
@@ -257,17 +274,64 @@ Create a new JSON file in this directory (e.g. `my-tool.json`) referencing `conn
 
 Map each extracted tag to the appropriate JSON Pointer target. For tags whose values need conversion, use a `transform` entry and bind any additional transform inputs or parameters that the transform definition requires.
 
-### 3 – Validate the connector
+### 3 – Validate the connector and sample mapping
 
 Validate your connector against the schema using any JSON Schema Draft 07 validator, for example:
 
 ```bash
 python3 -c "
 import json, jsonschema
-schema = json.load(open('connector-schema.json'))
-data   = json.load(open('my-tool.json'))
+schema = json.load(open('connectors/connector-schema.json'))
+data   = json.load(open('connectors/mappings/my-tool.json'))
 jsonschema.validate(data, schema)
 print('Valid')
 "
 ```
 
+Then apply it to the sample TIFF:
+
+```bash
+famdo map my_image.tif mappings/my-tool.json -o mapped.json
+```
+
+`famdo map` validates the connector and the resulting FAMH document before it
+writes `mapped.json`. It reads TIFF tags from IFD 0 and does not guess missing
+context such as a timezone. The extracted sample filename is also not a
+connector source; do not turn it into a constant unless the connector is
+intentionally limited to that one image.
+
+### 4 – Record unresolved review items
+
+If the connector is schema-valid but the sample cannot produce a complete FAMH
+document, do not add placeholder mappings. Create
+`mappings/my-tool.unresolved.json` and validate it against
+[unresolved-schema.json](unresolved-schema.json):
+
+```json
+{
+  "$schema": "../unresolved-schema.json",
+  "version": "1.0.0",
+  "status": "needs-review",
+  "sourceImage": "my_image.tif",
+  "connectorPath": "mappings/my-tool.json",
+  "unresolved": [
+    {
+      "kind": "missing-required-target",
+      "target": "/General Section/Method",
+      "candidateTargets": [
+        "/General Section/Method"
+      ],
+      "question": "Which acquisition method should be recorded?",
+      "reason": "The sample TIFF does not contain enough information to determine the FAMH method."
+    }
+  ]
+}
+```
+
+Sidecars are required only when unresolved items exist. A connector is
+production-ready only after the connector schema passes and `famdo map`
+succeeds for the representative sample; otherwise the sidecar is the handoff
+for human review.
+
+The repository also provides an agent workflow for this process in
+[`famdo-tiff-connector`](../.github/skills/famdo-tiff-connector/SKILL.md).
