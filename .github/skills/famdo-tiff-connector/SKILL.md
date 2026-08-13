@@ -1,45 +1,71 @@
 ---
 name: famdo-tiff-connector
-description: 'Use when creating or updating a FAMH connector or mapping JSON from a TIFF file with famdo. Extract TIFF metadata with the famdo CLI, map tags to FAMH connector fields using tag IDs, add transform invocations when needed, validate the connector JSON, and write unresolved or ambiguous tags to a sidecar .unresolved.json file instead of guessing.'
-argument-hint: 'Path to the TIFF file and desired connector or mapping file name'
+description: 'Use when creating or updating a FAMH connector or mapping JSON from one or more TIFF files with famdo. Extract and compare TIFF metadata, map stable tags to FAMH connector fields, validate every sample output, and write unresolved or ambiguous decisions to a sidecar instead of guessing.'
+argument-hint: 'One or more TIFF paths, optional tool context, and a connector output path'
 user-invocable: true
 disable-model-invocation: false
 ---
 
 # Famdo TIFF Connector
 
-Create a conservative connector or mapping JSON for the FA Metadata Header (FAMH) schema from TIFF metadata extracted with the `famdo` CLI.
+Create a conservative connector or mapping JSON for the FA Metadata Header (FAMH)
+schema from one or more TIFF samples extracted with the `famdo` CLI.
 
-This skill builds files such as `connectors/mappings/my-tool.json` from a real TIFF
-sample. It prioritizes a schema-valid connector over aggressive guessing. When a
-tag, transform, required FAMH field, or contextual decision cannot be resolved
-confidently, keep the connector free of speculative mappings and write a
-machine-readable `.unresolved.json` sidecar for human review.
+This skill builds files such as `connectors/mappings/my-tool.json` from one or
+more representative TIFF samples. It prioritizes a schema-valid connector over
+aggressive guessing. When a tag, transform, required FAMH field, or contextual
+decision cannot be resolved confidently, keep the connector free of speculative
+mappings and write a machine-readable `.unresolved.json` sidecar for human review.
+
+The skill is self-contained. The user only needs to provide the TIFF path(s),
+any known vendor/instrument/method context, and the desired connector output
+path. Do not ask the user to repeat the extraction, mapping, validation, or
+review procedure described below.
 
 ## When to Use
 
-- Build a new connector from a TIFF file
+- Build a new connector from one or more TIFF files
 - Update an existing connector after inspecting a new tool's TIFF metadata
 - Convert `famdo extract` output into `connectors/mappings/*.json`
 - Identify which TIFF tags can map directly to FAMH and which need transforms or user decisions
 
 ## Preconditions
 
-- A TIFF file is available for inspection
+- One or more representative TIFF files are available for inspection
 - `famdo` is installed or a local checkout is available
 - The target connector should follow `connectors/connector-schema.json`
 - The target mappings should default to FAMH `v1.1` unless the user explicitly asks for another version
 - `famdo map` supports connector target versions `1` and `1.1`; target version `2` requires a separately designed connector mapping
 
+## Minimal Invocation
+
+An invocation can be as short as:
+
+```text
+Use the famdo-tiff-connector skill for these TIFFs:
+- /path/to/sample-1.tiff
+- /path/to/sample-2.tiff
+
+Known context: <vendor, instrument, and method if known>
+Create the connector at: connectors/mappings/<name>.json
+```
+
+Treat all other steps in this skill as required implementation work. If known
+context is absent, continue conservatively and create unresolved review items
+for the missing decisions.
+
 ## Procedure
 
-1. Confirm the sample TIFF path and decide the connector output path.
+1. Collect the TIFF samples, known context, and connector output path.
 
    Preferred output location: `connectors/mappings/<name>.json`
 
    Preferred unresolved sidecar path: `connectors/mappings/<name>.unresolved.json`
 
-2. Run metadata extraction with `famdo`.
+   When multiple samples are provided, treat them as one connector family
+   candidate and compare them before adding mappings.
+
+2. Run metadata extraction with `famdo` for every sample.
 
    Preferred command:
 
@@ -50,11 +76,11 @@ machine-readable `.unresolved.json` sidecar for human review.
    If `famdo` is not on `PATH` but a local checkout exists, use the local binary or
    `cargo run -- extract` from that repo.
 
-   The command may return status `1` when it writes metadata with extraction
-   diagnostics. Do not ignore those diagnostics: retain the extracted JSON for
-   inspection and record each blocking issue in the unresolved sidecar.
+   Use a separate output JSON for each input. The command may return status `1`
+   when it writes metadata with extraction diagnostics. Continue to inspect that
+   output, but record every extraction diagnostic in the unresolved sidecar.
 
-3. Inspect the extracted metadata.
+3. Inspect and compare the extracted metadata.
 
    For mappings, use `ifds[0].tags` (or the compatible top-level `tags` array):
 
@@ -67,6 +93,13 @@ machine-readable `.unresolved.json` sidecar for human review.
 
    - `diagnostics`: tag-read or unsupported-value problems that block mapping
    - `ifds`: additional image directories; `famdo map` currently reads IFD 0 only
+
+   Across multiple samples, distinguish:
+
+   - stable tags and value types that can become connector mappings;
+   - optional tags that are absent from some samples;
+   - values that vary per image and must not become constants;
+   - vendor-specific tags whose meaning needs human confirmation.
 
    Do not infer that a tag in another IFD applies to IFD 0. If multi-IFD
    semantics matter for the connector, create an unresolved review item.
@@ -102,11 +135,19 @@ machine-readable `.unresolved.json` sidecar for human review.
    - `Make` (271) -> `/General Section/Manufacturer`
    - `Model` (272) -> `/General Section/Tool Name`
 
-   Do not copy the extracted `filename` into a connector constant for a
-   reusable connector. It identifies the sample path, not a TIFF tag. If the
-   target FAMH version requires `/General Section/File Name` and no runtime
-   source is available, record that target as unresolved instead of baking the
-   sample filename into every mapped output.
+   Use the `runtime` source for generated FAMH metadata instead of copying
+   sample context into constants:
+
+   ```json
+   {
+     "source": { "type": "runtime", "field": "image-file-name" },
+     "target": "/General Section/File Name"
+   }
+   ```
+
+   Use `{ "type": "runtime", "field": "mapping-timestamp" }` for
+   `/General Section/Time Stamp`. These values describe the current mapping
+   invocation and do not require sample-specific constants.
 
 6. Add transform-based mappings where a transform definition already exists.
 
@@ -133,6 +174,14 @@ machine-readable `.unresolved.json` sidecar for human review.
    Example:
 
    - If mapping `Pixel Width/Value` or `Pixel Height/Value`, also add the corresponding `Unit` mapping, typically constant `"nm"`.
+
+   If the target schema has no established method-specific subsection, a
+   connector may materialize a provisional subsection under
+   `/Method Specific/<Method Name>/...` using descriptive field names. Keep
+   those fields conservative, preserve raw vendor values when useful, and
+   record the provisional structure as a `human-decision` item in the review
+   sidecar. A successful schema validation does not make the subsection an
+   official FAMH vocabulary.
 
 8. Do not guess when the semantics are unclear.
 
@@ -206,23 +255,25 @@ machine-readable `.unresolved.json` sidecar for human review.
    - validate any `.unresolved.json` sidecar against `connectors/unresolved-schema.json`
    - check that multi-input transform bindings are present when required
    - check that transformed numeric value fields also have appropriate unit mappings when needed
-   - run `famdo map <image> <connector> --out <candidate-output>`
+   - run `famdo map <image> <connector> --out <candidate-output>` for every sample
+   - run `famdo validate --version v1` (or the selected supported version) for every mapped output
 
    `famdo map` validates the mapped FAMH document before writing it. Treat the
    outcomes as follows:
 
-   - **Ready:** map succeeds and writes the candidate output. No unresolved
+   - **Ready:** map and validate succeed for every sample and no unresolved
      sidecar is needed.
-   - **Needs review:** the connector is schema-valid but map reports missing
-     required FAMH fields, ambiguous values, extraction diagnostics, or an
-     unsupported transform. Keep the connector, record every blocking issue in
-     the sidecar, and do not claim that the connector produces a complete FAMH
-     document.
+   - **Needs review:** the connector is schema-valid but any sample fails
+     mapping/validation, or the sidecar contains provisional mappings,
+     ambiguous values, extraction diagnostics, or human decisions. Keep the
+     connector, record every blocking issue in the sidecar, and do not claim
+     production readiness merely because the JSON schema accepts the output.
 
 ## Decision Rules
 
 - Default to FAMH `v1.1`
 - Prefer exact schema field names and valid JSON Pointers
+- Use runtime sources for the generated FAMH filename and mapping timestamp
 - Prefer direct mappings over transforms when no conversion is needed
 - Prefer existing transform definitions over inventing new conversions ad hoc
 - Prefer omission plus explicit review notes over speculative mappings
@@ -237,7 +288,7 @@ The task is complete when all of the following are true:
 - Every transform invocation matches the transform definition shape as closely as the connector schema allows
 - Directly mappable baseline TIFF tags have been included when present
 - Ambiguous or unresolved tags are written to `<name>.unresolved.json` when any exist
-- A successful sample mapping was written and validated, or the connector is explicitly marked as needing review with a schema-valid sidecar
+- A mapped and validated output was produced for every representative sample, or the connector is explicitly marked as needing review with a schema-valid sidecar
 - The final response states what was created, what was validated, and what still needs a decision
 
 ## Final Response Format
@@ -249,6 +300,7 @@ Include:
 - whether connector-schema validation passed
 - whether unresolved-schema validation passed, if a sidecar was created
 - a short summary of direct mappings and transform-based mappings added
+- the mapped and validated output path for each representative sample
 - a short summary of unresolved tags needing user input
 
 ## Notes
