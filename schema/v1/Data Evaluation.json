@@ -19,7 +19,7 @@
                 "type": "string"
             },
             "POI": {
-                "description": ".POI (point of interest) is an array which contains all the 0-N POIs selected by the user. One POI is a point on the image, defined by its name and (x, y)-coordinates.",
+                "description": "POI (point of interest) is an array which contains all the 0-N POIs selected by the user. One POI is defined by its name and coordinates. The standard representation is 2D (x, y); an optional z-coordinate allows a 3D representation (x, y, z).",
                 "type": [
                     "array",
                     "null"
@@ -51,7 +51,8 @@
                                 "Coordinates": {
                                     "Value": [
                                         1933.57,
-                                        8732.19
+                                        8732.19,
+                                        30838.0
                                     ],
                                     "Unit": "µm"
                                 }
@@ -72,12 +73,13 @@
                             "type": "string"
                         },
                         "Coordinates": {
-                            "description": "(x, y) coordinates of the specific POI in the tools coordinate frame. The first element denotes the x-coordinate and the second the y-coordinate. The unit is specified under the property 'Unit'.",
+                            "description": "Coordinates of the specific POI in the tool's coordinate frame. The standard representation is (x, y). An optional third element denotes the z-coordinate for a 3D representation (x, y, z). The unit specified under 'Unit' applies to all coordinates.",
                             "type": "object",
                             "properties": {
                                 "Value": {
                                     "type": "array",
-                                    "maxItems": 2,
+                                    "minItems": 2,
+                                    "maxItems": 3,
                                     "items": {
                                         "type": [
                                             "number",
