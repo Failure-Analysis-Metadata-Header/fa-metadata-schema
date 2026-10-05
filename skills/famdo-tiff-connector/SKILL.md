@@ -248,11 +248,23 @@ for the missing decisions.
 
 10. Validate the connector and sample mapping before finishing.
 
-   At minimum:
+  Run the bundled JSON and schema validator first:
 
-   - validate JSON syntax
-   - validate against `connectors/connector-schema.json`
-   - validate any `.unresolved.json` sidecar against `connectors/unresolved-schema.json`
+  ```bash
+  python skills/famdo-tiff-connector/scripts/validate_connector.py <connector.json>
+  ```
+
+  It checks JSON syntax and validates the connector against
+  `connectors/connector-schema.json`. If the conventional sidecar
+  `<connector-stem>.unresolved.json` exists beside the connector, it also
+  validates that file against `connectors/unresolved-schema.json`. For a
+  nonstandard sidecar location, pass `--unresolved <path>`. The script needs
+  Python and the `jsonschema` package; it can locate repository schemas
+  automatically or accept explicit `--connector-schema` and
+  `--unresolved-schema` paths.
+
+  Also:
+
    - check that multi-input transform bindings are present when required
    - check that transformed numeric value fields also have appropriate unit mappings when needed
    - run `famdo map <image> <connector> --out <candidate-output>` for every sample
